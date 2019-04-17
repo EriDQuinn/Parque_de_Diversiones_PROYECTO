@@ -1,4 +1,3 @@
-
 /*---------------------------------------------------------*/
 /* ----------------   Proyecto feria --------------------------*/
 /*-----------------    2019-2   ---------------------------*/
@@ -237,8 +236,8 @@ void myData() //Recordemos que antes aquí teníamos un cubo, pero ahora hay un 
 
 
 -0.5f, -0.5f, 0.5f,		0.0f, 0.0f,
--0.5f, 0.0f, 0.5f,		0.0f, 0.0f,
- 0.7f, -0.3f, 0.5f,		0.0f, 0.0f
+-0.5f, 0.0f, 0.5f,		0.0f, 1.0f,
+ 0.7f, -0.3f, 0.5f,		1.0f, 0.0f
 
 
 
@@ -386,7 +385,7 @@ void myData() //Recordemos que antes aquí teníamos un cubo, pero ahora hay un 
 	// texture 4 banderas
 	// ---------
 	glGenTextures(4, &texture4);
-	glBindTexture(GL_TEXTURE_2D, texture3); //tipo 2D 
+	glBindTexture(GL_TEXTURE_2D, texture4); //tipo 2D 
 	// set the texture wrapping parameters
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -407,6 +406,28 @@ void myData() //Recordemos que antes aquí teníamos un cubo, pero ahora hay un 
 	stbi_image_free(data);
 
 
+	// texture 5 metal
+	glGenTextures(5, &texture5);
+	glBindTexture(GL_TEXTURE_2D, texture5); //tipo 2D 
+	// set the texture wrapping parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	// set texture filtering parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); //filtro 
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	data = stbi_load("texturas_feria/MetalBare.jpg", &width, &height, &nrChannels, 0);
+	if (data)
+	{
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+	{
+		std::cout << "Failed to load texture three" << std::endl;
+	}
+	stbi_image_free(data);
+
 
 	
 }
@@ -418,7 +439,7 @@ void animate(void)
 	{
 		movimiento = -0.2;
 	}
-	if (angPato<=-90)
+	if (angRueda<=-90)
 	{
 		movimiento = 0.2;
 	}
@@ -652,34 +673,15 @@ void display(void)
 	projectionShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 1.0f));
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
-	model = glm::translate(model, glm::vec3(10.50f, 0.0f, 0.0f));
+	model = glm::translate(model, glm::vec3(20.50f, 0.0f, 0.0f));
 	modelTemp = model;
 	model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 1.0f));
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	
-	model = glm::translate(model, glm::vec3(2.0f, 0.0f, 0.0f));
+	model = glm::translate(model, glm::vec3(-2.0f, 1.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0f, 2.0f, 1.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 1.0f));
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-
-	model = glm::translate(model, glm::vec3(8.0f, 0.0f, 0.0f));
-	model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 1.0f));
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-
-	//palito
-	model = glm::translate(model, glm::vec3(0.0f, 2.0f, 0.0f));
-	model = glm::scale(model, glm::vec3(0.10f, 0.10f, 0.10f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 1.0f));
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-
-	model = glm::translate(model, glm::vec3(-2.0f, 0.0f, 0.0f));
-	model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 1.0f));
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
@@ -690,7 +692,26 @@ void display(void)
 	projectionShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 1.0f));
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
+	//palito
+	model = glm::translate(model, glm::vec3(0.0f, 2.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(0.50f, 0.50f, 0.50f));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 1.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
 	model = glm::translate(model, glm::vec3(-2.0f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 1.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	model = glm::translate(model, glm::vec3(15.0f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 1.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	model = glm::translate(model, glm::vec3(2.0f, 0.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 1.0f));
@@ -733,6 +754,9 @@ void display(void)
 	model=modelTemp;
 
 	//Rueda de la fortuna
+	glActiveTexture(GL_TEXTURE);
+	glBindTexture(GL_TEXTURE_2D, texture5);
+	
 	model = glm::mat4(1.0f);
 	model = glm::translate(model, glm::vec3(2.0f, 2.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0f, 2.0f, 1.0f));
@@ -740,6 +764,8 @@ void display(void)
 	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	model=modelTemp;
+
+	
 
 
 
