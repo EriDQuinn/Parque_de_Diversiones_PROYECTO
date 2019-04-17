@@ -753,7 +753,7 @@ void display(void)
 	glDrawArrays(GL_TRIANGLES, 24, 26);
 	model = modelTemp;
 	*/
-	//Rueda de la fortuna
+		//Rueda de la fortuna
 	glActiveTexture(GL_TEXTURE);
 	glBindTexture(GL_TEXTURE_2D, texture5);
 	//base
@@ -767,17 +767,18 @@ void display(void)
 	model = modelTemp;
 
 	//soporte
-	model = glm::translate(model, glm::vec3(1.0f, 5.0f, 2.0f));
+	model = glm::translate(model, glm::vec3(1.0f, 2.0f, 2.0f));
 	model = glm::scale(model, glm::vec3(5.0f, 4.0f, 0.20f));
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
 	glDrawArrays(GL_TRIANGLES, 27, 29);
 
-	model = glm::translate(model, glm::vec3(1.0f, 5.0f, -4.0f));
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -4.0f));
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
 	glDrawArrays(GL_TRIANGLES, 27, 29);
-	//barras soporte
+	
+	/*//barras soporte
 	//enfrente
 	model = glm::translate(model, glm::vec3(1.0f, 5.0f, 2.0f));
 	// = glm::rotate(model, glm::radians(rotX), glm::vec3(0, 0, 1));
@@ -801,16 +802,17 @@ void display(void)
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-
+*/
 	//eje
 
-	model = glm::translate(model, glm::vec3(0.50f, 3.0f, -1.0f));
+	model = glm::translate(model, glm::vec3(0.0f, 1.0f, -1.0f));
 	model = glm::rotate(model, glm::radians(angRueda), glm::vec3(0, 0, 1));
 	modelTemp = model;
-	model = glm::scale(model, glm::vec3(0.25, 0.25, 5));
+	model = glm::scale(model, glm::vec3(0.5, 0.5, 5));
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
 
 
 
