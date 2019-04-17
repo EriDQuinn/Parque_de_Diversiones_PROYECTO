@@ -33,7 +33,7 @@ GLuint VBO, VAO, EBO;
 
 //Camera
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
-double	lastX = 0.0f,
+double	lastX= 0.0f,
 lastY = 0.0f;
 bool firstMouse = true;
 
