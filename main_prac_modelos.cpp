@@ -1,9 +1,9 @@
 /*---------------------------------------------------------*/
-/* ----------------   Pr·ctica 8 --------------------------*/
+/* ----------------   Proyecto feria --------------------------*/
 /*-----------------    2019-2   ---------------------------*/
-/*------------- Alumno: Diaz Acosta Erika -----------------*/
+/*------------- Alumno: Diaz Acosta Erika y Ortiz Mart√≠nez Brenda -----------------*/
 
-/*-------------Diaz Acosta Erika      Grupo4 -------------- */
+/*-------------  Grupo4 -------------- */
 /*---------------------Version visual 2017------------------------*/
 /*---------Instrucciones-------------------------------------------*/
 /*--------Use las teclas para mover el modelo----------------------*/
@@ -56,7 +56,7 @@ movZ = -5.0f,
 rotX = 0.0f,
 rotY = 0.0f;
 //Texture
-unsigned int texture1, texture2, texture3; //Indice que va a tener cada textura, i.e., 2 Ìndices = 2 texturas
+unsigned int texture1, texture2, texture3; //Indice que va a tener cada textura, i.e., 2 √≠ndices = 2 texturas
 
 void getResolution()
 {
@@ -71,7 +71,7 @@ void getResolution()
 }
 
 
-void myData() //Recordemos que antes aquÌ tenÌamos un cubo, pero ahora hay un plano.
+void myData() //Recordemos que antes aqu√≠ ten√≠amos un cubo, pero ahora hay un plano.
 {
 	float vertices[] = {
 		// positions          // texture coords
@@ -599,7 +599,7 @@ int main()
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		//Mi funciÛn de dibujo
+		//Mi funci√≥n de dibujo
 		display();
 
 		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
