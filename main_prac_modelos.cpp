@@ -1,3 +1,4 @@
+
 /*---------------------------------------------------------*/
 /* ----------------   Proyecto feria --------------------------*/
 /*-----------------    2019-2   ---------------------------*/
@@ -55,8 +56,131 @@ movY = 0.0f,
 movZ = -5.0f,
 rotX = 0.0f,
 rotY = 0.0f;
+
+//rueda
+float angRueda = 0.0f;
+float movimiento = 0.2;
+
+
+//To Buid the Sphere
+//---------------------------------------------------------------------------
+//const int na = 36;        // vertex grid size
+const int meridianos = 36;			// vertex grid size   na -> meridianos
+const int paralelos = 36;			// nb -> paralelos
+const int meridianos3 = meridianos * 3;     // line in grid size
+const int nn = paralelos * meridianos3;    // whole grid size
+GLfloat sphere_pos[nn]; // vertex
+GLfloat sphere_nor[nn]; // normal
+//GLfloat sphere_col[nn];   // color
+GLuint  sphere_ix[meridianos*(paralelos - 1) * 6];    // indices
+GLuint sphere_vbo[4] = { -1,-1,-1,-1 };
+GLuint sphere_vao[4] = { -1,-1,-1,-1 };
+
+void sphere_init()
+{
+	// generate the sphere data
+	GLfloat x, y, z, a, b, da, db, r = 1.0;
+	int ia, ib, ix, iy;
+	da = (GLfloat)2.0*M_PI / GLfloat(meridianos);
+	db = (GLfloat)M_PI / GLfloat(paralelos - 1);
+	// [Generate sphere point data]
+	// spherical angles a,b covering whole sphere surface
+	for (ix = 0, b = (GLfloat)-0.5*M_PI, ib = 0; ib < paralelos; ib++, b += db)
+		for (a = 0.0, ia = 0; ia < meridianos; ia++, a += da, ix += 3)
+		{
+			// unit sphere
+			x = cos(b)*cos(a);
+			y = cos(b)*sin(a);
+			z = sin(b);
+			sphere_pos[ix + 0] = x * r;
+			sphere_pos[ix + 1] = y * r;
+			sphere_pos[ix + 2] = z * r;
+			sphere_nor[ix + 0] = x;
+			sphere_nor[ix + 1] = y;
+			sphere_nor[ix + 2] = z;
+		}
+	// [Generate GL_TRIANGLE indices]
+	for (ix = 0, iy = 0, ib = 1; ib < paralelos; ib++)
+	{
+		for (ia = 1; ia < meridianos; ia++, iy++)
+		{
+			// first half of QUAD
+			sphere_ix[ix] = iy;      ix++;
+			sphere_ix[ix] = iy + 1;    ix++;
+			sphere_ix[ix] = iy + meridianos;   ix++;
+			// second half of QUAD
+			sphere_ix[ix] = iy + meridianos;   ix++;
+			sphere_ix[ix] = iy + 1;    ix++;
+			sphere_ix[ix] = iy + meridianos + 1; ix++;
+		}
+		// first half of QUAD
+		sphere_ix[ix] = iy;       ix++;
+		sphere_ix[ix] = iy + 1 - meridianos;  ix++;
+		sphere_ix[ix] = iy + meridianos;    ix++;
+		// second half of QUAD
+		sphere_ix[ix] = iy + meridianos;    ix++;
+		sphere_ix[ix] = iy - meridianos + 1;  ix++;
+		sphere_ix[ix] = iy + 1;     ix++;
+		iy++;
+	}
+	// [VAO/VBO stuff]
+	GLuint i;
+	glGenVertexArrays(4, sphere_vao);
+	glGenBuffers(4, sphere_vbo);
+	glBindVertexArray(sphere_vao[0]);
+	i = 0; // vertex
+	glBindBuffer(GL_ARRAY_BUFFER, sphere_vbo[i]);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(sphere_pos), sphere_pos, GL_STATIC_DRAW);
+	glEnableVertexAttribArray(i);
+	glVertexAttribPointer(i, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	i = 1; // indices
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, sphere_vbo[i]);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(sphere_ix), sphere_ix, GL_STATIC_DRAW);
+	glEnableVertexAttribArray(i);
+	glVertexAttribPointer(i, 4, GL_UNSIGNED_INT, GL_FALSE, 0, 0);
+	i = 2; // normal
+	glBindBuffer(GL_ARRAY_BUFFER, sphere_vbo[i]);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(sphere_nor), sphere_nor, GL_STATIC_DRAW);
+	glEnableVertexAttribArray(i);
+	glVertexAttribPointer(i, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	/*
+		i=3; // color
+		glBindBuffer(GL_ARRAY_BUFFER,sphere_vbo[i]);
+		glBufferData(GL_ARRAY_BUFFER,sizeof(sphere_col),sphere_col,GL_STATIC_DRAW);
+		glEnableVertexAttribArray(i);
+		glVertexAttribPointer(i,3,GL_FLOAT,GL_FALSE,0,0);
+	*/
+	glBindVertexArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	glDisableVertexAttribArray(0);
+	glDisableVertexAttribArray(1);
+	glDisableVertexAttribArray(2);
+	glDisableVertexAttribArray(3);
+}
+
+void sphere_exit()
+{
+	glDeleteVertexArrays(4, sphere_vao);
+	glDeleteBuffers(4, sphere_vbo);
+}
+void sphere_draw()
+{
+	glEnable(GL_CULL_FACE);
+	glFrontFace(GL_CCW);
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
+
+	glBindVertexArray(sphere_vao[0]);
+	//  glDrawArrays(GL_POINTS,0,sizeof(sphere_pos)/sizeof(GLfloat));                   
+	glDrawElements(GL_LINE_LOOP, sizeof(sphere_ix) / sizeof(GLuint), GL_UNSIGNED_INT, 0);  
+	//TRIANGLES = solido
+	glBindVertexArray(0);
+}
+
+
 //Texture
-unsigned int texture1, texture2, texture3; //Indice que va a tener cada textura, i.e., 2 índices = 2 texturas
+unsigned int texture1, texture2, texture3, texture4; //Indice que va a tener cada textura, i.e., 2 índices = 2 texturas
 
 void getResolution()
 {
@@ -289,7 +413,16 @@ void myData() //Recordemos que antes aquí teníamos un cubo, pero ahora hay un 
 
 void animate(void)
 {
-
+	angRueda = angRueda + movimiento;
+	if (angRueda>=90)
+	{
+		movimiento = -0.2;
+	}
+	if (angPato<=-90)
+	{
+		movimiento = 0.2;
+	}
+	
 }
 
 void display(void)
@@ -599,7 +732,19 @@ void display(void)
 	glDrawArrays(GL_TRIANGLES, 24, 26);
 	model=modelTemp;
 
+	//Rueda de la fortuna
+	model = glm::mat4(1.0f);
+	model = glm::translate(model, glm::vec3(2.0f, 2.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0f, 2.0f, 1.0f));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	model=modelTemp;
 
+
+
+
+	
 	
 	
 	glBindVertexArray(0);
