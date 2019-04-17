@@ -760,15 +760,29 @@ void display(void)
 	model = glm::mat4(1.0f);
 	model = glm::translate(model, glm::vec3(2.0f, 2.0f, 0.0f));
 	modelTemp = model;
-	model = glm::scale(model, glm::vec3(10.0f, 2.0f, 5.0f));
+	model = glm::scale(model, glm::vec3(20.0f, 1.0f, 5.0f));
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	model=modelTemp;
-	//barras soporte
-	//enfrente
+
+	//soporte
 	model = glm::translate(model, glm::vec3(1.0f, 5.0f, 2.0f));
-	model = glm::rotate(model, glm::radians(45), glm::vec3(0, 0, 1));
+	model = glm::scale(model, glm::vec3(5.0f, 4.0f, 0.20f));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	glDrawArrays(GL_TRIANGLES, 27, 29);
+
+	model = glm::translate(model, glm::vec3(1.0f, 5.0f, -4.0f));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	glDrawArrays(GL_TRIANGLES, 27, 29);
+
+	//barras soporte
+	
+	//enfrente
+	/*model = glm::translate(model, glm::vec3(1.0f, 5.0f, 2.0f));
+	model = glm::rotate(model, glm::radians(0.7068f), glm::vec3(0, 0, 1));
 	model = glm::scale(model, glm::vec3(0.20f, 4.0f, 0.10f));
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
@@ -780,7 +794,7 @@ void display(void)
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	
 	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
-	model = glm::rotate(model, glm::radians(-45), glm::vec3(0, 0, 1));
+	model = glm::rotate(model, glm::radians(-0.7068f), glm::vec3(0, 0, 1));
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
@@ -789,20 +803,26 @@ void display(void)
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-
+*/
 	//eje
-	
+	model=modelTemp;
 	model = glm::translate(model, glm::vec3(0.50f, 3.0f, -1.0f));
-	model = glm::rotate(model, glm::radians(angPato), glm::vec3(0, 0, 1));
+	model = glm::rotate(model, glm::radians(angRueda), glm::vec3(0, 0, 1));
 	modelTemp = model;
 	model = glm::scale(model, glm::vec3(0.25, 0.25, 5));
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	model=modelTemp;
+	
+	//barra horiz
+	model = glm::scale(model, glm::vec3(10.0f, 4.0f, 4.0f));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
 
 	
-
-
 
 
 	
