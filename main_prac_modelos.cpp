@@ -111,44 +111,15 @@ void myData() //Recordemos que antes aquí teníamos un cubo, pero ahora hay un 
  0.5f, -0.5f, -0.5f,	0.0f, 0.0f,
  0.5f, -0.5f, 0.5f,		0.0f, 1.0f,
 
- //----entrada
 
-		// positions          // texture coords
-												//front
-		0.5f, 0.5f, 0.5f,		1.0f, 1.0f,
-		0.5f, -0.5f, 0.5f,		1.0f, 0.0f,
-		-0.5f, -0.5f, 0.5f,		0.0f, 0.0f,
-		-0.5f, 0.5f, 0.5f,		0.0f, 1.0f,
+-0.5f, -0.5f, 0.5f,		0.0f, 0.0f,
+-0.5f, 0.0f, 0.5f,		0.0f, 0.0f,
+ 0.7f, -0.3f, 0.5f,		0.0f, 0.0f
 
-		// Trasera
-0.5f, -0.5f, -0.5f,	1.0f, 1.0f,
-0.5f,  0.5f, -0.5f,	1.0f, 0.0f,
--0.5f,  0.5f, -0.5f,	0.0f, 0.0f,
--0.5f, -0.5f, -0.5f,	0.0f, 1.0f,
 
-//Izq
--0.5f,  0.5f, 0.5f,		1.0f, 1.0f,
--0.5f,  0.5f, -0.5f,	1.0f, 0.0f,
--0.5f, -0.5f, -0.5f,	0.0f, 0.0f,
--0.5f, -0.5f, 0.5f,		0.0f, 1.0f,
 
-//Der
-0.5f,  0.5f, 0.5f,		1.0f, 1.0f,
-0.5f,  0.5f, -0.5f,		1.0f, 0.0f,
-0.5f, -0.5f, -0.5f,		0.0f, 0.0f,
-0.5f, -0.5f, 0.5f,		0.0f, 1.0f,
 
-//Sup
--0.5f, 0.5f, 0.5f,		1.0f, 1.0f,
- 0.5f, 0.5f, 0.5f,		1.0f, 0.0f,
- 0.5f, 0.5f, -0.5f,		0.0f, 0.0f,
--0.5f, 0.5f, -0.5f,		0.0f, 1.0f,
-
-//Inf
--0.5f, -0.5f, 0.5f,		1.0f, 1.0f,
--0.5f, -0.5f, -0.5f,	1.0f, 0.0f,
- 0.5f, -0.5f, -0.5f,	0.0f, 0.0f,
- 0.5f, -0.5f, 0.5f,		0.0f, 1.0f
+	
 	};
 	unsigned int indices[] = {
 		
@@ -170,7 +141,9 @@ void myData() //Recordemos que antes aquí teníamos un cubo, pero ahora hay un 
 		20, 21, 22,
 		20, 22, 23,
 
-		24,25,26,
+		24,25,26
+
+/*		24,25,26,
 		24,26,27,
 
 		28,29,30,
@@ -186,7 +159,7 @@ void myData() //Recordemos que antes aquí teníamos un cubo, pero ahora hay un 
 		39,41,42,
 
 		43,44,45,
-		43,45,46
+		43,45,46*/
 
 		
 
@@ -285,6 +258,33 @@ void myData() //Recordemos que antes aquí teníamos un cubo, pero ahora hay un 
 		std::cout << "Failed to load texture three" << std::endl;
 	}
 	stbi_image_free(data);
+
+	// texture 4 banderas
+	// ---------
+	glGenTextures(4, &texture4);
+	glBindTexture(GL_TEXTURE_2D, texture3); //tipo 2D 
+	// set the texture wrapping parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	// set texture filtering parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); //filtro 
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	data = stbi_load("texturas_feria/red.jpg", &width, &height, &nrChannels, 0);
+	if (data)
+	{
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+	{
+		std::cout << "Failed to load texture three" << std::endl;
+	}
+	stbi_image_free(data);
+
+
+
+	
 }
 
 void animate(void)
@@ -527,11 +527,80 @@ void display(void)
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	
 	model = glm::translate(model, glm::vec3(2.0f, 0.0f, 0.0f));
-	modelTemp = model;
+	model = glm::scale(model, glm::vec3(1.0f, 2.0f, 1.0f));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 1.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	model = glm::translate(model, glm::vec3(8.0f, 0.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 1.0f));
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	//palito
+	model = glm::translate(model, glm::vec3(0.0f, 2.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(0.10f, 0.10f, 0.10f));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 1.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	model = glm::translate(model, glm::vec3(-2.0f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 1.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	model = glm::translate(model, glm::vec3(-10.0f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 1.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	model = glm::translate(model, glm::vec3(-2.0f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 1.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	//banderas
+	glActiveTexture(GL_TEXTURE);
+	glBindTexture(GL_TEXTURE_2D, texture4);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.50f, 0.0f));
+	modelTemp = model;
+	model = glm::scale(model, glm::vec3(7.0f, 5.0f, 1.0f));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	glDrawArrays(GL_TRIANGLES, 24, 26);
+	model=modelTemp;
+
+	model = glm::translate(model, glm::vec3(2.0f, 0.0f, 0.0f));
+	modelTemp = model;
+	model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	glDrawArrays(GL_TRIANGLES, 24, 26);
+	model=modelTemp;
+
+	model = glm::translate(model, glm::vec3(10.0f, 0.0f, 0.0f));
+	modelTemp = model;
+	model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	glDrawArrays(GL_TRIANGLES, 24, 26);
+	model=modelTemp;
+
+	model = glm::translate(model, glm::vec3(2.0f, 0.0f, 0.0f));
+	modelTemp = model;
+	model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	glDrawArrays(GL_TRIANGLES, 24, 26);
+	model=modelTemp;
+
+
+	
 	
 	glBindVertexArray(0);
 
