@@ -48,7 +48,7 @@ void myData(void);
 void display(void);
 void getResolution(void);
 void animate(void);
-
+void circulos(void); 
 //For Keyboard
 float	movX = 0.0f,
 movY = 0.0f,
@@ -426,6 +426,30 @@ void myData() //Recordemos que antes aquí teníamos un cubo, pero ahora hay un 
 
 
 
+}
+
+void circulos(void) {
+	float x1 = 0.0f, y1 = 0.0f, z = 0.0f;
+	for (double i = 0; i <= 360;) {
+		glBegin(GL_POINTS);
+		if (z == 0) {
+			x = 6 * cos(i);
+			y = 6 * sin(i);
+			
+			glVertex3d(x, y, z);
+			i = i + .5;
+			x = 6 * cos(i);
+			y = 6 * sin(i);
+			
+			glVertex3d(x, y, z);
+			glVertex3d(0, 0, 0);
+		}
+	glEnd();
+		i = i + 0.5;
+		
+
+	}
+	glEnd();
 }
 
 void animate(void)
