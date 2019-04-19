@@ -801,6 +801,9 @@ model = glm::translate(model, glm::vec3(-28.0f, 0.0f, 0.0f));
 	glActiveTexture(GL_TEXTURE);
 	glBindTexture(GL_TEXTURE_2D, texture2);
 
+	
+	//esferas rueda de la fortuna
+	//esfera1
 	model = modelTemp;
 	model = glm::translate(model, glm::vec3(1.0f, 4.5f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
@@ -811,11 +814,45 @@ model = glm::translate(model, glm::vec3(-28.0f, 0.0f, 0.0f));
 	//puertita
 	glActiveTexture(GL_TEXTURE);
 	glBindTexture(GL_TEXTURE_2D, texture2);
-	model = glm::translate(model, glm::vec3(0.0f, -1.0f, 1.0f));
+	model = glm::translate(model, glm::vec3(0.0f, -1.0f, 2.0f));
 	model = glm::scale(model, glm::vec3(1.0, 2.0, 0.010));
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	//esfera2
+	model = modelTemp;
+	model = glm::translate(model, glm::vec3(16.0f, 5.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	sphere_draw();
+	//puertita
+	glActiveTexture(GL_TEXTURE);
+	glBindTexture(GL_TEXTURE_2D, texture2);
+	model = glm::translate(model, glm::vec3(0.0f, -1.0f, 2.0f));
+	model = glm::scale(model, glm::vec3(1.0, 2.0, 0.010));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	//esfera3
+	model = modelTemp;
+	model = glm::translate(model, glm::vec3(-32.0f, -1.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	sphere_draw();
+	//puertita
+	glActiveTexture(GL_TEXTURE);
+	glBindTexture(GL_TEXTURE_2D, texture2);
+	model = glm::translate(model, glm::vec3(0.0f, -1.0f, 2.0f));
+	model = glm::scale(model, glm::vec3(1.0, 2.0, 0.010));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+
 }
 
 int main()
