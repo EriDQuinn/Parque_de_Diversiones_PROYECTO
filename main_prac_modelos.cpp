@@ -48,7 +48,7 @@ void myData(void);
 void display(void);
 void getResolution(void);
 void animate(void);
-void circulos(void); 
+void circulos(void);
 //For Keyboard
 float	movX = 0.0f,
 movY = 0.0f,
@@ -179,7 +179,7 @@ void sphere_draw()
 
 
 //Texture
-unsigned int texture1, texture2, texture3, texture4,texture5; //Indice que va a tener cada textura, i.e., 2 índices = 2 texturas
+unsigned int texture1, texture2, texture3, texture4, texture5; //Indice que va a tener cada textura, i.e., 2 índices = 2 texturas
 
 void getResolution()
 {
@@ -429,29 +429,50 @@ void myData() //Recordemos que antes aquí teníamos un cubo, pero ahora hay un 
 }
 
 void circulos(void) {
-	float x1 = 0.0f, y1 = 0.0f, z = 0.0f;
+	
+	glPointSize(15);
+	float x = 0.0f, y = 0.0f, z = 0.25f;
+	
 	for (double i = 0; i <= 360;) {
-		glBegin(GL_POINTS);
-		if (z == 0) {
-			x = 6 * cos(i);
-			y = 6 * sin(i);
-			
-			glVertex3d(x, y, z);
-			i = i + .5;
-			x = 6 * cos(i);
-			y = 6 * sin(i);
-			
-			glVertex3d(x, y, z);
-			glVertex3d(0, 0, 0);
-		}
-	glEnd();
-		i = i + 0.5;
-		
+		glBegin(GL_POINTS); {
+				x = 25 * cos(i);
+				y = 25 * sin(i);
 
-	}
+				glVertex3f(x, y, z);
+				i = i + 0.005;
+				x = 25 * cos(i);
+				y = 25 * sin(i);
+
+				glVertex3f(x, y, z);
+				glVertex3f(0, 0, 0);
+			}
+		i = i + 0.005;
+		}
 	glEnd();
 }
 
+void circulos2(void) {
+
+	glPointSize(15);
+	float x = 0.0f, y = 0.0f, z = -0.25f;
+
+	for (double i = 0; i <= 360;) {
+		glBegin(GL_POINTS); {
+			x = 25 * cos(i);
+			y = 25 * sin(i);
+
+			glVertex3f(x, y, z);
+			i = i + 0.005;
+			x = 25 * cos(i);
+			y = 25 * sin(i);
+
+			glVertex3f(x, y, z);
+			glVertex3f(0, 0, 0);
+		}
+		i = i + 0.005;
+	}
+	glEnd();
+}
 void animate(void)
 {
 	angRueda = angRueda + movimiento;
@@ -487,18 +508,18 @@ void display(void)
 	glm::mat4 projection = glm::mat4(1.0f);	//This matrix is for Projection
 	glm::mat4 modelTemp = glm::mat4(1.0f);
 	glm::mat4 modelTemp2 = glm::mat4(1.0f);
-//	view = glm::rotate(view, glm::radians(rotX), glm::vec3(1.0f, 0.0f, 0.0f));
+	//	view = glm::rotate(view, glm::radians(rotX), glm::vec3(1.0f, 0.0f, 0.0f));
 	view = glm::rotate(view, glm::radians(rotY), glm::vec3(0.0f, 1.0f, 0.0f));
 	//Use "projection" to include Camera
 	projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 	view = camera.GetViewMatrix();
 	view = glm::translate(view, glm::vec3(movX, movY, movZ));
 
-//	view = glm::rotate(view, glm::radians(rotX), glm::vec3(1.0f, 0.0f, 0.0f));
-	//view = glm::rotate(view, glm::radians(rotY), glm::vec3(0.0f, 1.0f, 0.0f));
+	//	view = glm::rotate(view, glm::radians(rotX), glm::vec3(1.0f, 0.0f, 0.0f));
+		//view = glm::rotate(view, glm::radians(rotY), glm::vec3(0.0f, 1.0f, 0.0f));
 
 
-	// pass them to the shaders
+		// pass them to the shaders
 	projectionShader.setVec3("viewPos", camera.Position);
 	projectionShader.setMat4("model", model);
 	projectionShader.setMat4("view", view);
@@ -757,20 +778,20 @@ void display(void)
 	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
 	glDrawArrays(GL_TRIANGLES, 24, 3);
 	//model = modelTemp;
-	
+
 	model = glm::translate(model, glm::vec3(-7.750f, 0.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
 	glDrawArrays(GL_TRIANGLES, 24, 3);
-	
+
 	model = glm::translate(model, glm::vec3(-2.18f, -1.9f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
 	glDrawArrays(GL_TRIANGLES, 24, 3);
-	
-	
+
+
 	//Rueda de la fortuna
 	glActiveTexture(GL_TEXTURE);
 	glBindTexture(GL_TEXTURE_2D, texture5);
@@ -783,10 +804,10 @@ void display(void)
 	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	model = modelTemp;
-	
+
 	//soporte
-	model = glm::translate(model, glm::vec3(1.0f,0.24f, 7.3));
-	model = glm::scale(model, glm::vec3(15.0f,25.0f, 0.33f));
+	model = glm::translate(model, glm::vec3(1.0f, 0.24f, 7.3));
+	model = glm::scale(model, glm::vec3(15.0f, 25.0f, 0.33f));
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
 	glDrawArrays(GL_TRIANGLES, 27, 3);
@@ -795,21 +816,37 @@ void display(void)
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
 	glDrawArrays(GL_TRIANGLES, 27, 3);
-	
-	
-//eje
+
+
+	//eje
 	model = modelTemp;
 	model = glm::translate(model, glm::vec3(1.0f, 18.0f, 0.0f));
 	model = glm::rotate(model, glm::radians(angRueda), glm::vec3(0, 0, 1));
-	
+
 	model = glm::scale(model, glm::vec3(0.5, 0.5, 14.8));
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-	
-	
 
 
+
+
+	circulos ();
+	circulos2();
+
+	//barras centro rueda
+	model = modelTemp;
+	model = glm::translate(model, glm::vec3(1.0f, 5.5f, 0.0f));
+	model = glm::scale(model, glm::vec3(0.5, 0.5, 7.5));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	model = glm::translate(model, glm::vec3(16.0f, 6.0f,0.0f));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 
 
