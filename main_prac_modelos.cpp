@@ -870,21 +870,23 @@ void display(void)
 	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
-
-	
-	
-	
 	//esferas rueda de la fortuna
 	glActiveTexture(GL_TEXTURE);
 	glBindTexture(GL_TEXTURE_2D, texture5);
 	
-	
 	model = modelTemp;
 	model = glm::translate(model, glm::vec3(1.0f, 4.5f, 0.0f));
-	model = glm::scale(model, glm::vec3(1.5, 1.50, 1.5));
+	model = glm::scale(model, glm::vec3(1.2, 1.5, 1.5));
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 	sphere_draw();
+	//puertita
+	model = glm::translate(model, glm::vec3(0.0f, -1.0f,1.0f));
+	model = glm::scale(model, glm::vec3(1.0, 2.0, 0.010));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
 /*
 	
 	model = glm::translate(model, glm::vec3(16.0f,4.50f,0.0f));
