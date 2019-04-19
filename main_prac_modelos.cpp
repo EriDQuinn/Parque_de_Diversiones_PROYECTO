@@ -61,126 +61,13 @@ float angRueda = 0.0f;
 float movimiento = 0.2;
 //float rotX = 0.7068f;
 
-//To Buid the Sphere
-//---------------------------------------------------------------------------
-//const int na = 36;        // vertex grid size
-const int meridianos = 36;			// vertex grid size   na -> meridianos
-const int paralelos = 36;			// nb -> paralelos
-const int meridianos3 = meridianos * 3;     // line in grid size
-const int nn = paralelos * meridianos3;    // whole grid size
-GLfloat sphere_pos[nn]; // vertex
-GLfloat sphere_nor[nn]; // normal
-//GLfloat sphere_col[nn];   // color
-GLuint  sphere_ix[meridianos*(paralelos - 1) * 6];    // indices
-GLuint sphere_vbo[4] = { -1,-1,-1,-1 };
-GLuint sphere_vao[4] = { -1,-1,-1,-1 };
 
-void sphere_init()
-{
-	// generate the sphere data
-	GLfloat x, y, z, a, b, da, db, r = 1.0;
-	int ia, ib, ix, iy;
-	da = (GLfloat)2.0*M_PI / GLfloat(meridianos);
-	db = (GLfloat)M_PI / GLfloat(paralelos - 1);
-	// [Generate sphere point data]
-	// spherical angles a,b covering whole sphere surface
-	for (ix = 0, b = (GLfloat)-0.5*M_PI, ib = 0; ib < paralelos; ib++, b += db)
-		for (a = 0.0, ia = 0; ia < meridianos; ia++, a += da, ix += 3)
-		{
-			// unit sphere
-			x = cos(b)*cos(a);
-			y = cos(b)*sin(a);
-			z = sin(b);
-			sphere_pos[ix + 0] = x * r;
-			sphere_pos[ix + 1] = y * r;
-			sphere_pos[ix + 2] = z * r;
-			sphere_nor[ix + 0] = x;
-			sphere_nor[ix + 1] = y;
-			sphere_nor[ix + 2] = z;
-		}
-	// [Generate GL_TRIANGLE indices]
-	for (ix = 0, iy = 0, ib = 1; ib < paralelos; ib++)
-	{
-		for (ia = 1; ia < meridianos; ia++, iy++)
-		{
-			// first half of QUAD
-			sphere_ix[ix] = iy;      ix++;
-			sphere_ix[ix] = iy + 1;    ix++;
-			sphere_ix[ix] = iy + meridianos;   ix++;
-			// second half of QUAD
-			sphere_ix[ix] = iy + meridianos;   ix++;
-			sphere_ix[ix] = iy + 1;    ix++;
-			sphere_ix[ix] = iy + meridianos + 1; ix++;
-		}
-		// first half of QUAD
-		sphere_ix[ix] = iy;       ix++;
-		sphere_ix[ix] = iy + 1 - meridianos;  ix++;
-		sphere_ix[ix] = iy + meridianos;    ix++;
-		// second half of QUAD
-		sphere_ix[ix] = iy + meridianos;    ix++;
-		sphere_ix[ix] = iy - meridianos + 1;  ix++;
-		sphere_ix[ix] = iy + 1;     ix++;
-		iy++;
-	}
-	// [VAO/VBO stuff]
-	GLuint i;
-	glGenVertexArrays(4, sphere_vao);
-	glGenBuffers(4, sphere_vbo);
-	glBindVertexArray(sphere_vao[0]);
-	i = 0; // vertex
-	glBindBuffer(GL_ARRAY_BUFFER, sphere_vbo[i]);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(sphere_pos), sphere_pos, GL_STATIC_DRAW);
-	glEnableVertexAttribArray(i);
-	glVertexAttribPointer(i, 3, GL_FLOAT, GL_FALSE, 0, 0);
-	i = 1; // indices
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, sphere_vbo[i]);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(sphere_ix), sphere_ix, GL_STATIC_DRAW);
-	glEnableVertexAttribArray(i);
-	glVertexAttribPointer(i, 4, GL_UNSIGNED_INT, GL_FALSE, 0, 0);
-	i = 2; // normal
-	glBindBuffer(GL_ARRAY_BUFFER, sphere_vbo[i]);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(sphere_nor), sphere_nor, GL_STATIC_DRAW);
-	glEnableVertexAttribArray(i);
-	glVertexAttribPointer(i, 3, GL_FLOAT, GL_FALSE, 0, 0);
-	/*
-		i=3; // color
-		glBindBuffer(GL_ARRAY_BUFFER,sphere_vbo[i]);
-		glBufferData(GL_ARRAY_BUFFER,sizeof(sphere_col),sphere_col,GL_STATIC_DRAW);
-		glEnableVertexAttribArray(i);
-		glVertexAttribPointer(i,3,GL_FLOAT,GL_FALSE,0,0);
-	*/
-	glBindVertexArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	glDisableVertexAttribArray(0);
-	glDisableVertexAttribArray(1);
-	glDisableVertexAttribArray(2);
-	glDisableVertexAttribArray(3);
-}
 
-void sphere_exit()
-{
-	glDeleteVertexArrays(4, sphere_vao);
-	glDeleteBuffers(4, sphere_vbo);
-}
-void sphere_draw()
-{
-	glEnable(GL_CULL_FACE);
-	glFrontFace(GL_CCW);
-	glEnable(GL_LIGHTING);
-	glEnable(GL_LIGHT0);
-
-	glBindVertexArray(sphere_vao[0]);
-	//  glDrawArrays(GL_POINTS,0,sizeof(sphere_pos)/sizeof(GLfloat));                   
-	glDrawElements(GL_TRIANGLES, sizeof(sphere_ix) / sizeof(GLuint), GL_UNSIGNED_INT, 0);
-	//TRIANGLES = solido
-	glBindVertexArray(0);
-}
 
 
 //Texture
 unsigned int texture1, texture2, texture3, texture4, texture5; //Indice que va a tener cada textura, i.e., 2 índices = 2 texturas
-unsigned int texture6, texture7, texture8, texture9, texture10;
+
 void getResolution()
 {
 	const GLFWvidmode * mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
@@ -412,7 +299,7 @@ void myData() //Recordemos que antes aquí teníamos un cubo, pero ahora hay un 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); //filtro 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-	data = stbi_load("texturas_feria/soporte_rueda.jpg", &width, &height, &nrChannels, 0);
+	data = stbi_load("texturas_feria/marmol_colores.jpg", &width, &height, &nrChannels, 0);
 	if (data)
 	{
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
@@ -424,28 +311,6 @@ void myData() //Recordemos que antes aquí teníamos un cubo, pero ahora hay un 
 	}
 	stbi_image_free(data);
 
-
-	// texture 6 ESCAMAS
-	glGenTextures(6, &texture6);
-	glBindTexture(GL_TEXTURE_2D, texture6); //tipo 2D 
-	// set the texture wrapping parameters
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	// set texture filtering parameters
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); //filtro 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	data = stbi_load("texturas_feria/mermaid1.jpg", &width, &height, &nrChannels, 0);
-	if (data)
-	{
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-		glGenerateMipmap(GL_TEXTURE_2D);
-	}
-	else
-	{
-		std::cout << "Failed to load texture three" << std::endl;
-	}
-	stbi_image_free(data);
 
 
 }
@@ -853,7 +718,7 @@ void display(void)
 
 
 
-	circulos ();
+	circulos();
 	circulos2();
 
 	//barras centro rueda
@@ -864,57 +729,93 @@ void display(void)
 	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
-	model = glm::translate(model, glm::vec3(16.0f, 6.0f,0.0f));
+	model = glm::translate(model, glm::vec3(16.0f, 6.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
-	//esferas rueda de la fortuna
-	glActiveTexture(GL_TEXTURE);
-	glBindTexture(GL_TEXTURE_2D, texture5);
-	
-	model = modelTemp;
-	model = glm::translate(model, glm::vec3(1.0f, 4.5f, 0.0f));
-	model = glm::scale(model, glm::vec3(1.2, 1.5, 1.5));
+	model = glm::translate(model, glm::vec3(-32.0f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
-	sphere_draw();
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	model = glm::translate(model, glm::vec3(-7.0f, 9.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	model = glm::translate(model, glm::vec3(46.0f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	model = glm::translate(model, glm::vec3(2.0f, 11.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	model = glm::translate(model, glm::vec3(-50.0f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	model = glm::translate(model, glm::vec3(3.0f, 11.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+
+
+	model = glm::translate(model, glm::vec3(44.0f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+
+	model = glm::translate(model, glm::vec3(-8.0f, 9.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+model = glm::translate(model, glm::vec3(-28.0f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	
+	
+	model = glm::translate(model, glm::vec3(13.0f, 4.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	glActiveTexture(GL_TEXTURE);
+	glBindTexture(GL_TEXTURE_2D, texture2);
+
+	model = modelTemp;
+	model = glm::translate(model, glm::vec3(1.0f, 4.5f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	my_sphere.render();
+
 	//puertita
-	model = glm::translate(model, glm::vec3(0.0f, -1.0f,1.0f));
+	glActiveTexture(GL_TEXTURE);
+	glBindTexture(GL_TEXTURE_2D, texture2);
+	model = glm::translate(model, glm::vec3(0.0f, -1.0f, 1.0f));
 	model = glm::scale(model, glm::vec3(1.0, 2.0, 0.010));
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-
-/*
-	
-	model = glm::translate(model, glm::vec3(16.0f,4.50f,0.0f));
-	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
-	sphere_draw();
-
-	model = glm::translate(model, glm::vec3(-16.0f, 15.5f, 0.0f));
-	model = glm::scale(model, glm::vec3(2.5, 1.50, 9.5));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
-	sphere_draw();
-
-	model = glm::translate(model, glm::vec3(.0f, 5.0f,0.0f));
-	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
-	sphere_draw();
-
-
-	
-*/	
-	
-	
-
-	glBindVertexArray(0);
-
 }
 
 int main()
