@@ -849,6 +849,29 @@ void display(void)
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 
+	
+	
+	
+	//esferas rueda de la fortuna
+
+	model = modelTemp;
+	model = glm::translate(model, glm::vec3(1.0f, 4.5f, 0.0f));
+	model = glm::scale(model, glm::vec3(2.5, 1.50, 9.5));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	sphere_draw();
+
+	model = glm::translate(model, glm::vec3(16.0f, 5.0f,0.0f));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	sphere_draw();
+
+
+	
+	
+	
+	
 
 	glBindVertexArray(0);
 
