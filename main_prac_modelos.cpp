@@ -172,7 +172,7 @@ void sphere_draw()
 
 	glBindVertexArray(sphere_vao[0]);
 	//  glDrawArrays(GL_POINTS,0,sizeof(sphere_pos)/sizeof(GLfloat));                   
-	glDrawElements(GL_LINE_LOOP, sizeof(sphere_ix) / sizeof(GLuint), GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLES, sizeof(sphere_ix) / sizeof(GLuint), GL_UNSIGNED_INT, 0);
 	//TRIANGLES = solido
 	glBindVertexArray(0);
 }
@@ -180,7 +180,7 @@ void sphere_draw()
 
 //Texture
 unsigned int texture1, texture2, texture3, texture4, texture5; //Indice que va a tener cada textura, i.e., 2 índices = 2 texturas
-
+unsigned int texture6, texture7, texture8, texture9, texture10;
 void getResolution()
 {
 	const GLFWvidmode * mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
@@ -424,6 +424,28 @@ void myData() //Recordemos que antes aquí teníamos un cubo, pero ahora hay un 
 	}
 	stbi_image_free(data);
 
+
+	// texture 6 ESCAMAS
+	glGenTextures(6, &texture6);
+	glBindTexture(GL_TEXTURE_2D, texture6); //tipo 2D 
+	// set the texture wrapping parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	// set texture filtering parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); //filtro 
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	data = stbi_load("texturas_feria/mermaid1.jpg", &width, &height, &nrChannels, 0);
+	if (data)
+	{
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+	{
+		std::cout << "Failed to load texture three" << std::endl;
+	}
+	stbi_image_free(data);
 
 
 }
@@ -853,15 +875,31 @@ void display(void)
 	
 	
 	//esferas rueda de la fortuna
-
+	glActiveTexture(GL_TEXTURE);
+	glBindTexture(GL_TEXTURE_2D, texture5);
+	
+	
 	model = modelTemp;
 	model = glm::translate(model, glm::vec3(1.0f, 4.5f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.5, 1.50, 1.5));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	sphere_draw();
+/*
+	
+	model = glm::translate(model, glm::vec3(16.0f,4.50f,0.0f));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	sphere_draw();
+
+	model = glm::translate(model, glm::vec3(-16.0f, 15.5f, 0.0f));
 	model = glm::scale(model, glm::vec3(2.5, 1.50, 9.5));
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 	sphere_draw();
 
-	model = glm::translate(model, glm::vec3(16.0f, 5.0f,0.0f));
+	model = glm::translate(model, glm::vec3(.0f, 5.0f,0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
@@ -869,7 +907,7 @@ void display(void)
 
 
 	
-	
+*/	
 	
 	
 
