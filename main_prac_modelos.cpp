@@ -318,7 +318,7 @@ void myData() //Recordemos que antes aquí teníamos un cubo, pero ahora hay un 
 void circulos(void) {
 	
 	glPointSize(15);
-	float x = 0.0f, y = 0.0f, z = 0.25f;
+	float x = 0.0f, y = 0.0f, z = 0.27f;
 	
 	for (double i = 0; i <= 360;) {
 		glBegin(GL_POINTS); {
@@ -709,35 +709,21 @@ void display(void)
 	model = modelTemp;
 	model = glm::translate(model, glm::vec3(1.0f, 18.0f, 0.0f));
 	model = glm::rotate(model, glm::radians(angRueda), glm::vec3(0, 0, 1));
-	modelTemp=model;
+	modelTemp = model;
 	model = glm::scale(model, glm::vec3(0.5, 0.5, 14.8));
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-	model = modelTemp;
 	
 	//barras que sostienen la rueda al eje
-	model = modelTemp;
-	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
-	model = glm::scale(model, glm::vec3(2.0, 10.0, 5.6));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
-	model = modelTemp;
-	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
-	model = glm::scale(model, glm::vec3(10.0, 2.0, 5.6));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-	model = modelTemp;
 
 	circulos();
 	circulos2();
 
 	//barras centro rueda
 	model = modelTemp;
-	model = glm::translate(model, glm::vec3(1.0f, 5.5f, 0.0f));
+	model = glm::translate(model, glm::vec3(0.0f,-12.55f, 0.0f));
 	model = glm::scale(model, glm::vec3(0.5, 0.5, 7.5));
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
@@ -814,10 +800,8 @@ model = glm::translate(model, glm::vec3(-28.0f, 0.0f, 0.0f));
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	glActiveTexture(GL_TEXTURE);
 	glBindTexture(GL_TEXTURE_2D, texture2);
-
-	
 	//esferas rueda de la fortuna
-	//esfera1
+	/*	//esfera1
 	model = modelTemp;
 	model = glm::translate(model, glm::vec3(1.0f, 4.5f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
@@ -828,35 +812,35 @@ model = glm::translate(model, glm::vec3(-28.0f, 0.0f, 0.0f));
 	//puertita
 	glActiveTexture(GL_TEXTURE);
 	glBindTexture(GL_TEXTURE_2D, texture2);
-	model = glm::translate(model, glm::vec3(0.0f, -1.0f, 2.0f));
-	model = glm::scale(model, glm::vec3(1.0, 2.0, 0.010));
+	model = glm::translate(model, glm::vec3(0.0f, -1.0f, 5.0f));
+	model = glm::scale(model, glm::vec3(1.0, 2.0, 0.40));
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-
-	//esfera2
+*/
+	/*//esfera2
 	model = modelTemp;
-	model = glm::translate(model, glm::vec3(16.0f, 5.0f, 0.0f));
+	model = glm::translate(model, glm::vec3(9.0f, 7.50f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
-	sphere_draw();
+	my_sphere.render();
 	//puertita
 	glActiveTexture(GL_TEXTURE);
 	glBindTexture(GL_TEXTURE_2D, texture2);
-	model = glm::translate(model, glm::vec3(0.0f, -1.0f, 2.0f));
-	model = glm::scale(model, glm::vec3(1.0, 2.0, 0.010));
+	model = glm::translate(model, glm::vec3(0.0f, -1.0f, 4.0f));
+	model = glm::scale(model, glm::vec3(1.0, 2.0, 0.30));
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	//esfera3
 	model = modelTemp;
-	model = glm::translate(model, glm::vec3(-32.0f, -1.0f, 0.0f));
+	model = glm::translate(model, glm::vec3(-20.0f, -1.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
-	sphere_draw();
+	my_sphere.render();
 	//puertita
 	glActiveTexture(GL_TEXTURE);
 	glBindTexture(GL_TEXTURE_2D, texture2);
@@ -864,9 +848,7 @@ model = glm::translate(model, glm::vec3(-28.0f, 0.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 2.0, 0.010));
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-
-
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0*/
 }
 
 int main()
