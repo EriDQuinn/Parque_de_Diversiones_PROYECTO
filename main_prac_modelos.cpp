@@ -836,8 +836,8 @@ void display(void)
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	
 	model = modelTemp;
-	model = glm::translate(model, glm::vec3(0.0f, 12.0f, 0.0f));
-	model = glm::scale(model, glm::vec3(0.50, 0.50, 1.001));
+	model = glm::translate(model, glm::vec3(0.0f, 12.50f, 0.0f));
+	model = glm::scale(model, glm::vec3(0.50, 0.50, 8.0));
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
