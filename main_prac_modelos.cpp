@@ -58,6 +58,7 @@ rotY = 0.0f;
 
 //rueda
 float angRueda = 0.0f;
+float ang1 = 0.4f;
 float movimiento = 0.2;
 //float rotX = 0.7068f;
 
@@ -310,9 +311,6 @@ void myData() //Recordemos que antes aquí teníamos un cubo, pero ahora hay un 
 		std::cout << "Failed to load texture three" << std::endl;
 	}
 	stbi_image_free(data);
-
-
-
 }
 
 void circulos(void) {
@@ -322,18 +320,18 @@ void circulos(void) {
 	
 	for (double i = 0; i <= 360;) {
 		glBegin(GL_POINTS); {
-				x = 25 * cos(i);
-				y = 25 * sin(i);
+				x = 1*cos(i);
+				y = 1*sin(i);
 
 				glVertex3f(x, y, z);
-				i = i + 0.005;
-				x = 25 * cos(i);
-				y = 25 * sin(i);
+				i = i + 0.05;
+				x = 1 *cos(i);
+				y = 1 *sin(i);
 
 				glVertex3f(x, y, z);
 				glVertex3f(0, 0, 0);
 			}
-		i = i + 0.005;
+		i = i + 0.05;
 		}
 	glEnd();
 }
@@ -345,18 +343,18 @@ void circulos2(void) {
 
 	for (double i = 0; i <= 360;) {
 		glBegin(GL_POINTS); {
-			x = 25 * cos(i);
-			y = 25 * sin(i);
+			x = 1 * cos(i);
+			y = 1 * sin(i);
 
 			glVertex3f(x, y, z);
-			i = i + 0.005;
-			x = 25 * cos(i);
-			y = 25 * sin(i);
+			i = i + 0.05;
+			x = 1 * cos(i);
+			y = 1 * sin(i);
 
 			glVertex3f(x, y, z);
 			glVertex3f(0, 0, 0);
 		}
-		i = i + 0.005;
+		i = i + 0.05;
 	}
 	glEnd();
 }
@@ -703,12 +701,11 @@ void display(void)
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
 	glDrawArrays(GL_TRIANGLES, 27, 3);
-
-
+	
 	//eje
 	model = modelTemp;
 	model = glm::translate(model, glm::vec3(1.0f, 18.0f, 0.0f));
-	model = glm::rotate(model, glm::radians(angRueda), glm::vec3(0, 0, 1));
+	//model = glm::rotate(model, glm::radians(angRueda), glm::vec3(0, 0, 1));
 	modelTemp = model;
 	model = glm::scale(model, glm::vec3(0.5, 0.5, 14.8));
 	projectionShader.setMat4("model", model);
@@ -716,12 +713,60 @@ void display(void)
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	
 	//barras que sostienen la rueda al eje
+	model = modelTemp;
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 3.20f));
+	model = glm::scale(model, glm::vec3(1.0, 25.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	model = modelTemp;
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -3.20f));
+	model = glm::scale(model, glm::vec3(1.0, 25.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
+	model = modelTemp;
+	model = glm::translate(model, glm::vec3(6.50f, 0.0f, 3.20f));
+	model = glm::scale(model, glm::vec3(12.0, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	model = modelTemp;
+	model = glm::translate(model, glm::vec3(6.50f, 0.0f, -3.20f));
+	model = glm::scale(model, glm::vec3(12.0, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
+	model = modelTemp;
+	model = glm::translate(model, glm::vec3(-6.50f, 0.0f, 3.20f));
+	model = glm::scale(model, glm::vec3(12.0, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	model = modelTemp;
+	model = glm::translate(model, glm::vec3(-6.50f, 0.0f, -3.20f));
+	model = glm::scale(model, glm::vec3(12.0, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	//circulos rueda
+	model = modelTemp;
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -3.50f));
+	model = glm::scale(model, glm::vec3(12.50, 12.50, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 	circulos();
+	model = modelTemp;
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 3.50f));
+	model = glm::scale(model, glm::vec3(12.50, 12.50, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 	circulos2();
+	
 
-	//barras centro rueda
+	//barras entre las ruedas
 	model = modelTemp;
 	model = glm::translate(model, glm::vec3(0.0f,-12.55f, 0.0f));
 	model = glm::scale(model, glm::vec3(0.5, 0.5, 7.5));
@@ -753,7 +798,7 @@ void display(void)
 	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
-	model = glm::translate(model, glm::vec3(2.0f, 11.0f, 0.0f));
+	model = glm::translate(model, glm::vec3(2.0f, 10.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
@@ -765,13 +810,11 @@ void display(void)
 	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
-	model = glm::translate(model, glm::vec3(3.0f, 11.0f, 0.0f));
+	model = glm::translate(model, glm::vec3(3.0f, 12.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-
-
 
 	model = glm::translate(model, glm::vec3(44.0f, 0.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
@@ -786,20 +829,21 @@ void display(void)
 	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
-model = glm::translate(model, glm::vec3(-28.0f, 0.0f, 0.0f));
+	model = glm::translate(model, glm::vec3(-28.0f, 0.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	
-	
-	model = glm::translate(model, glm::vec3(13.0f, 4.0f, 0.0f));
-	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
+	model = modelTemp;
+	model = glm::translate(model, glm::vec3(0.0f, 12.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(0.50, 0.50, 1.001));
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	glActiveTexture(GL_TEXTURE);
 	glBindTexture(GL_TEXTURE_2D, texture2);
+
 	//esferas rueda de la fortuna
 	/*	//esfera1
 	model = modelTemp;
