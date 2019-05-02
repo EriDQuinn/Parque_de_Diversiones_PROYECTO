@@ -19,16 +19,16 @@
 Esfera my_sphere(1.0f);
 
 void resize(GLFWwindow* window, int width, int height);
-void my_input(GLFWwindow *window);
-void mouse_callback(GLFWwindow *window, double xpos, double ypos);
-void scroll_callback(GLFWwindow *window, double xoffset, double yoffset);
+void my_input(GLFWwindow* window);
+void mouse_callback(GLFWwindow* window, double xpos, double ypos);
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 
 // settings
 // Window size
 int SCR_WIDTH = 3800;
 int SCR_HEIGHT = 7600;
 
-GLFWmonitor *monitors;
+GLFWmonitor* monitors;
 GLuint VBO, VAO, EBO;
 
 //Camera
@@ -58,20 +58,15 @@ rotY = 0.0f;
 
 //rueda
 float angRueda = 0.0f, angCanasta = 0.0f;
-float ang1 = 0.4f;
-float movimiento = 0.2, colgando=0.0;
-//float rotX = 0.7068f;
-
-
-
+float movimiento = 0.0, colgando = 0.0;
 
 
 //Texture
-unsigned int texture1, texture2, texture3, texture4, texture5; //Indice que va a tener cada textura, i.e., 2 índices = 2 texturas
+unsigned int texture1, texture2, texture3, texture4, texture5,texture6,texture7; //Indice que va a tener cada textura, i.e., 2 índices = 2 texturas
 
 void getResolution()
 {
-	const GLFWvidmode * mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+	const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 
 	SCR_WIDTH = mode->width;
 	SCR_HEIGHT = (mode->height) - 80;
@@ -210,7 +205,7 @@ void myData() //Recordemos que antes aquí teníamos un cubo, pero ahora hay un 
 	// load image, create texture and generate mipmaps
 	int width, height, nrChannels;
 	stbi_set_flip_vertically_on_load(true); // tell stb_image.h to flip loaded texture's on the y-axis.
-	unsigned char *data = stbi_load("texturas_feria/piedras.jpg", &width, &height, &nrChannels, 0);
+	unsigned char* data = stbi_load("texturas_feria/piedras.jpg", &width, &height, &nrChannels, 0);
 	if (data)
 	{
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
@@ -311,28 +306,54 @@ void myData() //Recordemos que antes aquí teníamos un cubo, pero ahora hay un 
 		std::cout << "Failed to load texture three" << std::endl;
 	}
 	stbi_image_free(data);
+
+
+// texture 6`puertas
+glGenTextures(6, &texture6);
+glBindTexture(GL_TEXTURE_2D, texture6); //tipo 2D 
+// set the texture wrapping parameters
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+// set texture filtering parameters
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); //filtro 
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+data = stbi_load("texturas_feria/puertas.jpg", &width, &height, &nrChannels, 0);
+if (data)
+{
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+	glGenerateMipmap(GL_TEXTURE_2D);
 }
+else
+{
+	std::cout << "Failed to load texture three" << std::endl;
+}
+stbi_image_free(data);
+}
+
+
+
 
 void circulos(void) {
 	
-	glPointSize(15);
+	glPointSize(0.1);
 	float x = 0.0f, y = 0.0f, z = 0.27f;
-	
+	glPointSize(15);
 	for (double i = 0; i <= 360;) {
 		glBegin(GL_POINTS); {
-				x = 1*cos(i);
-				y = 1*sin(i);
+			x = 1 * cos(i);
+			y = 1 * sin(i);
 
-				glVertex3f(x, y, z);
-				i = i + 0.05;
-				x = 1 *cos(i);
-				y = 1 *sin(i);
+			glVertex3f(x, y, z);
+			i = i + 0.05;
+			x = 1 * cos(i);
+			y = 1 * sin(i);
 
-				glVertex3f(x, y, z);
-				glVertex3f(0, 0, 0);
-			}
-		i = i + 0.05;
+			glVertex3f(x, y, z);
+			glVertex3f(0, 0, 0);
 		}
+		i = i + 0.05;
+	}
 	glEnd();
 }
 
@@ -358,14 +379,18 @@ void circulos2(void) {
 	}
 	glEnd();
 }
+
+
 void animate(void)
 {
+	movimiento = 0.05;
+	colgando = -0.05;
 	angRueda = angRueda + movimiento;
 	angCanasta = angCanasta + colgando;
 	if (angRueda >= 90)
 	{
 		movimiento = -0.1;
-		if (angCanasta <= 90)
+		if (angCanasta <= -80)
 		{
 			colgando = 0.20;
 		}
@@ -373,13 +398,13 @@ void animate(void)
 	if (angRueda <= -90)
 	{
 		movimiento = 0.1;
-		if (angCanasta >= 90)
+		if (angCanasta >= 80)
 		{
 			colgando = -0.20;
 		}
 	}
-	
-	
+
+
 }
 
 void display(void)
@@ -711,7 +736,7 @@ void display(void)
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
 	glDrawArrays(GL_TRIANGLES, 27, 3);
-	
+
 	//eje
 	model = modelTemp;
 	model = glm::translate(model, glm::vec3(1.0f, 18.0f, 0.0f));
@@ -721,7 +746,7 @@ void display(void)
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-	
+
 	//barras que sostienen la rueda al eje
 	model = modelTemp;
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 3.20f));
@@ -761,7 +786,7 @@ void display(void)
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-	
+
 	model = modelTemp;
 	model = glm::rotate(model, glm::radians(40.0f), glm::vec3(0, 0, 1));
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 2.20f));
@@ -777,9 +802,9 @@ void display(void)
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-	
-	
-	
+
+
+
 	//circulos rueda
 	model = modelTemp;
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -3.50f));
@@ -793,11 +818,11 @@ void display(void)
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 	circulos2();
-	
+
 
 	//barras entre las ruedas
 	model = modelTemp;
-	model = glm::translate(model, glm::vec3(0.0f,-12.55f, 0.0f));
+	model = glm::translate(model, glm::vec3(0.0f, -12.55f, 0.0f));
 	model = glm::scale(model, glm::vec3(0.5, 0.5, 7.5));
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
@@ -862,7 +887,7 @@ void display(void)
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-	
+
 	model = modelTemp;
 	model = glm::translate(model, glm::vec3(0.0f, 12.50f, 0.0f));
 	model = glm::scale(model, glm::vec3(0.50, 0.50, 8.0));
@@ -876,32 +901,50 @@ void display(void)
 
 	//esferas rueda de la fortuna
 	model = modelTemp;
-	model = glm::translate(model, glm::vec3(0.0f, -12.0f, 0.0f));
+	model = glm::translate(model, glm::vec3(0.0f, -12.50f, 0.0f));
 	model = glm::rotate(model, glm::radians(angCanasta), glm::vec3(0, 0, 1));
 	modelTemp2 = model;
-	model = glm::translate(model, glm::vec3(0.0f, -1.0f, 0.0f));
+	model = glm::translate(model, glm::vec3(0.0f, -0.30f, 0.0f));
 	//model = modelTemp2;
-	model = glm::scale(model, glm::vec3(1.0, 2.0, 1.0));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 0.0f));
+	//glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	circulos();
+	
+	//esfera1
+	model = modelTemp2;
+
+	glActiveTexture(GL_TEXTURE);
+	glBindTexture(GL_TEXTURE_2D, texture6);
+	
+	model = glm::translate(model, glm::vec3(0.0f, -2.70f, 1.230f));
+	model = glm::scale(model, glm::vec3(1.60, 1.50, 1.50));
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	
+	glActiveTexture(GL_TEXTURE);
+	glBindTexture(GL_TEXTURE_2D, texture2);
 
-	//esfera1
-	/*
-	model = glm::translate(model, glm::vec3(0.0f, -14.0f, 0.0f));
+	model = modelTemp2;
+	model = glm::translate(model, glm::vec3(0.0f, -2.010f, 0.0f));
 	model = glm::scale(model, glm::vec3(2.0, 2.0, 2.0));
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 	my_sphere.render();
+	//model = modelTemp;
 	
 	//puertita
 	
-/*
-	model = glm::translate(model, glm::vec3(0.0f, -1.0f, 5.0f));
-	model = glm::scale(model, glm::vec3(1.0, 2.0, 0.40));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+
+
+
+
+
+
+
 	/*
 	//esfera2
 	model = modelTemp;
@@ -918,7 +961,6 @@ void display(void)
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-
 	//esfera3
 	model = modelTemp;
 	model = glm::translate(model, glm::vec3(-20.0f, -1.0f, 0.0f));
@@ -1018,7 +1060,7 @@ int main()
 
 // process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
 // ---------------------------------------------------------------------------------------------------------
-void my_input(GLFWwindow *window)
+void my_input(GLFWwindow * window)
 {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
@@ -1040,7 +1082,7 @@ void my_input(GLFWwindow *window)
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
 // ---------------------------------------------------------------------------------------------
-void resize(GLFWwindow* window, int width, int height)
+void resize(GLFWwindow * window, int width, int height)
 {
 	// Set the Viewport to the size of the created window
 	glViewport(0, 0, width, height);
@@ -1048,7 +1090,7 @@ void resize(GLFWwindow* window, int width, int height)
 
 // glfw: whenever the mouse moves, this callback is called
 // -------------------------------------------------------
-void mouse_callback(GLFWwindow* window, double xpos, double ypos)
+void mouse_callback(GLFWwindow * window, double xpos, double ypos)
 {
 	if (firstMouse)
 	{
@@ -1068,7 +1110,7 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 
 // glfw: whenever the mouse scroll wheel scrolls, this callback is called
 // ----------------------------------------------------------------------
-void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+void scroll_callback(GLFWwindow * window, double xoffset, double yoffset)
 {
 	camera.ProcessMouseScroll(yoffset);
 }
