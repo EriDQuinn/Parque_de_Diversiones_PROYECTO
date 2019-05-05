@@ -1,7 +1,7 @@
 /*---------------------------------------------------------*/
 /* ----------------   Proyecto feria --------------------------*/
 /*-----------------    2019-2   ---------------------------*/
-/*------------- Alumno: Diaz Acosta Erika y Ortiz MartÃ­nez Brenda -----------------*/
+/*------------- Alumno: Diaz Acosta Erika y Ortiz Martínez Brenda -----------------*/
 
 /*-------------  Grupo4 -------------- */
 /*---------------------Version visual 2017------------------------*/
@@ -62,7 +62,7 @@ float movimiento = 0.0, colgando = 0.0;
 
 
 //Texture
-unsigned int texture1, texture2, texture3, texture4, texture5,texture6,texture7; //Indice que va a tener cada textura, i.e., 2 Ã­ndices = 2 texturas
+unsigned int texture1, texture2, texture3, texture4, texture5,texture6,texture7; //Indice que va a tener cada textura, i.e., 2 índices = 2 texturas
 unsigned int texture8,texture9;
 void getResolution()
 {
@@ -77,7 +77,7 @@ void getResolution()
 }
 
 
-void myData() //Recordemos que antes aquÃ­ tenÃ­amos un cubo, pero ahora hay un plano.
+void myData() //Recordemos que antes aquí teníamos un cubo, pero ahora hay un plano.
 {
 	float vertices[] = {
 		// positions          // texture coords
@@ -1482,7 +1482,7 @@ int main()
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		//Mi funciÃ³n de dibujo
+		//Mi función de dibujo
 		display();
 
 		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
