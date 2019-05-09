@@ -1,7 +1,7 @@
 /*---------------------------------------------------------*/
 /* ----------------   Proyecto feria --------------------------*/
 /*-----------------    2019-2   ---------------------------*/
-/*------------- Alumno: Diaz Acosta Erika y Ortiz Martínez Brenda -----------------*/
+/*------------- Alumno: Diaz Acosta Erika y Ortiz MartÃ­nez Brenda -----------------*/
 
 /*-------------  Grupo4 -------------- */
 /*---------------------Version visual 2017------------------------*/
@@ -11,10 +11,15 @@
 /*--------Z Bajar   E  subir------------------------------------*/
 /*--------A izquierda   D derecha------------------------------------*/
 /*----------mouse: mover, scroll = acercar---------------*/
-#define STB_IMAGE_IMPLEMENTATION
+//#define STB_IMAGE_IMPLEMENTATION
+#include <glew.h>
+#include <glfw3.h>
+#include <stb_image.h>
 #include "esfera.h"
 #include "camera.h"
 #include <stb_image.h>
+#include "Model.h"
+
 
 Esfera my_sphere(1.0f);
 
@@ -45,7 +50,7 @@ lastFrame = 0.0f;
 glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
 
 void myData(void);
-void display(void);
+void display(Model);
 void getResolution(void);
 void animate(void);
 void circulos(void);
@@ -62,8 +67,8 @@ float movimiento = 0.0, colgando = 0.0;
 
 
 //Texture
-unsigned int texture1, texture2, texture3, texture4, texture5,texture6,texture7; //Indice que va a tener cada textura, i.e., 2 índices = 2 texturas
-unsigned int texture8,texture9;
+unsigned int texture1, texture2, texture3, texture4, texture5,texture6,texture7; //Indice que va a tener cada textura, i.e., 2 Ã­ndices = 2 texturas
+unsigned int texture8,texture9, texture10, texture11;
 void getResolution()
 {
 	const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
@@ -77,7 +82,7 @@ void getResolution()
 }
 
 
-void myData() //Recordemos que antes aquí teníamos un cubo, pero ahora hay un plano.
+void myData() //Recordemos que antes aquÃ­ tenÃ­amos un cubo, pero ahora hay un plano.
 {
 	float vertices[] = {
 		// positions          // texture coords
@@ -327,6 +332,7 @@ else
 {
 	std::cout << "Failed to load texture three" << std::endl;
 }
+
 stbi_image_free(data);
 
 
@@ -364,7 +370,7 @@ glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); //filtro 
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-data = stbi_load("texturas_feria/ventana.jpg", &width, &height, &nrChannels, 0);
+data = stbi_load("texturas_feria/morado2.jpg", &width, &height, &nrChannels, 0);
 if (data)
 {
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
@@ -377,11 +383,56 @@ else
 stbi_image_free(data);
 
 
+
+// texture 9
+glGenTextures(9, &texture9);
+glBindTexture(GL_TEXTURE_2D, texture9); //tipo 2D 
+// set the texture wrapping parameters
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+// set texture filtering parameters
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); //filtro 
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+data = stbi_load("texturas_feria/blue.jpg", &width, &height, &nrChannels, 0);
+if (data)
+{
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+	glGenerateMipmap(GL_TEXTURE_2D);
 }
+else
+{
+	std::cout << "Failed to load texture three" << std::endl;
+}
+stbi_image_free(data);
+
+
+// texture 10
+glGenTextures(10, &texture10);
+glBindTexture(GL_TEXTURE_2D, texture10); //tipo 2D 
+// set the texture wrapping parameters
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+// set texture filtering parameters
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); //filtro 
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+data = stbi_load("texturas_feria/verde.jpg", &width, &height, &nrChannels, 0);
+if (data)
+{
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+	glGenerateMipmap(GL_TEXTURE_2D);
+}
+else
+{
+	std::cout << "Failed to load texture three" << std::endl;
+}
+stbi_image_free(data);
 
 
 
 
+}
 
 
 
@@ -458,7 +509,7 @@ void animate(void)
 
 }
 
-void display(void)
+void display(Model Tree)
 {
 	// bind textures on corresponding texture units
 	glActiveTexture(GL_TEXTURE);			//activar la textura a 0. 
@@ -467,7 +518,7 @@ void display(void)
 	//Shader projectionShader("shaders/shader_light.vs", "shaders/shader_light.fs");
 	Shader projectionShader("shaders/shader_texture.vs", "shaders/shader_texture.fs");
 	Shader lampShader("shaders/shader_lamp.vs", "shaders/shader_lamp.fs");
-
+	Shader modelShader("Shaders/modelLoading.vs", "Shaders/modelLoading.fs");
 	//To Use Lighting
 	projectionShader.use();
 	projectionShader.setInt("texture1", 0);
@@ -763,9 +814,9 @@ void display(void)
 	glDrawArrays(GL_TRIANGLES, 24, 3);
 
 
-	//Rueda de la fortuna
+	//Rueda de la fortuna////////////////////////////////////////////////////////////////
 	glActiveTexture(GL_TEXTURE);
-	glBindTexture(GL_TEXTURE_2D, texture5);
+	glBindTexture(GL_TEXTURE_2D, texture5);//galaxia
 	//base
 	model = glm::mat4(1.0f);
 	model = glm::translate(model, glm::vec3(2.0f, 0.5f, 0.0f));
@@ -943,10 +994,671 @@ void display(void)
 	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	
-
 	glActiveTexture(GL_TEXTURE);
 	glBindTexture(GL_TEXTURE_2D, texture7);
+	//esferas rueda de la fortuna
+	//canasta1 Aros-------------------------------------------------------------------------
+	model = modelTemp;
+	model = glm::translate(model, glm::vec3(0.0f, -12.350f, -0.20f));
+	model = glm::rotate(model, glm::radians(angCanasta), glm::vec3(0, 0, 1));
+	modelTemp2 = model;
+	model = glm::translate(model, glm::vec3(0.0f, -0.50f, 0.0f));
+	//model = modelTemp2;
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 0.0f));
+	circulos();
+	//canasta 
+	//soporte
+	model = modelTemp2;
+	glActiveTexture(GL_TEXTURE);
+	glBindTexture(GL_TEXTURE_2D, texture2);
+	model = glm::translate(model, glm::vec3(0.0f, -2.50f, 0.3f));
+	model = glm::scale(model, glm::vec3(0.250, 2.50, 0.250));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 1.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	//techo canasta
+	model = glm::translate(model, glm::vec3(0.0f, 0.45f, 0.0f));
+	model = glm::scale(model, glm::vec3(2.0, 0.10, 2.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	my_sphere.render();
+	glBindVertexArray(VAO);
+	//piso canasta
+	//caja
+	glActiveTexture(GL_TEXTURE);
+	glBindTexture(GL_TEXTURE_2D, texture7);
+	model = glm::translate(model, glm::vec3(0.0f, -8.05f, 0.0f));
+	model = glm::scale(model, glm::vec3(3.50, 3.0, 3.50));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 24, GL_UNSIGNED_INT, 0);
+	glActiveTexture(GL_TEXTURE);
+	glBindTexture(GL_TEXTURE_2D, texture8);
+	model = glm::translate(model, glm::vec3(0.0f, -0.550f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0, 0.10, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	my_sphere.render();
+	glBindVertexArray(VAO);
+	glActiveTexture(GL_TEXTURE);
+	//asiento enfrente textura galaxia
+	glBindTexture(GL_TEXTURE_2D, texture5);
+	model = glm::translate(model, glm::vec3(0.0f, 1.80f, 0.39f));
+	model = glm::scale(model, glm::vec3(0.80, 5.0, 0.20));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	//asientoatras
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -3.90f));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 01.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	//asientoder
+	model = glm::translate(model, glm::vec3(0.4950f, 0.0f, 2.0f));
+	model = glm::scale(model, glm::vec3(0.250, 1.0, 2.500));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 1.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	//asientoizq
+	model = glm::translate(model, glm::vec3(-3.94950f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.00));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 1.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	//disco azul
+	glActiveTexture(GL_TEXTURE);
+	glBindTexture(GL_TEXTURE_2D, texture9);
+	model = glm::translate(model, glm::vec3(2.0f, 6.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(2.0, 0.010, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	my_sphere.render();
+	glBindVertexArray(VAO);
+	
+	//canasta2 Aros------------------------------------------------------------------------
+	glActiveTexture(GL_TEXTURE);
+	glBindTexture(GL_TEXTURE_2D, texture7);
+	model = modelTemp;
+	model = glm::translate(model, glm::vec3(0.0f, 12.350f, 0.0f));
+	model = glm::rotate(model, glm::radians(angCanasta), glm::vec3(0, 0, 1));
+	modelTemp2 = model;
+	model = glm::translate(model, glm::vec3(0.0f, -0.50f, 0.0f));
+	//model = modelTemp2;
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 0.0f));
+	circulos();
+	//canasta
+	//soporte
+	model = modelTemp2;
+	glActiveTexture(GL_TEXTURE);
+	glBindTexture(GL_TEXTURE_2D, texture2);
+	model = glm::translate(model, glm::vec3(0.0f, -2.50f, 0.3f));
+	model = glm::scale(model, glm::vec3(0.250, 2.50, 0.250));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 1.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	//techo canasta
+	model = glm::translate(model, glm::vec3(0.0f, 0.45f, 0.0f));
+	model = glm::scale(model, glm::vec3(2.0, 0.10, 2.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	my_sphere.render();
+	glBindVertexArray(VAO);
+	//piso canasta
+	//model = modelTemp2;
+	glActiveTexture(GL_TEXTURE);
+	glBindTexture(GL_TEXTURE_2D, texture7);
+	model = glm::translate(model, glm::vec3(0.0f, -8.05f, 0.0f));
+	model = glm::scale(model, glm::vec3(3.50, 3.0, 3.50));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 24, GL_UNSIGNED_INT, 0);
+	glActiveTexture(GL_TEXTURE);
+	glBindTexture(GL_TEXTURE_2D, texture8);
+	model = glm::translate(model, glm::vec3(0.0f, -0.550f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0, 0.10, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	my_sphere.render();
+	glBindVertexArray(VAO);
+	glActiveTexture(GL_TEXTURE);
+	//asiento enfrente textura galaxia
+	glBindTexture(GL_TEXTURE_2D, texture5);
+	model = glm::translate(model, glm::vec3(0.0f, 1.80f, 0.39f));
+	model = glm::scale(model, glm::vec3(0.80, 5.0, 0.20));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	//asientoatras
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -3.90f));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 01.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	//asientoder
+	model = glm::translate(model, glm::vec3(0.4950f, 0.0f, 2.0f));
+	model = glm::scale(model, glm::vec3(0.250, 1.0, 2.500));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 1.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	//asientoizq
+	model = glm::translate(model, glm::vec3(-3.94950f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.00));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 1.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	//disco azul
+	glActiveTexture(GL_TEXTURE);
+	glBindTexture(GL_TEXTURE_2D, texture9);
+	model = glm::translate(model, glm::vec3(2.0f, 6.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(2.0, 0.010, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	my_sphere.render();
+	glBindVertexArray(VAO);
+	//canasta3 Aros-----------------------------------------------------------------------------------------
+	glActiveTexture(GL_TEXTURE);
+	glBindTexture(GL_TEXTURE_2D, texture7);
+	model = modelTemp;
+	model = glm::translate(model, glm::vec3(12.30f, -0.30f, 0.0f));
+	model = glm::rotate(model, glm::radians(angCanasta), glm::vec3(0, 0, 1));
+	modelTemp2 = model;
+	model = glm::translate(model, glm::vec3(0.0f, -0.50f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 0.0f));
+	circulos();
+	//canasta
+	//soporte
+	model = modelTemp2;
+	glActiveTexture(GL_TEXTURE);
+	glBindTexture(GL_TEXTURE_2D, texture2);
+	model = glm::translate(model, glm::vec3(0.0f, -2.50f, 0.3f));
+	model = glm::scale(model, glm::vec3(0.250, 2.50, 0.250));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 1.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	//techo canasta
+	model = glm::translate(model, glm::vec3(0.0f, 0.45f, 0.0f));
+	model = glm::scale(model, glm::vec3(2.0, 0.10, 2.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	my_sphere.render();
+	glBindVertexArray(VAO);
+	//piso canasta
+	glActiveTexture(GL_TEXTURE);
+	glBindTexture(GL_TEXTURE_2D, texture7);
+	model = glm::translate(model, glm::vec3(0.0f, -8.05f, 0.0f));
+	model = glm::scale(model, glm::vec3(3.50, 3.0, 3.50));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 24, GL_UNSIGNED_INT, 0);
+	glActiveTexture(GL_TEXTURE);
+	glBindTexture(GL_TEXTURE_2D, texture8);
+	model = glm::translate(model, glm::vec3(0.0f, -0.550f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0, 0.10, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	my_sphere.render();
+	glBindVertexArray(VAO);
+	glActiveTexture(GL_TEXTURE);
+	//asiento enfrente textura galaxia
+	glBindTexture(GL_TEXTURE_2D, texture5);
+	model = glm::translate(model, glm::vec3(0.0f, 1.80f, 0.39f));
+	model = glm::scale(model, glm::vec3(0.80, 5.0, 0.20));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	//asientoatras
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -3.90f));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 01.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	//asientoder
+	model = glm::translate(model, glm::vec3(0.4950f, 0.0f, 2.0f));
+	model = glm::scale(model, glm::vec3(0.250, 1.0, 2.500));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 1.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	//asientoizq
+	model = glm::translate(model, glm::vec3(-3.94950f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.00));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 1.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	//disco azul
+	glActiveTexture(GL_TEXTURE);
+	glBindTexture(GL_TEXTURE_2D, texture9);
+	model = glm::translate(model, glm::vec3(2.0f, 6.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(2.0, 0.010, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	my_sphere.render();
+	glBindVertexArray(VAO);
+	//canasta 4  Aros--------------------------------------------------------------------------------------
+	glActiveTexture(GL_TEXTURE);
+	glBindTexture(GL_TEXTURE_2D, texture7);
+	model = modelTemp;
+	model = glm::translate(model, glm::vec3(-12.30f, -0.30f, 0.0f));
+	model = glm::rotate(model, glm::radians(angCanasta), glm::vec3(0, 0, 1));
+	modelTemp2 = model;
+	model = glm::translate(model, glm::vec3(0.0f, -0.50f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 0.0f));
+	circulos();
+	//canasta
+	//soporte
+	model = modelTemp2;
+	glActiveTexture(GL_TEXTURE);
+	glBindTexture(GL_TEXTURE_2D, texture2);
+	model = glm::translate(model, glm::vec3(0.0f, -2.50f, 0.3f));
+	model = glm::scale(model, glm::vec3(0.250, 2.50, 0.250));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 1.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	//techo canasta
+	model = glm::translate(model, glm::vec3(0.0f, 0.45f, 0.0f));
+	model = glm::scale(model, glm::vec3(2.0, 0.10, 2.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	my_sphere.render();
+	glBindVertexArray(VAO);
+	//piso canasta
+	glActiveTexture(GL_TEXTURE);
+	glBindTexture(GL_TEXTURE_2D, texture7);
+	model = glm::translate(model, glm::vec3(0.0f, -8.05f, 0.0f));
+	model = glm::scale(model, glm::vec3(3.50, 3.0, 3.50));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 24, GL_UNSIGNED_INT, 0);
+	glActiveTexture(GL_TEXTURE);
+	glBindTexture(GL_TEXTURE_2D, texture8);
+	model = glm::translate(model, glm::vec3(0.0f, -0.550f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0, 0.10, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	my_sphere.render();
+	glBindVertexArray(VAO);
+	glActiveTexture(GL_TEXTURE);
+	//asiento enfrente textura galaxia
+	glBindTexture(GL_TEXTURE_2D, texture5);
+	model = glm::translate(model, glm::vec3(0.0f, 1.80f, 0.39f));
+	model = glm::scale(model, glm::vec3(0.80, 5.0, 0.20));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	//asientoatras
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -3.90f));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 01.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	//asientoder
+	model = glm::translate(model, glm::vec3(0.4950f, 0.0f, 2.0f));
+	model = glm::scale(model, glm::vec3(0.250, 1.0, 2.500));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 1.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	//asientoizq
+	model = glm::translate(model, glm::vec3(-3.94950f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.00));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 1.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	//disco azul
+	glActiveTexture(GL_TEXTURE);
+	glBindTexture(GL_TEXTURE_2D, texture9);
+	model = glm::translate(model, glm::vec3(2.0f, 6.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(2.0, 0.010, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	my_sphere.render();
+	glBindVertexArray(VAO);
 
+	//canasta 5  Aros--------------------------------------------------------------------------------------
+	glActiveTexture(GL_TEXTURE);
+	glBindTexture(GL_TEXTURE_2D, texture7);
+	model = modelTemp;
+	model = glm::translate(model, glm::vec3(8.320f, 9.40f, 0.0f));
+	model = glm::rotate(model, glm::radians(angCanasta), glm::vec3(0, 0, 1));
+	modelTemp2 = model;
+	model = glm::translate(model, glm::vec3(0.0f, -0.50f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 0.0f));
+	circulos();
+	//canasta
+	//soporte
+	model = modelTemp2;
+	glActiveTexture(GL_TEXTURE);
+	glBindTexture(GL_TEXTURE_2D, texture2);
+	model = glm::translate(model, glm::vec3(0.0f, -2.50f, 0.3f));
+	model = glm::scale(model, glm::vec3(0.250, 2.50, 0.250));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 1.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	//techo canasta
+	model = glm::translate(model, glm::vec3(0.0f, 0.45f, 0.0f));
+	model = glm::scale(model, glm::vec3(2.0, 0.10, 2.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	my_sphere.render();
+	glBindVertexArray(VAO);
+	//piso canasta
+	glActiveTexture(GL_TEXTURE);
+	glBindTexture(GL_TEXTURE_2D, texture7);
+	model = glm::translate(model, glm::vec3(0.0f, -8.05f, 0.0f));
+	model = glm::scale(model, glm::vec3(3.50, 3.0, 3.50));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 24, GL_UNSIGNED_INT, 0);
+	glActiveTexture(GL_TEXTURE);
+	glBindTexture(GL_TEXTURE_2D, texture8);
+	model = glm::translate(model, glm::vec3(0.0f, -0.550f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0, 0.10, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	my_sphere.render();
+	glBindVertexArray(VAO);
+	glActiveTexture(GL_TEXTURE);
+	//asiento enfrente textura galaxia
+	glBindTexture(GL_TEXTURE_2D, texture5);
+	model = glm::translate(model, glm::vec3(0.0f, 1.80f, 0.39f));
+	model = glm::scale(model, glm::vec3(0.80, 5.0, 0.20));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	//asientoatras
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -3.90f));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 01.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	//asientoder
+	model = glm::translate(model, glm::vec3(0.4950f, 0.0f, 2.0f));
+	model = glm::scale(model, glm::vec3(0.250, 1.0, 2.500));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 1.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	//asientoizq
+	model = glm::translate(model, glm::vec3(-3.94950f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.00));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 1.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	//disco azul
+	glActiveTexture(GL_TEXTURE);
+	glBindTexture(GL_TEXTURE_2D, texture9);
+	model = glm::translate(model, glm::vec3(2.0f, 6.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(2.0, 0.010, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	my_sphere.render();
+	glBindVertexArray(VAO);
+
+	//canasta 6 Aros--------------------------------------------------------------------------------------
+	glActiveTexture(GL_TEXTURE);
+	glBindTexture(GL_TEXTURE_2D, texture7);
+	model = modelTemp;
+	model = glm::translate(model, glm::vec3(-8.320f, 9.40f, 0.0f));
+	model = glm::rotate(model, glm::radians(angCanasta), glm::vec3(0, 0, 1));
+	modelTemp2 = model;
+	model = glm::translate(model, glm::vec3(0.0f, -0.50f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 0.0f));
+	circulos();
+	//canasta
+	//soporte
+	model = modelTemp2;
+	glActiveTexture(GL_TEXTURE);
+	glBindTexture(GL_TEXTURE_2D, texture2);
+	model = glm::translate(model, glm::vec3(0.0f, -2.50f, 0.3f));
+	model = glm::scale(model, glm::vec3(0.250, 2.50, 0.250));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 1.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	//techo canasta
+	model = glm::translate(model, glm::vec3(0.0f, 0.45f, 0.0f));
+	model = glm::scale(model, glm::vec3(2.0, 0.10, 2.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	my_sphere.render();
+	glBindVertexArray(VAO);
+	//piso canasta
+	glActiveTexture(GL_TEXTURE);
+	glBindTexture(GL_TEXTURE_2D, texture7);
+	model = glm::translate(model, glm::vec3(0.0f, -8.05f, 0.0f));
+	model = glm::scale(model, glm::vec3(3.50, 3.0, 3.50));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 24, GL_UNSIGNED_INT, 0);
+	glActiveTexture(GL_TEXTURE);
+	glBindTexture(GL_TEXTURE_2D, texture8);
+	model = glm::translate(model, glm::vec3(0.0f, -0.550f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0, 0.10, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	my_sphere.render();
+	glBindVertexArray(VAO);
+	glActiveTexture(GL_TEXTURE);
+	//asiento enfrente textura galaxia
+	glBindTexture(GL_TEXTURE_2D, texture5);
+	model = glm::translate(model, glm::vec3(0.0f, 1.80f, 0.39f));
+	model = glm::scale(model, glm::vec3(0.80, 5.0, 0.20));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	//asientoatras
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -3.90f));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 01.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	//asientoder
+	model = glm::translate(model, glm::vec3(0.4950f, 0.0f, 2.0f));
+	model = glm::scale(model, glm::vec3(0.250, 1.0, 2.500));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 1.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	//asientoizq
+	model = glm::translate(model, glm::vec3(-3.94950f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.00));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 1.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	//disco azul
+	glActiveTexture(GL_TEXTURE);
+	glBindTexture(GL_TEXTURE_2D, texture9);
+	model = glm::translate(model, glm::vec3(2.0f, 6.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(2.0, 0.010, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	my_sphere.render();
+	glBindVertexArray(VAO);
+
+	//canasta 7 Aros--------------------------------------------------------------------------------------
+	glActiveTexture(GL_TEXTURE);
+	glBindTexture(GL_TEXTURE_2D, texture7);
+	model = modelTemp;
+	model = glm::translate(model, glm::vec3(8.310f, -9.450f, 0.0f));
+	model = glm::rotate(model, glm::radians(angCanasta), glm::vec3(0, 0, 1));
+	modelTemp2 = model;
+	model = glm::translate(model, glm::vec3(0.0f, -0.50f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 0.0f));
+	circulos();
+	//canasta
+	//soporte
+	model = modelTemp2;
+	glActiveTexture(GL_TEXTURE);
+	glBindTexture(GL_TEXTURE_2D, texture2);
+	model = glm::translate(model, glm::vec3(0.0f, -2.50f, 0.3f));
+	model = glm::scale(model, glm::vec3(0.250, 2.50, 0.250));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 1.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	//techo canasta
+	model = glm::translate(model, glm::vec3(0.0f, 0.45f, 0.0f));
+	model = glm::scale(model, glm::vec3(2.0, 0.10, 2.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	my_sphere.render();
+	glBindVertexArray(VAO);
+	//piso canasta
+	glActiveTexture(GL_TEXTURE);
+	glBindTexture(GL_TEXTURE_2D, texture7);
+	model = glm::translate(model, glm::vec3(0.0f, -8.05f, 0.0f));
+	model = glm::scale(model, glm::vec3(3.50, 3.0, 3.50));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 24, GL_UNSIGNED_INT, 0);
+	glActiveTexture(GL_TEXTURE);
+	glBindTexture(GL_TEXTURE_2D, texture8);
+	model = glm::translate(model, glm::vec3(0.0f, -0.550f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0, 0.10, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	my_sphere.render();
+	glBindVertexArray(VAO);
+	glActiveTexture(GL_TEXTURE);
+	//asiento enfrente textura galaxia
+	glBindTexture(GL_TEXTURE_2D, texture5);
+	model = glm::translate(model, glm::vec3(0.0f, 1.80f, 0.39f));
+	model = glm::scale(model, glm::vec3(0.80, 5.0, 0.20));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	//asientoatras
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -3.90f));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 01.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	//asientoder
+	model = glm::translate(model, glm::vec3(0.4950f, 0.0f, 2.0f));
+	model = glm::scale(model, glm::vec3(0.250, 1.0, 2.500));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 1.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	//asientoizq
+	model = glm::translate(model, glm::vec3(-3.94950f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.00));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 1.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	//disco azul
+	glActiveTexture(GL_TEXTURE);
+	glBindTexture(GL_TEXTURE_2D, texture9);
+	model = glm::translate(model, glm::vec3(2.0f, 6.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(2.0, 0.010, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	my_sphere.render();
+	glBindVertexArray(VAO);
+
+	//canasta 8 Aros--------------------------------------------------------------------------------------
+	glActiveTexture(GL_TEXTURE);
+	glBindTexture(GL_TEXTURE_2D, texture7);
+	model = modelTemp;
+	model = glm::translate(model, glm::vec3(-8.320f, -9.450f, 0.0f));
+	model = glm::rotate(model, glm::radians(angCanasta), glm::vec3(0, 0, 1));
+	modelTemp2 = model;
+	model = glm::translate(model, glm::vec3(0.0f, -0.50f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 0.0f));
+	circulos();
+	//canasta
+	//soporte
+	model = modelTemp2;
+	glActiveTexture(GL_TEXTURE);
+	glBindTexture(GL_TEXTURE_2D, texture2);
+	model = glm::translate(model, glm::vec3(0.0f, -2.50f, 0.3f));
+	model = glm::scale(model, glm::vec3(0.250, 2.50, 0.250));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 1.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	//techo canasta
+	model = glm::translate(model, glm::vec3(0.0f, 0.45f, 0.0f));
+	model = glm::scale(model, glm::vec3(2.0, 0.10, 2.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	my_sphere.render();
+	glBindVertexArray(VAO);
+	//piso canasta
+	glActiveTexture(GL_TEXTURE);
+	glBindTexture(GL_TEXTURE_2D, texture7);
+	model = glm::translate(model, glm::vec3(0.0f, -8.05f, 0.0f));
+	model = glm::scale(model, glm::vec3(3.50, 3.0, 3.50));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 24, GL_UNSIGNED_INT, 0);
+	glActiveTexture(GL_TEXTURE);
+	glBindTexture(GL_TEXTURE_2D, texture8);
+	model = glm::translate(model, glm::vec3(0.0f, -0.550f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0, 0.10, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	my_sphere.render();
+	glBindVertexArray(VAO);
+	glActiveTexture(GL_TEXTURE);
+	//asiento enfrente textura galaxia
+	glBindTexture(GL_TEXTURE_2D, texture5);
+	model = glm::translate(model, glm::vec3(0.0f, 1.80f, 0.39f));
+	model = glm::scale(model, glm::vec3(0.80, 5.0, 0.20));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	//asientoatras
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -3.90f));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 01.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	//asientoder
+	model = glm::translate(model, glm::vec3(0.4950f, 0.0f, 2.0f));
+	model = glm::scale(model, glm::vec3(0.250, 1.0, 2.500));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 1.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	//asientoizq
+	model = glm::translate(model, glm::vec3(-3.94950f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.00));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 1.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	//disco azul
+	glActiveTexture(GL_TEXTURE);
+	glBindTexture(GL_TEXTURE_2D, texture9);
+	model = glm::translate(model, glm::vec3(2.0f, 6.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(2.0, 0.010, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	my_sphere.render();
+	glBindVertexArray(VAO);
+
+	model = modelTemp;
+	glActiveTexture(GL_TEXTURE);
+	glBindTexture(GL_TEXTURE_2D, texture10);
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 7.50f));
+	model = glm::scale(model, glm::vec3(2.0, 2.0, 0.150));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	my_sphere.render();
+	glBindVertexArray(VAO);
+
+
+	//-------------------------------------------------------------------------------------------
+
+	 /*
 	//esferas rueda de la fortuna
 	//canasta1
 	model = modelTemp;
@@ -1408,9 +2120,25 @@ void display(void)
 	my_sphere.render();
 	glBindVertexArray(VAO);
 
-	
+	*/
+//arbol ////////////////
+
+modelShader.use();
+
+modelShader.setMat4("model", model);
+modelShader.setMat4("view", view);
+// note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
+modelShader.setMat4("projection", projection);
+
+model = glm::mat4(1.0f);
 
 
+modelShader.setMat4("model", model);
+model = glm::translate(model, glm::vec3(-35.0f, 0.10f, 5.0f));
+model = glm::scale(model, glm::vec3(01.0f, 01.0f, 1.0f));
+projectionShader.setMat4("model", model);
+projectionShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 0.0f));
+Tree.Draw(modelShader);
 
 
 
@@ -1438,7 +2166,7 @@ int main()
 	monitors = glfwGetPrimaryMonitor();
 	getResolution();
 
-	GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Practica 8", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Proyecto Feria Diaz y Ortiz", NULL, NULL);
 	if (window == NULL)
 	{
 		std::cout << "Failed to create GLFW window" << std::endl;
@@ -1463,6 +2191,21 @@ int main()
 	my_sphere.init();
 	glEnable(GL_DEPTH_TEST);
 
+	//-----------------------MODELOS-------------------------------------
+	Shader modelShader("Shaders/modelLoading.vs", "Shaders/modelLoading.fs");
+	// Load models
+	Model Tree = ((char*)"Models/Cart_Meatball/OBJ/street_cart_meetball.obj");
+	//Model pista = ((char*)"Models/pista2.obj");
+
+	
+
+	//-------------------------------------------------------
+
+
+
+
+
+
 	// render loop
 	// While the windows is not closed
 	while (!glfwWindowShouldClose(window))
@@ -1482,8 +2225,8 @@ int main()
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		//Mi función de dibujo
-		display();
+		//Mi funciÃ³n de dibujo
+		display(Tree);
 
 		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
 		// -------------------------------------------------------------------------------
