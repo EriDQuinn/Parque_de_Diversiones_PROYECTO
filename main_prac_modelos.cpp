@@ -933,6 +933,19 @@ void display(Model Tree, Model FoodCart)
 	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
 	glDrawArrays(GL_TRIANGLES, 24, 3);
 
+	
+	//----------------letrero-------------------
+
+	glActiveTexture(GL_TEXTURE);
+	glBindTexture(GL_TEXTURE_2D, texture11);
+
+	model = glm::translate(model, glm::vec3(5.550f, -0.430f, 1.0f));
+	//model = glm::mat4(1.0f);
+	model = glm::scale(model, glm::vec3(7.30, 3.10, 1.50));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
 
 	//Rueda de la fortuna////////////////////////////////////////////////////////////////
 	glActiveTexture(GL_TEXTURE);
