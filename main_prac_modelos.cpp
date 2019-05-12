@@ -37,7 +37,7 @@ GLFWmonitor* monitors;
 GLuint VBO, VAO, EBO;
 
 //Camera
-Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
+Camera camera(glm::vec3(0.0f, 0.0f, 0.0f));
 double	lastX = 0.0f,
 lastY = 0.0f;
 bool firstMouse = true;
@@ -50,7 +50,7 @@ lastFrame = 0.0f;
 glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
 
 void myData(void);
-void display(Model);
+void display(Model, Model);
 void getResolution(void);
 void animate(void);
 void circulos(void);
@@ -67,9 +67,9 @@ float movimiento = 0.0, colgando = 0.0;
 
 
 //Texture
-unsigned int texture1, texture2, texture3, texture4, texture5,texture6,texture7; //Indice que va a tener cada textura, i.e., 2 índices = 2 texturas
-unsigned int texture8,texture9, texture10, texture11,texture12,texture13,texture14;
-unsigned int texture15;
+unsigned int texture1, texture2, texture3, texture4, texture5, texture6, texture7; //Indice que va a tener cada textura, i.e., 2 índices = 2 texturas
+unsigned int texture8, texture9, texture10, texture11, texture12, texture13, texture14, texture15, texture16, texture17;
+unsigned int texture18, texture19, texture20;
 
 void getResolution()
 {
@@ -102,15 +102,15 @@ void myData() //Recordemos que antes aquí teníamos un cubo, pero ahora hay un 
 
 //Izq
 -0.5f,  0.5f, 0.5f,		1.0f, 1.0f,
--0.5f,  0.5f, -0.5f,	1.0f, 0.0f,
+-0.5f,  0.5f, -0.5f,	0.0f, 1.0f,
 -0.5f, -0.5f, -0.5f,	0.0f, 0.0f,
--0.5f, -0.5f, 0.5f,		0.0f, 1.0f,
+-0.5f, -0.5f, 0.5f,		1.0f, 0.0f,
 
 //Der
-0.5f,  0.5f, 0.5f,		1.0f, 1.0f,
-0.5f,  0.5f, -0.5f,		1.0f, 0.0f,
-0.5f, -0.5f, -0.5f,		0.0f, 0.0f,
-0.5f, -0.5f, 0.5f,		0.0f, 1.0f,
+0.5f,  0.5f, 0.5f,		0.0f, 1.0f,
+0.5f,  0.5f, -0.5f,		1.0f, 1.0f,
+0.5f, -0.5f, -0.5f,		1.0f, 0.0f,
+0.5f, -0.5f, 0.5f,		0.0f, 0.0f,
 
 //Sup
 -0.5f, 0.5f, 0.5f,		2.0f, 2.0f,
@@ -313,235 +313,239 @@ void myData() //Recordemos que antes aquí teníamos un cubo, pero ahora hay un 
 		std::cout << "Failed to load texture three" << std::endl;
 	}
 	stbi_image_free(data);
-	
-// texture 6`puertas
-glGenTextures(6, &texture6);
-glBindTexture(GL_TEXTURE_2D, texture6); //tipo 2D 
-// set the texture wrapping parameters
-glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-// set texture filtering parameters
-glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); //filtro 
-glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-data = stbi_load("texturas_feria/puertas2.jpg", &width, &height, &nrChannels, 0);
-if (data)
-{
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-	glGenerateMipmap(GL_TEXTURE_2D);
-}
-else
-{
-	std::cout << "Failed to load texture three" << std::endl;
-}
+	// texture 6`puertas
+	glGenTextures(6, &texture6);
+	glBindTexture(GL_TEXTURE_2D, texture6); //tipo 2D 
+	// set the texture wrapping parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	// set texture filtering parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); //filtro 
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-stbi_image_free(data);
+	data = stbi_load("texturas_feria/puertas2.jpg", &width, &height, &nrChannels, 0);
+	if (data)
+	{
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+	{
+		std::cout << "Failed to load texture three" << std::endl;
+	}
 
-
-
-// texture 7
-glGenTextures(7, &texture7);
-glBindTexture(GL_TEXTURE_2D, texture7); //tipo 2D 
-// set the texture wrapping parameters
-glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-// set texture filtering parameters
-glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); //filtro 
-glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-data = stbi_load("texturas_feria/marciano2.jpg", &width, &height, &nrChannels, 0);
-if (data)
-{
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-	glGenerateMipmap(GL_TEXTURE_2D);
-}
-else
-{
-	std::cout << "Failed to load texture three" << std::endl;
-}
-stbi_image_free(data);
-
-
-// texture 8
-glGenTextures(8, &texture8);
-glBindTexture(GL_TEXTURE_2D, texture8); //tipo 2D 
-// set the texture wrapping parameters
-glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-// set texture filtering parameters
-glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); //filtro 
-glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-data = stbi_load("texturas_feria/morado2.jpg", &width, &height, &nrChannels, 0);
-if (data)
-{
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-	glGenerateMipmap(GL_TEXTURE_2D);
-}
-else
-{
-	std::cout << "Failed to load texture three" << std::endl;
-}
-stbi_image_free(data);
+	stbi_image_free(data);
 
 
 
-// texture 9
-glGenTextures(9, &texture9);
-glBindTexture(GL_TEXTURE_2D, texture9); //tipo 2D 
-// set the texture wrapping parameters
-glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-// set texture filtering parameters
-glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); //filtro 
-glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	// texture 7
+	glGenTextures(7, &texture7);
+	glBindTexture(GL_TEXTURE_2D, texture7); //tipo 2D 
+	// set the texture wrapping parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	// set texture filtering parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); //filtro 
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-data = stbi_load("texturas_feria/blue.jpg", &width, &height, &nrChannels, 0);
-if (data)
-{
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-	glGenerateMipmap(GL_TEXTURE_2D);
-}
-else
-{
-	std::cout << "Failed to load texture three" << std::endl;
-}
-stbi_image_free(data);
-
-
-// texture 10
-glGenTextures(10, &texture10);
-glBindTexture(GL_TEXTURE_2D, texture10); //tipo 2D 
-// set the texture wrapping parameters
-glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-// set texture filtering parameters
-glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); //filtro 
-glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-data = stbi_load("texturas_feria/verde.jpg", &width, &height, &nrChannels, 0);
-if (data)
-{
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-	glGenerateMipmap(GL_TEXTURE_2D);
-}
-else
-{
-	std::cout << "Failed to load texture three" << std::endl;
-}
-stbi_image_free(data);
+	data = stbi_load("texturas_feria/marciano2.jpg", &width, &height, &nrChannels, 0);
+	if (data)
+	{
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+	{
+		std::cout << "Failed to load texture three" << std::endl;
+	}
+	stbi_image_free(data);
 
 
+	// texture 8
+	glGenTextures(8, &texture8);
+	glBindTexture(GL_TEXTURE_2D, texture8); //tipo 2D 
+	// set the texture wrapping parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	// set texture filtering parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); //filtro 
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	data = stbi_load("texturas_feria/morado2.jpg", &width, &height, &nrChannels, 0);
+	if (data)
+	{
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+	{
+		std::cout << "Failed to load texture three" << std::endl;
+	}
+	stbi_image_free(data);
 
 
 
+	// texture 9
+	glGenTextures(9, &texture9);
+	glBindTexture(GL_TEXTURE_2D, texture9); //tipo 2D 
+	// set the texture wrapping parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	// set texture filtering parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); //filtro 
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-glGenTextures(12, &texture12);
-glBindTexture(GL_TEXTURE_2D, texture12); //tipo 2D 
-// set the texture wrapping parameters
-glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-// set texture filtering parameters
-glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); //filtro 
-glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-data = stbi_load("texturas_feria/lego.jpg", &width, &height, &nrChannels, 0);
-if (data)
-{
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-	glGenerateMipmap(GL_TEXTURE_2D);
-}
-else
-{
-	std::cout << "Failed to load texture three" << std::endl;
-}
-stbi_image_free(data);
-
-
-
-glGenTextures(13, &texture13);
-glBindTexture(GL_TEXTURE_2D, texture13); //tipo 2D 
-// set the texture wrapping parameters
-glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-// set texture filtering parameters
-glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); //filtro 
-glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-data = stbi_load("texturas_feria/lego_yellow2.jpg", &width, &height, &nrChannels, 0);
-if (data)
-{
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-	glGenerateMipmap(GL_TEXTURE_2D);
-}
-else
-{
-	std::cout << "Failed to load texture three" << std::endl;
-}
-stbi_image_free(data);
-
-// texture 14
-	// ---------
-glGenTextures(14, &texture14);
-glBindTexture(GL_TEXTURE_2D, texture14); //tipo 2D 
-// set the texture wrapping parameters
-glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-// set texture filtering parameters
-glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); //filtro 
-glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-data = stbi_load("texturas_feria/gris.jpg", &width, &height, &nrChannels, 0);
-if (data)
-{
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-	glGenerateMipmap(GL_TEXTURE_2D);
-}
-else
-{
-	std::cout << "Failed to load texture two" << std::endl;
-}
-stbi_image_free(data);
+	data = stbi_load("texturas_feria/blue.jpg", &width, &height, &nrChannels, 0);
+	if (data)
+	{
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+	{
+		std::cout << "Failed to load texture three" << std::endl;
+	}
+	stbi_image_free(data);
 
 
+	// texture 10
+	glGenTextures(10, &texture10);
+	glBindTexture(GL_TEXTURE_2D, texture10); //tipo 2D 
+	// set the texture wrapping parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	// set texture filtering parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); //filtro 
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	data = stbi_load("texturas_feria/verde.jpg", &width, &height, &nrChannels, 0);
+	if (data)
+	{
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+	{
+		std::cout << "Failed to load texture three" << std::endl;
+	}
+	stbi_image_free(data);
+	//TEXTURA 11
+	glGenTextures(11, &texture11);
+	glBindTexture(GL_TEXTURE_2D, texture11); //tipo 2D 
+	// set the texture wrapping parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	// set texture filtering parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); //filtro 
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	data = stbi_load("texturas_feria/letrero.jpg", &width, &height, &nrChannels, 0);
+	if (data)
+	{
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+	{
+		std::cout << "Failed to load texture two" << std::endl;
+	}
+	stbi_image_free(data);
 
 
-// texture 15
-	// ---------
-glGenTextures(15, &texture15);
-glBindTexture(GL_TEXTURE_2D, texture14); //tipo 2D 
-// set the texture wrapping parameters
-glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-// set texture filtering parameters
-glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); //filtro 
-glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	//TEXTURA 12
+	glGenTextures(12, &texture12);
+	glBindTexture(GL_TEXTURE_2D, texture12); //tipo 2D 
+	// set the texture wrapping parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	// set texture filtering parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); //filtro 
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-data = stbi_load("texturas_feria/nube.jpg", &width, &height, &nrChannels, 0);
-if (data)
-{
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-	glGenerateMipmap(GL_TEXTURE_2D);
-}
-else
-{
-	std::cout << "Failed to load texture two" << std::endl;
-}
-stbi_image_free(data);
+	data = stbi_load("texturas_feria/lego.jpg", &width, &height, &nrChannels, 0);
+	if (data)
+	{
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+	{
+		std::cout << "Failed to load texture three" << std::endl;
+	}
+	stbi_image_free(data);
+
+
+
+	glGenTextures(13, &texture13);
+	glBindTexture(GL_TEXTURE_2D, texture13); //tipo 2D 
+	// set the texture wrapping parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	// set texture filtering parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); //filtro 
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	data = stbi_load("texturas_feria/legoverde.jpg", &width, &height, &nrChannels, 0);
+	if (data)
+	{
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+	{
+		std::cout << "Failed to load texture three" << std::endl;
+	}
+	stbi_image_free(data);
+
+	// texture 14
+		// ---------
+	glGenTextures(14, &texture14);
+	glBindTexture(GL_TEXTURE_2D, texture14); //tipo 2D 
+	// set the texture wrapping parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	// set texture filtering parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); //filtro 
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	data = stbi_load("texturas_feria/lego.jpg", &width, &height, &nrChannels, 0);
+	if (data)
+	{
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+	{
+		std::cout << "Failed to load texture two" << std::endl;
+	}
+	stbi_image_free(data);
 
 
 
 
+	// texture 15
+		// ---------
+	glGenTextures(15, &texture15);
+	glBindTexture(GL_TEXTURE_2D, texture14); //tipo 2D 
+	// set the texture wrapping parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	// set texture filtering parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); //filtro 
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-
-
-
-
-
-
-
-
-
+	data = stbi_load("texturas_feria/toystoywall.jpg", &width, &height, &nrChannels, 0);
+	if (data)
+	{
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+	{
+		std::cout << "Failed to load texture two" << std::endl;
+	}
+	stbi_image_free(data);
 
 
 
@@ -551,7 +555,7 @@ stbi_image_free(data);
 
 
 void circulos(void) {
-	
+
 	glPointSize(0.1);
 	float x = 0.0f, y = 0.0f, z = 0.27f;
 	glPointSize(15);
@@ -623,7 +627,7 @@ void animate(void)
 
 }
 
-void display(Model Tree)
+void display(Model Tree, Model FoodCart)
 {
 	// bind textures on corresponding texture units
 	glActiveTexture(GL_TEXTURE);			//activar la textura a 0. 
@@ -644,8 +648,6 @@ void display(Model Tree)
 	glm::mat4 projection = glm::mat4(1.0f);	//This matrix is for Projection
 	glm::mat4 modelTemp = glm::mat4(1.0f);
 	glm::mat4 modelTemp2 = glm::mat4(1.0f);
-	glm::mat4 modelTemp3 = glm::mat4(1.0f);
-
 	//	view = glm::rotate(view, glm::radians(rotX), glm::vec3(1.0f, 0.0f, 0.0f));
 	view = glm::rotate(view, glm::radians(rotY), glm::vec3(0.0f, 1.0f, 0.0f));
 	//Use "projection" to include Camera
@@ -769,191 +771,9 @@ void display(Model Tree)
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-
-
-
-	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-
-	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-
-	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-
-	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-
-	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-
-	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-
-	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-
-	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-
-	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-
-	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-
-	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-
-	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-
-	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-
-
-	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-
-
-
-	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-
-	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-
-	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-
-	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-
-	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-
-	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-
-	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-
-
-	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-
-	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-
-	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-
-	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-
-	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-
-	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-
-	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-
-	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-
-	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-
-	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-
-	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-
-	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-
-	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-
-	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-
-
-
-	//entrada	
+	
+	
+	//entrada	--------------------------------------------
 
 	glActiveTexture(GL_TEXTURE);
 	glBindTexture(GL_TEXTURE_2D, texture2);
@@ -1293,7 +1113,7 @@ void display(Model Tree)
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-	
+
 	glActiveTexture(GL_TEXTURE);
 	glBindTexture(GL_TEXTURE_2D, texture7);
 	//esferas rueda de la fortuna
@@ -1377,7 +1197,7 @@ void display(Model Tree)
 	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
 	my_sphere.render();
 	glBindVertexArray(VAO);
-	
+
 	//canasta2 Aros------------------------------------------------------------------------
 	glActiveTexture(GL_TEXTURE);
 	glBindTexture(GL_TEXTURE_2D, texture7);
@@ -1954,7 +1774,9 @@ void display(Model Tree)
 	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
 	my_sphere.render();
 	glBindVertexArray(VAO);
-	
+
+	//-------------------------------------------------------------------------------------------
+
 	//MONTAÑA RUSA 
 	glActiveTexture(GL_TEXTURE);
 	glBindTexture(GL_TEXTURE_2D, texture14);
@@ -1989,7 +1811,7 @@ void display(Model Tree)
 	glBindTexture(GL_TEXTURE_2D, texture10);
 
 
-	model = glm::translate(model, glm::vec3(2.5f,0.55f, 3.0f));
+	model = glm::translate(model, glm::vec3(2.5f, 0.55f, 3.0f));
 	model = glm::scale(model, glm::vec3(6.0, 0.1, 8.0));
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
@@ -2000,6 +1822,7 @@ void display(Model Tree)
 	glActiveTexture(GL_TEXTURE);
 	glBindTexture(GL_TEXTURE_2D, texture14);
 	model = glm::translate(model, glm::vec3(0.0f, 0.5f, 0.0f));
+	modelTemp=model;
 	model = glm::scale(model, glm::vec3(1.0, 0.1, 0.5));
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
@@ -2013,14 +1836,14 @@ void display(Model Tree)
 	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
-	for (int i = 0; i <= 3 ;i = i + 1)
+	for (int i = 0; i <= 3; i = i + 1)
 	{
 		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 5.5f));
 		model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
 		projectionShader.setMat4("model", model);
 		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-	
+
 	}
 
 	model = glm::translate(model, glm::vec3(10.0f, 0.0f, -22.0f));
@@ -2061,255 +1884,538 @@ void display(Model Tree)
 	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
-		for (int i = 0; i <= 1; i = i + 1)
-		{
-			model = glm::translate(model, glm::vec3(0.0f, 0.0f, 5.5f));
-			model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-			projectionShader.setMat4("model", model);
-			projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
-			glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-
-		}
-
-
-		model = glm::translate(model, glm::vec3(10.0f, 0.0f, -11.0f));
+	for (int i = 0; i <= 1; i = i + 1)
+	{
+		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 5.5f));
 		model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
 		projectionShader.setMat4("model", model);
 		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
-		for (int i = 0; i <= 1; i = i + 1)
-		{
-			model = glm::translate(model, glm::vec3(0.0f, 0.0f, 5.5f));
-			model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-			projectionShader.setMat4("model", model);
-			projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
-			glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	}
 
-		}
 
-		model = glm::translate(model, glm::vec3(10.0f, 0.0f, -11.0f));
+	model = glm::translate(model, glm::vec3(10.0f, 0.0f, -11.0f));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	for (int i = 0; i <= 1; i = i + 1)
+	{
+		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 5.5f));
 		model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
 		projectionShader.setMat4("model", model);
 		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
-		for (int i = 0; i <= 1; i = i + 1)
-		{
-			model = glm::translate(model, glm::vec3(0.0f, 0.0f, 5.5f));
-			model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-			projectionShader.setMat4("model", model);
-			projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
-			glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	}
 
-		}
-		model = glm::translate(model, glm::vec3(10.0f, 0.0f, -11.0f));
+	model = glm::translate(model, glm::vec3(10.0f, 0.0f, -11.0f));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	for (int i = 0; i <= 1; i = i + 1)
+	{
+		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 5.5f));
 		model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
 		projectionShader.setMat4("model", model);
 		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
-		for (int i = 0; i <= 1; i = i + 1)
-		{
-			model = glm::translate(model, glm::vec3(0.0f, 0.0f, 5.5f));
-			model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-			projectionShader.setMat4("model", model);
-			projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
-			glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	}
+	model = glm::translate(model, glm::vec3(10.0f, 0.0f, -11.0f));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
-		}
-		model = glm::translate(model, glm::vec3(10.0f, 0.0f, -11.0f));
+	for (int i = 0; i <= 1; i = i + 1)
+	{
+		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 5.5f));
 		model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
 		projectionShader.setMat4("model", model);
 		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
-		for (int i = 0; i <= 1; i = i + 1)
-		{
-			model = glm::translate(model, glm::vec3(0.0f, 0.0f, 5.5f));
-			model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-			projectionShader.setMat4("model", model);
-			projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
-			glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	}
+	model = glm::translate(model, glm::vec3(10.0f, 0.0f, -11.0f));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
-		}
-		model = glm::translate(model, glm::vec3(10.0f, 0.0f, -11.0f));
+	for (int i = 0; i <= 1; i = i + 1)
+	{
+		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 5.5f));
 		model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
 		projectionShader.setMat4("model", model);
 		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
-		for (int i = 0; i <= 1; i = i + 1)
-		{
-			model = glm::translate(model, glm::vec3(0.0f, 0.0f, 5.5f));
-			model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-			projectionShader.setMat4("model", model);
-			projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
-			glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	}
+	model = glm::translate(model, glm::vec3(10.0f, 0.0f, -11.0f));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
-		}
-
-
-		model = glm::translate(model, glm::vec3(19.0f, 0.0f, 11.0f));
+	for (int i = 0; i <= 1; i = i + 1)
+	{
+		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 5.5f));
 		model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
 		projectionShader.setMat4("model", model);
 		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
-		for (int i = 0; i <= 37; i = i + 1)
-		{
-			model = glm::translate(model, glm::vec3(-2.5f, 0.0f, 0.0f));
-			model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-			projectionShader.setMat4("model", model);
-			projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
-			glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	}
 
-		}
 
-		model = glm::translate(model, glm::vec3(-3.5f, 0.0f, -98.0f));
+	model = glm::translate(model, glm::vec3(19.0f, 0.0f, 11.0f));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	for (int i = 0; i <= 37; i = i + 1)
+	{
+		model = glm::translate(model, glm::vec3(-2.5f, 0.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
 		projectionShader.setMat4("model", model);
 		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	}
+
+	model = glm::translate(model, glm::vec3(-3.5f, 0.0f, -98.0f));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	for (int i = 0; i <= 29; i = i + 1)
+	{
+		model = glm::translate(model, glm::vec3(2.5f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
+		projectionShader.setMat4("model", model);
+		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	}
+
+	model = glm::translate(model, glm::vec3(23.5f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	for (int i = 0; i <= 3; i = i + 1)
+	{
+		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 5.5f));
+		model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
+		projectionShader.setMat4("model", model);
+		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	}
+
+	model = glm::translate(model, glm::vec3(-98.5f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	for (int i = 0; i <= 2; i = i + 1)
+	{
+		model = glm::translate(model, glm::vec3(0.0f, 0.0f, -5.5f));
+		model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
+		projectionShader.setMat4("model", model);
+		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	}
+	//barandales de las rejas 
+	model = glm::translate(model, glm::vec3(0.0f, 0.5f, 6.0f));
+	model = glm::scale(model, glm::vec3(1.0, 0.04, 23.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	model = glm::translate(model, glm::vec3(98.5f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.2));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	model = glm::translate(model, glm::vec3(-19.0, 0.0f, 2.55f));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 0.5));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	for (int i = 0; i <= 6; i = i + 1)
+	{
+		model = glm::translate(model, glm::vec3(-10.0f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
+		projectionShader.setMat4("model", model);
+		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	}
+
+	model = glm::translate(model, glm::vec3(-10.0f, 0.0f, 0.3f));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.8));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	model = glm::translate(model, glm::vec3(50.0f, 0.0f, 0.5f));
+	model = glm::scale(model, glm::vec3(100.0, 1.0, 0.05));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	model = glm::translate(model, glm::vec3(-0.13f, 0.0f, -79.0f));
+	model = glm::scale(model, glm::vec3(0.75, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+
+	//puertas 
+
+	model = glm::translate(model, glm::vec3(-0.42f, -10.0f, 61.0f));
+	model = glm::scale(model, glm::vec3(0.130, 20.0, 0.5));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+
+	model = glm::translate(model, glm::vec3(1.025f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.02, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	for (int i = 0; i <= 5; i = i + 1)
+	{
+		model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
+		projectionShader.setMat4("model", model);
+		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	}
+
 	
-		for (int i = 0; i <= 29; i = i + 1)
-		{
-			model = glm::translate(model, glm::vec3(2.5f, 0.0f, 0.0f));
-			model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-			projectionShader.setMat4("model", model);
-			projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
-			glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
-		}
+	//----------------Rieles-------------------Rieles-----------------Rieles-----------------------------------
+	glActiveTexture(GL_TEXTURE);
+	glBindTexture(GL_TEXTURE_2D, texture13);
 
-		model = glm::translate(model, glm::vec3(23.5f, 0.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-		projectionShader.setMat4("model", model);
-		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
-		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	model = modelTemp;
 
-		for (int i = 0; i <= 3; i = i + 1)
-		{
-			model = glm::translate(model, glm::vec3(0.0f, 0.0f, 5.5f));
-			model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-			projectionShader.setMat4("model", model);
-			projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
-			glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	model = glm::translate(model, glm::vec3(0.50f, 0.150f, 0.0f));
+	model = glm::scale(model, glm::vec3(0.0250, 0.250, 0.15));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
-		}
+	model = glm::translate(model, glm::vec3(-2.0f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.00, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
-		model = glm::translate(model, glm::vec3(-98.5f, 0.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-		projectionShader.setMat4("model", model);
-		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
-		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	model = glm::translate(model, glm::vec3(-2.0f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.00, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	
+	model = glm::translate(model, glm::vec3(-2.0f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.00, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	
+	model = glm::translate(model, glm::vec3(-2.0f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.00, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	
+	model = glm::translate(model, glm::vec3(-2.0f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.00, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	
+	model = glm::translate(model, glm::vec3(-2.0f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.00, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
-		for (int i = 0; i <= 2; i = i + 1)
-		{
-			model = glm::translate(model, glm::vec3(0.0f, 0.0f, -5.5f));
-			model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-			projectionShader.setMat4("model", model);
-			projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
-			glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	model = glm::translate(model, glm::vec3(-2.0f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.00, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
-		}
-		//barandales de las rejas 
-		model = glm::translate(model, glm::vec3(0.0f, 0.5f, 6.0f));
-		model = glm::scale(model, glm::vec3(1.0, 0.04, 23.0));
-		projectionShader.setMat4("model", model);
-		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
-		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	model = glm::translate(model, glm::vec3(-2.0f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.00, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
-		model = glm::translate(model, glm::vec3(98.5f, 0.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(1.0, 1.0, 1.2));
-		projectionShader.setMat4("model", model);
-		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
-		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	model = glm::translate(model, glm::vec3(-2.0f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.00, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
-		model = glm::translate(model, glm::vec3(-19.0, 0.0f, 2.55f));
-		model = glm::scale(model, glm::vec3(1.0, 1.0, 0.5));
-		projectionShader.setMat4("model", model);
-		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
-		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	model = glm::translate(model, glm::vec3(-2.0f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.00, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
-		for (int i = 0; i <= 6; i = i + 1)
-		{
-			model = glm::translate(model, glm::vec3(-10.0f, 0.0f, 0.0f));
-			model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-			projectionShader.setMat4("model", model);
-			projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
-			glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	model = glm::translate(model, glm::vec3(-2.0f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.00, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
-		}
+	model = glm::translate(model, glm::vec3(-2.0f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.00, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
-		model = glm::translate(model, glm::vec3(-10.0f, 0.0f, 0.3f));
-		model = glm::scale(model, glm::vec3(1.0, 1.0, 1.8));
-		projectionShader.setMat4("model", model);
-		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
-		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	model = glm::translate(model, glm::vec3(-2.0f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.00, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
-		model = glm::translate(model, glm::vec3(50.0f, 0.0f, 0.5f));
-		model = glm::scale(model, glm::vec3(100.0, 1.0, 0.05));
-		projectionShader.setMat4("model", model);
-		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
-		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	model = glm::translate(model, glm::vec3(-2.0f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.00, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
-		model = glm::translate(model, glm::vec3(-0.13f, 0.0f, -79.0f));
-		model = glm::scale(model, glm::vec3(0.75, 1.0, 1.0));
-		projectionShader.setMat4("model", model);
-		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
-		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-		
+	model = glm::translate(model, glm::vec3(-2.0f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.00, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
-		//puertas 
-
-		model = glm::translate(model, glm::vec3(-0.42f, -10.0f, 61.0f));
-		model = glm::scale(model, glm::vec3(0.130, 20.0, 0.5));
-		projectionShader.setMat4("model", model);
-		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
-		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-
-		
-			model = glm::translate(model, glm::vec3(1.025f, 0.0f, 0.0f));
-			model = glm::scale(model, glm::vec3(1.02, 1.0, 1.0));
-			projectionShader.setMat4("model", model);
-			projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
-			glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-
-			for (int i = 0; i <= 5; i = i + 1)
-			{
-				model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
-				model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-				projectionShader.setMat4("model", model);
-				projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
-				glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-
-			}
-		
-
-		
-//arbol ////////////////
-
-modelShader.use();
-
-modelShader.setMat4("model", model);
-modelShader.setMat4("view", view);
-// note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
-modelShader.setMat4("projection", projection);
-
-model = glm::mat4(1.0f);
+	model = glm::translate(model, glm::vec3(-2.0f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.00, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 
-modelShader.setMat4("model", model);
-model = glm::translate(model, glm::vec3(-35.0f, 0.10f, 5.0f));
-model = glm::scale(model, glm::vec3(01.0f, 01.0f, 1.0f));
-projectionShader.setMat4("model", model);
-projectionShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 0.0f));
-Tree.Draw(modelShader);
+	model = glm::translate(model, glm::vec3(-2.0f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.00, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	model = glm::translate(model, glm::vec3(-2.0f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.00, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	model = glm::translate(model, glm::vec3(-2.0f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.00, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	model = glm::translate(model, glm::vec3(-2.0f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.00, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	model = glm::translate(model, glm::vec3(-2.0f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.00, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	model = glm::translate(model, glm::vec3(-2.0f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.00, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	model = glm::translate(model, glm::vec3(-2.0f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.00, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	model = glm::translate(model, glm::vec3(-2.0f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.00, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	model = glm::translate(model, glm::vec3(-2.0f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.00, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	model = glm::translate(model, glm::vec3(-2.0f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.00, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	model = glm::translate(model, glm::vec3(-2.0f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.00, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	model = glm::translate(model, glm::vec3(-2.0f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.00, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	model = glm::translate(model, glm::vec3(-2.0f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.00, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	model = glm::translate(model, glm::vec3(-2.0f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.00, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	model = glm::translate(model, glm::vec3(-2.0f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.00, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	model = glm::translate(model, glm::vec3(-2.0f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.00, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	model = glm::translate(model, glm::vec3(-2.0f, 0.0f, -1.0f));
+	model = glm::scale(model, glm::vec3(1.00, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	model = glm::translate(model, glm::vec3(-2.0f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.00, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	model = glm::translate(model, glm::vec3(-2.0f, -1.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.00, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	model = glm::translate(model, glm::vec3(-2.0f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.00, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	model = glm::translate(model, glm::vec3(-2.0f, -1.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.00, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	model = glm::translate(model, glm::vec3(-2.0f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.00, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	model = glm::translate(model, glm::vec3(-2.0f, -1.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.00, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 
 
 
+
+
+
+
+
+
+
+	//---------------------------------------MODELOS -------------------------------------------
+	//arbol ////////////////
+
+	modelShader.use();
+
+	modelShader.setMat4("model", model);
+	modelShader.setMat4("view", view);
+	// note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
+	modelShader.setMat4("projection", projection);
+
+	model = glm::mat4(1.0f);
+	modelShader.setMat4("model", model);
+	model = glm::translate(model, glm::vec3(-60.0f, 0.10f, -25.0f));
+	model = glm::scale(model, glm::vec3(0.0150f, 0.0150f, 0.0150f));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 0.0f));
+	Tree.Draw(modelShader);
+
+	model = glm::mat4(1.0f);
+	modelShader.setMat4("model", model);
+	model = glm::translate(model, glm::vec3(-55.0f, 0.10f, -15.0f));
+	model = glm::scale(model, glm::vec3(01.350f, 01.350f, 01.350f));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 0.0f));
+	FoodCart.Draw(modelShader);
+	
+	model = glm::mat4(1.0f);
+	modelShader.setMat4("model", model);
+	model = glm::translate(model, glm::vec3(-45.0f, 0.10f, -15.0f));
+	model = glm::scale(model, glm::vec3(0.0150f, 0.0250f, 0.0150f));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 0.0f));
+	Tree.Draw(modelShader);
+	model = glm::mat4(1.0f);
+	modelShader.setMat4("model", model);
+	model = glm::translate(model, glm::vec3(-45.0f, 0.10f, -10.0f));
+	model = glm::scale(model, glm::vec3(0.0150f, 0.0250f, 0.0150f));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 0.0f));
+	Tree.Draw(modelShader);
+	model = glm::mat4(1.0f);
+	modelShader.setMat4("model", model);
+	model = glm::translate(model, glm::vec3(-45.0f, 0.10f, -5.0f));
+	model = glm::scale(model, glm::vec3(0.0150f, 0.0250f, 0.0150f)); 
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 0.0f));
+	Tree.Draw(modelShader);
+	
 
 
 	glBindVertexArray(VAO);
@@ -2361,10 +2467,10 @@ int main()
 	//-----------------------MODELOS-------------------------------------
 	Shader modelShader("Shaders/modelLoading.vs", "Shaders/modelLoading.fs");
 	// Load models
-	Model Tree = ((char*)"Models/Cart_Meatball/OBJ/street_cart_meetball.obj");
-	//Model pista = ((char*)"Models/pista2.obj");
+	Model Tree = ((char*)"Models/arbol2/Tree_Conifer_1.obj");
+	Model FoodCart = ((char*)"Models/Cart_food/street_cart_meetball.obj");
 
-	
+
 
 	//-------------------------------------------------------
 
@@ -2393,7 +2499,7 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		//Mi función de dibujo
-		display(Tree);
+		display(Tree, FoodCart);
 
 		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
 		// -------------------------------------------------------------------------------
@@ -2426,9 +2532,9 @@ void my_input(GLFWwindow * window)
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 		camera.ProcessKeyboard(RIGHT, (float)deltaTime);
 	if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
-		movY += 0.05f;
+		movY += 0.07f;
 	if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS)
-		movY -= 0.05f;
+		movY -= 0.07f;
 
 }
 
