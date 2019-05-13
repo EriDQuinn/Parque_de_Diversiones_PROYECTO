@@ -2485,8 +2485,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1)
 	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
-	
-	//----------------Rieles-------------------Rieles-----------------Rieles-----------------------------------
+		//----------------Rieles-------------------Rieles-----------------Rieles-----------------------------------
 	glActiveTexture(GL_TEXTURE);
 	glBindTexture(GL_TEXTURE_2D, texture13);
 
@@ -2505,10 +2504,11 @@ void display(Model Tree, Model FoodCart, Model Soldado1)
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 
-	for (int i = 0; i <= 10; i = i + 1)
+	for (int i = 0; i <= 20; i = i + 1)
 	{
 		model = glm::translate(model, glm::vec3(-2.0f, 0.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
+		modelTemp = model;
 		projectionShader.setMat4("model", model);
 		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
@@ -2523,7 +2523,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1)
 		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	}
-for (int i = 0; i <= 4; i = i + 1)
+	for (int i = 0; i <= 4; i = i + 1)
 	{
 		model = glm::translate(model, glm::vec3(-1.80f, -1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(1.00, 1.0, 1.0));
@@ -2571,7 +2571,7 @@ for (int i = 0; i <= 4; i = i + 1)
 		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	}
-	for (int i = 0; i <= 6; i = i + 1)
+	for (int i = 0; i <= 4; i = i + 1)
 	{
 		model = glm::translate(model, glm::vec3(-1.60f, 0.80f, 0.0f));
 		model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
@@ -2725,7 +2725,6 @@ for (int i = 0; i <= 4; i = i + 1)
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 0.0f));
 	Carrito.Draw(modelShader);
-
 
 
 	glBindVertexArray(VAO);
