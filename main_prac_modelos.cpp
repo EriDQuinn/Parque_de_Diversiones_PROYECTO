@@ -2517,7 +2517,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1)
 
 
 		
-	//----------------Rieles-------------------Rieles-----------------Rieles-----------------------------------
+//----------------Rieles-------------------Rieles-----------------Rieles-----------------------------------
 
 	glActiveTexture(GL_TEXTURE);
 	glBindTexture(GL_TEXTURE_2D, texture13);
@@ -2620,7 +2620,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1)
 
 	for (int i = 0; i <= 1; i = i + 1) //giro
 	{
-		model = glm::translate(model, glm::vec3(-1.7, 0.07f, 0.0f));
+		model = glm::translate(model, glm::vec3(-1.2, 0.07f, 0.0f));
 		model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
 		model = glm::rotate(model, glm::radians(-8.50f), glm::vec3(0, 1, 0));
 		model = glm::rotate(model, glm::radians(-1.50f), glm::vec3(1, 0, 0));
@@ -2668,9 +2668,9 @@ void display(Model Tree, Model FoodCart, Model Soldado1)
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-	for (int i = 0; i <= 5; i = i + 1)
+	for (int i = 0; i <=5; i = i + 1)
 	{
-		model = glm::translate(model, glm::vec3(0.01f, -0.50f, 1.80f));
+		model = glm::translate(model, glm::vec3(0.015f, -0.520f, 1.40f));
 		model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
 		model = glm::rotate(model, glm::radians(4.50f), glm::vec3(0, 1, 0));
 		model = glm::rotate(model, glm::radians(3.50f), glm::vec3(1, 0, 0));
@@ -2678,46 +2678,41 @@ void display(Model Tree, Model FoodCart, Model Soldado1)
 		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	}
-	//atras rampa giro
-	model = modelTemp;
-	model = glm::translate(model, glm::vec3(-53.0f, 0.0f, -07.0f));
-	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-	for (int i = 0; i <= 5; i = i + 1)//giro
-	{
-		model = modelTemp;
-		model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.5f));
-		model = glm::rotate(model, glm::radians(5.50f), glm::vec3(0, 1, 0));
-		model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-		projectionShader.setMat4("model", model);
-		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
-		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-
-	}
 	//atras rampa
 	model = modelTemp;
-	model = glm::translate(model, glm::vec3(-50.0f, 0.0f, -7.0f));
+	model = glm::translate(model, glm::vec3(-51.50f, 0.0f, -7.0f));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
+	//model = glm::rotate(model, glm::radians(-8.50f), glm::vec3(0, 1, 0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	
+	model = glm::translate(model, glm::vec3(-1.50f, 0.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-	for (int i = 0; i <= 3; i = i + 1)//giro
-	{
-		model = modelTemp;
-		model = glm::translate(model, glm::vec3(-1.50f, -0.01f, 0.005f));
-		model = glm::rotate(model, glm::radians(5.50f), glm::vec3(0, 1, 0));
-		model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-		projectionShader.setMat4("model", model);
-		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
-		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	model = glm::translate(model, glm::vec3(-1.50f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	model = glm::translate(model, glm::vec3(-1.50f, 1.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	model = glm::translate(model, glm::vec3(-1.50f, 1.0f, 0.0001f));
+	model = glm::rotate(model, glm::radians(10.50f), glm::vec3(0, 1, 0));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 0.60));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
-	}
+	//atras rampa
 	model = modelTemp;//subida
 	model = glm::translate(model, glm::vec3(-50.0f, 0.0f, -7.0f));
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-	//model = glm::rotate(model, glm::radians(-8.50f), glm::vec3(0, 1, 0));
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
@@ -2758,7 +2753,51 @@ void display(Model Tree, Model FoodCart, Model Soldado1)
 		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	}
-
+	for (int i = 0; i <= 4; i = i + 1)
+	{
+		model = glm::translate(model, glm::vec3(1.20f, 1.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.00, 1.0, 1.0));
+		model = glm::rotate(model, glm::radians(2.50f), glm::vec3(0, 0, 1));
+		projectionShader.setMat4("model", model);
+		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	}
+	for (int i = 0; i <= 2; i = i + 1)
+		{
+			model = glm::translate(model, glm::vec3(1.50f, 0.70f, 0.0f));
+			model = glm::scale(model, glm::vec3(1.00, 1.0, 1.0));
+			model = glm::rotate(model, glm::radians(-2.50f), glm::vec3(0, 0, 1));
+			projectionShader.setMat4("model", model);
+			projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+			glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+		}
+	for (int i = 0; i <= 1; i = i + 1)
+	{
+		model = glm::translate(model, glm::vec3(1.50f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.00, 1.0, 1.0));
+		model = glm::rotate(model, glm::radians(-2.50f), glm::vec3(0, 0, 1));
+		projectionShader.setMat4("model", model);
+		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	}
+	for (int i = 0; i <= 6; i = i + 1)
+	{
+		model = glm::translate(model, glm::vec3(1.50f, -0.70f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.00, 1.0, 1.0));
+		model = glm::rotate(model, glm::radians(-2.50f), glm::vec3(0, 0, 1));
+		projectionShader.setMat4("model", model);
+		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	}
+	for (int i = 0; i <= 9; i = i + 1)
+	{
+		model = glm::translate(model, glm::vec3(1.20f, -0.60f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.00, 1.0, 1.0));
+		model = glm::rotate(model, glm::radians(-2.80f), glm::vec3(0, 0, 1));
+		projectionShader.setMat4("model", model);
+		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	}
 
 	//---------------------------------------MODELOS -------------------------------------------
 	//arbol ////////////////
