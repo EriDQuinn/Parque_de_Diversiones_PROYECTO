@@ -2581,28 +2581,84 @@ for (int i = 0; i <= 4; i = i + 1)
 		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	}
+	//-------------------giroooooo--------------------------------------	
 	model = glm::translate(model, glm::vec3(0.0f, 0.50f, 0.0f));
 	model = glm::rotate(model, glm::radians(21.0f), glm::vec3(0, 0, 1));
-	
-	for (int i = 0; i <= 4; i = i + 1) //giro
+
+	for (int i = 0; i <= 3; i = i + 1) //giro
 	{
-		model = glm::translate(model, glm::vec3(-1.50f, 0.0f, 0.0f));
+		model = glm::translate(model, glm::vec3(-1.40f, 0.035f, 0.0f));
 		model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-		model = glm::rotate(model, glm::radians(-5.50f), glm::vec3(0, 1, 0));
+		model = glm::rotate(model, glm::radians(-6.50f), glm::vec3(0, 1, 0));
 		projectionShader.setMat4("model", model);
 		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	}
-	for (int i = 0; i <= 4; i = i + 1) //giro
+	model = modelTemp;
+	model = glm::translate(model, glm::vec3(-62.0f, 1.0f, -4.50f));
+	model = glm::scale(model, glm::vec3(4.0, 1.0, 0.250));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	
+	for (int i = 0; i <= 8; i = i + 1)
 	{
-		model = glm::translate(model, glm::vec3(-1.50f, 0.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(0.80, 1.0, 1.0));
-		model = glm::rotate(model, glm::radians(-8.50f), glm::vec3(0, 1, 0));
+		model = glm::translate(model, glm::vec3(0.00f, 0.0f, -1.50f));
+		model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
+		model = glm::rotate(model, glm::radians(-2.50f), glm::vec3(0, 1, 0));
 		projectionShader.setMat4("model", model);
 		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	}
 
+	model = modelTemp;
+	model = glm::translate(model, glm::vec3(-62.0f, 1.0f, -4.0f));
+	model = glm::scale(model, glm::vec3(4.0, 1.0, 0.250));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	model = modelTemp;
+	model = glm::translate(model, glm::vec3(-62.0f, 1.0f, -3.50f));
+	model = glm::scale(model, glm::vec3(4.0, 1.0, 0.250));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	for (int i = 0; i <= 4; i = i + 1)
+	{
+		model = glm::translate(model, glm::vec3(0.001f, -0.80f, 1.50f));
+		model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
+		model = glm::rotate(model, glm::radians(2.50f), glm::vec3(0, 1, 0));
+		model = glm::rotate(model, glm::radians(3.50f), glm::vec3(1, 0, 0));
+		projectionShader.setMat4("model", model);
+		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	}
+	for (int i = 0; i <= 1; i = i + 1)
+	{
+		model = glm::translate(model, glm::vec3(0.05f, -0.20f, 1.20f));
+		model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
+		model = glm::rotate(model, glm::radians(7.50f), glm::vec3(0, 1, 0));
+		model = glm::rotate(model, glm::radians(4.50f), glm::vec3(1, 0, 0));
+		projectionShader.setMat4("model", model);
+		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	}
+	/*model = glm::translate(model, glm::vec3(0.001f, -0.50f, 1.50f));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
+	model = glm::rotate(model, glm::radians(-1.20f), glm::vec3(0, 1, 0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+
+	model = modelTemp;
+		model = glm::translate(model, glm::vec3(-55.0f, 0.0f, -5.0f));
+		model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
+		//model = glm::rotate(model, glm::radians(-8.50f), glm::vec3(0, 1, 0));
+		projectionShader.setMat4("model", model);
+		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	*/
 
 	//---------------------------------------MODELOS -------------------------------------------
 	//arbol ////////////////
@@ -2655,13 +2711,21 @@ for (int i = 0; i <= 4; i = i + 1)
 	model = glm::mat4(1.0f);
 	modelShader.setMat4("model", model);
 	model = glm::translate(model, glm::vec3(5.0f, 0.10f, 5.0f));
-	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1, 0, 0));
-	model = glm::scale(model, glm::vec3(1.0f, 1.00f,1.0f));
+	model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1, 0, 0));
+	model = glm::scale(model, glm::vec3(1.0f, 1.00f, 1.0f));
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 0.0f));
 	Soldado1.Draw(modelShader);
-	
-	
+
+	model = glm::mat4(1.0f);
+	modelShader.setMat4("model", model);
+	model = glm::translate(model, glm::vec3(5.0f, 30.10f, -125.0f));
+	model = glm::rotate(model, glm::radians(270.0f), glm::vec3(0, 1, 0));
+	model = glm::scale(model, glm::vec3(0.250f, 0.250f, 0.250f));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 0.0f));
+	Carrito.Draw(modelShader);
+
 
 
 	glBindVertexArray(VAO);
