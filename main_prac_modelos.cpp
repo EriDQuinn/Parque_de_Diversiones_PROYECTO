@@ -2516,7 +2516,8 @@ void display(Model Tree, Model FoodCart, Model Soldado1)
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 
-//----------------Rieles-------------------Rieles-----------------Rieles-----------------------------------
+
+	//----------------Rieles-------------------Rieles-----------------Rieles-----------------------------------
 
 	glActiveTexture(GL_TEXTURE);
 	glBindTexture(GL_TEXTURE_2D, texture13);
@@ -2869,7 +2870,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1)
 		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	}
-	for (int i = 0; i <= 7; i = i + 1)
+	for (int i = 0; i <= 5; i = i + 1)
 	{
 		model = glm::translate(model, glm::vec3(1.70f, -1.20f, 0.0f));
 		model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
@@ -2878,9 +2879,9 @@ void display(Model Tree, Model FoodCart, Model Soldado1)
 		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	}
-	for (int i = 0; i <= 3; i = i + 1)
+	for (int i = 0; i <= 2; i = i + 1)
 	{
-		model = glm::translate(model, glm::vec3(1.80f, -0.70f, 0.0f));
+		model = glm::translate(model, glm::vec3(1.80f, -0.5f, 0.0f));
 		model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
 		model = glm::rotate(model, glm::radians(1.0f), glm::vec3(0, 0, 1));
 		projectionShader.setMat4("model", model);
@@ -2896,7 +2897,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1)
 		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	}
-	for (int i = 0; i <= 3; i = i + 1)
+	for (int i = 0; i <= 4; i = i + 1)
 	{
 		model = glm::translate(model, glm::vec3(1.50f, 0.50f, 0.0f));
 		model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
@@ -2905,7 +2906,6 @@ void display(Model Tree, Model FoodCart, Model Soldado1)
 		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	}
-
 	//---------------------------------------MODELOS -------------------------------------------
 	//arbol ////////////////
 
