@@ -50,7 +50,7 @@ lastFrame = 0.0f;
 glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
 
 void myData(void);
-void display(Model, Model, Model,Model);
+void display(Model, Model, Model, Model);
 void getResolution(void);
 void animate(void);
 void circulos(void);
@@ -640,7 +640,7 @@ void animate(void)
 	if (play) {
 
 		if (estado == 0) { //ESTADO A
-		
+
 
 
 			if (movKit_x > -9.0) {//
@@ -651,7 +651,7 @@ void animate(void)
 			else {
 
 				estado = 1;
-				
+
 			}
 		}
 
@@ -690,7 +690,7 @@ void animate(void)
 
 			}
 		}
-		
+
 		if (estado == 4) { //ESTADO b
 
 			if (movKit_x > -75) {//SIGO EN EL ESTADO B    
@@ -700,7 +700,7 @@ void animate(void)
 				//printf("%f \n", movKit_x);
 			}
 			else {
-				
+
 				rotKit_y = 210.0f;
 				estado = 5;
 			}
@@ -728,7 +728,7 @@ void animate(void)
 				//printf("%f \n", movKit_x);
 			}
 			else {
-				
+
 				rotKit_y = 130.0f;
 				estado = 7;
 			}
@@ -736,7 +736,7 @@ void animate(void)
 
 		if (estado == 7) { //ESTADO b
 
-			if (movKit_x <-80) {//SIGO EN EL ESTADO B    
+			if (movKit_x < -80) {//SIGO EN EL ESTADO B    
 				movKit_x += 1.0f;
 				movKit_z -= 0.2f;
 				movKit_y += 0.2;
@@ -752,12 +752,12 @@ void animate(void)
 
 			if (movKit_x < -56) {//SIGO EN EL ESTADO B    
 				movKit_x += 1.0f;
-			
+
 				movKit_y -= 0.1f;
 				printf("%f \n", movKit_x);
 			}
 			else {
-				
+
 				rotKit_y = 90.0f;
 				estado = 9;
 			}
@@ -771,7 +771,7 @@ void animate(void)
 				printf("%f \n", movKit_x);
 			}
 			else {
-				
+
 				rotKit_y = 90.0f;
 				estado = 9;
 			}
@@ -799,7 +799,7 @@ void animate(void)
 
 }
 
-void display(Model Tree, Model FoodCart, Model Soldado1,Model Carrito)
+void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 {
 	// bind textures on corresponding texture units
 	glActiveTexture(GL_TEXTURE);			//activar la textura a 0. 
@@ -2220,33 +2220,15 @@ void display(Model Tree, Model FoodCart, Model Soldado1,Model Carrito)
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
 	projectionShader.setMat4("model", model);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	for (int i = 0; i <= 10; i = i + 1)
+	{
 
-	model = glm::translate(model, glm::vec3(2.0f, 0.0f, 0.0f));
-	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-	projectionShader.setMat4("model", model);
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+		model = glm::translate(model, glm::vec3(2.0f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
+		projectionShader.setMat4("model", model);
+		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
-	model = glm::translate(model, glm::vec3(2.0f, 0.0f, 0.0f));
-	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-	projectionShader.setMat4("model", model);
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-
-	model = glm::translate(model, glm::vec3(2.0f, 0.0f, 0.0f));
-	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-	projectionShader.setMat4("model", model);
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-
-	model = glm::translate(model, glm::vec3(2.0f, 0.0f, 0.0f));
-	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-	projectionShader.setMat4("model", model);
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-
-	model = glm::translate(model, glm::vec3(2.0f, 0.0f, 0.0f));
-	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-	projectionShader.setMat4("model", model);
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-
-
+	}
 
 
 
@@ -3033,7 +3015,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1,Model Carrito)
 		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	}
-	for (int i = 0; i <= 2; i = i + 1)
+	for (int i = 0; i <= 3; i = i + 1)
 	{
 		model = glm::translate(model, glm::vec3(1.50f, -0.40f, 0.0f));
 		model = glm::scale(model, glm::vec3(1.00, 1.0, 1.0));
@@ -3078,7 +3060,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1,Model Carrito)
 		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	}
-	for (int i = 0; i <= 2; i = i + 1)
+	for (int i = 0; i <= 3; i = i + 1)
 	{
 		model = glm::translate(model, glm::vec3(1.50f, 0.50f, 0.0f));
 		model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
@@ -3087,7 +3069,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1,Model Carrito)
 		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	}
-	for (int i = 0; i <= 2; i = i + 1)
+	for (int i = 0; i <= 3; i = i + 1)
 	{
 		model = glm::translate(model, glm::vec3(1.50f, 0.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
@@ -3132,9 +3114,9 @@ void display(Model Tree, Model FoodCart, Model Soldado1,Model Carrito)
 		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	}
-	for (int i = 0; i <= 4; i = i + 1)
+	for (int i = 0; i <= 6; i = i + 1)
 	{
-		model = glm::translate(model, glm::vec3(1.50f, 0.50f, 0.0f));
+		model = glm::translate(model, glm::vec3(1.60f, 0.30f, 0.0f));
 		model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
 		model = glm::rotate(model, glm::radians(1.50f), glm::vec3(0, 0, 1));
 		projectionShader.setMat4("model", model);
@@ -3154,7 +3136,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1,Model Carrito)
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	}
 	model = modelTemp;
-	model = glm::translate(model, glm::vec3(45.0f, 0.0f, 0.0f));
+	model = glm::translate(model, glm::vec3(46.0f, -2.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
@@ -3235,10 +3217,35 @@ void display(Model Tree, Model FoodCart, Model Soldado1,Model Carrito)
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-	for (int i = 0; i <= 6; i = i + 1)
+	for (int i = 0; i <= 3; i = i + 1)
 	{
 		model = glm::translate(model, glm::vec3(0.0f, -0.50f, 1.30f));
 		model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
+		projectionShader.setMat4("model", model);
+		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	}
+	for (int i = 0; i <= 4; i = i + 1)
+	{
+		model = glm::translate(model, glm::vec3(0.0f, -0.50f, 1.30f));
+		model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
+		model = glm::rotate(model, glm::radians(-2.70f), glm::vec3(0, 1, 0));
+		projectionShader.setMat4("model", model);
+		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	}
+	model = modelTemp;
+	model = glm::translate(model, glm::vec3(108.0f, -20.50f, -5.20f));
+	model = glm::scale(model, glm::vec3(4.0, 1.0, 0.250));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	for (int i = 0; i <= 1; i = i + 1)
+	{
+		model = glm::translate(model, glm::vec3(0.0f, 0.20f, -1.10f));
+		model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
+		model = glm::rotate(model, glm::radians(2.50f), glm::vec3(0, 1, 0));
 		projectionShader.setMat4("model", model);
 		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
@@ -3293,12 +3300,11 @@ void display(Model Tree, Model FoodCart, Model Soldado1,Model Carrito)
 
 	model = glm::mat4(1.0f);
 	modelShader.setMat4("model", model);
-	model = glm::translate(model, glm::vec3(5.0f, 0.10f, 5.0f));
-	model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1, 0, 0));
+	model = glm::translate(model, glm::vec3(-35.0f, 0.10f, 20.0f));
 	model = glm::scale(model, glm::vec3(1.0f, 1.00f, 1.0f));
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 0.0f));
-	//Soldado1.Draw(modelShader);
+	Soldado1.Draw(modelShader);
 
 	model = glm::mat4(1.0f);
 	modelShader.setMat4("model", model);// 5.0f, 30.10f, -125.0f
@@ -3308,7 +3314,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1,Model Carrito)
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 0.0f));
 	Carrito.Draw(modelShader);
-	
+
 
 
 	glBindVertexArray(VAO);
@@ -3362,8 +3368,8 @@ int main()
 	// Load models
 	Model Tree = ((char*)"Models/arbol2/Tree_Conifer_1.obj");
 	Model FoodCart = ((char*)"Models/Cart_food/street_cart_meetball.obj");
-	Model Soldado = ((char*)"Models/Soldier_with_binoculars/18826_Soldier_with_binoculars_in_one_hand_and_pointing_with_the_other_hand_v1_NEW.obj");
-	Model Carrito= ((char*)"Models/carrito/wooden_model _truck.obj");
+	Model Soldado = ((char*)"Models/Soldier_with_binoculars/SOLDADO.obj");
+	Model Carrito = ((char*)"Models/carrito/wooden_model _truck.obj");
 
 
 	//-------------------------------------------------------
@@ -3393,7 +3399,7 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		//Mi función de dibujo
-		display(Tree, FoodCart, Soldado,Carrito);
+		display(Tree, FoodCart, Soldado, Carrito);
 
 		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
 		// -------------------------------------------------------------------------------
