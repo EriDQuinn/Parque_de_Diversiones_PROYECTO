@@ -3287,14 +3287,9 @@ glBindTexture(GL_TEXTURE_2D, texture2);
 	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
-
-
-
-	//----------------Rieles-------------------Rieles-----------------Rieles-----------------------------------
-
+/////RIELES --------------------------------------------------------------------
 	glActiveTexture(GL_TEXTURE);
 	glBindTexture(GL_TEXTURE_2D, texture13);
-	lightingShader.setInt("material_diffuse", texture13);
 
 	model = modelTemp;
 
@@ -3572,7 +3567,7 @@ glBindTexture(GL_TEXTURE_2D, texture2);
 		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	}
-	for (int i = 0; i <= 3; i = i + 1)
+	for (int i = 0; i <= 2; i = i + 1)
 	{
 		model = glm::translate(model, glm::vec3(1.50f, -0.40f, 0.0f));
 		model = glm::scale(model, glm::vec3(1.00, 1.0, 1.0));
@@ -3617,7 +3612,7 @@ glBindTexture(GL_TEXTURE_2D, texture2);
 		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	}
-	for (int i = 0; i <= 3; i = i + 1)
+	for (int i = 0; i <= 2; i = i + 1)
 	{
 		model = glm::translate(model, glm::vec3(1.50f, 0.50f, 0.0f));
 		model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
@@ -3626,7 +3621,7 @@ glBindTexture(GL_TEXTURE_2D, texture2);
 		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	}
-	for (int i = 0; i <= 3; i = i + 1)
+	for (int i = 0; i <= 2; i = i + 1)
 	{
 		model = glm::translate(model, glm::vec3(1.50f, 0.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
@@ -3671,9 +3666,9 @@ glBindTexture(GL_TEXTURE_2D, texture2);
 		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	}
-	for (int i = 0; i <= 6; i = i + 1)
+	for (int i = 0; i <= 4; i = i + 1)
 	{
-		model = glm::translate(model, glm::vec3(1.60f, 0.30f, 0.0f));
+		model = glm::translate(model, glm::vec3(1.50f, 0.50f, 0.0f));
 		model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
 		model = glm::rotate(model, glm::radians(1.50f), glm::vec3(0, 0, 1));
 		projectionShader.setMat4("model", model);
@@ -3693,7 +3688,7 @@ glBindTexture(GL_TEXTURE_2D, texture2);
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	}
 	model = modelTemp;
-	model = glm::translate(model, glm::vec3(46.0f, -2.0f, 0.0f));
+	model = glm::translate(model, glm::vec3(45.0f, 0.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
@@ -3751,7 +3746,7 @@ glBindTexture(GL_TEXTURE_2D, texture2);
 		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	}
-	for (int i = 0; i <= 4; i = i + 1)
+	for (int i = 0; i <= 8; i = i + 1)//no
 	{
 		model = glm::translate(model, glm::vec3(1.30f, 0.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
@@ -3760,21 +3755,14 @@ glBindTexture(GL_TEXTURE_2D, texture2);
 		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	}
-	for (int i = 0; i <= 6; i = i + 1)
-	{
-		model = glm::translate(model, glm::vec3(1.50f, 0.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-		projectionShader.setMat4("model", model);
-		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
-		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-	}
+	
 	model = modelTemp;
-	model = glm::translate(model, glm::vec3(108.0f, -20.0f, -5.20f));
+	model = glm::translate(model, glm::vec3(100.0f, -16.0f,- 6.5f));
 	model = glm::scale(model, glm::vec3(4.0, 1.0, 0.250));
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-	for (int i = 0; i <= 3; i = i + 1)
+	for (int i = 0; i <= 11; i = i + 1)
 	{
 		model = glm::translate(model, glm::vec3(0.0f, -0.50f, 1.30f));
 		model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
@@ -3782,31 +3770,24 @@ glBindTexture(GL_TEXTURE_2D, texture2);
 		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	}
-	for (int i = 0; i <= 4; i = i + 1)
-	{
-		model = glm::translate(model, glm::vec3(0.0f, -0.50f, 1.30f));
-		model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-		model = glm::rotate(model, glm::radians(-2.70f), glm::vec3(0, 1, 0));
-		projectionShader.setMat4("model", model);
-		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
-		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-	}
-	model = modelTemp;
-	model = glm::translate(model, glm::vec3(108.0f, -20.50f, -5.20f));
-	model = glm::scale(model, glm::vec3(4.0, 1.0, 0.250));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
-	for (int i = 0; i <= 1; i = i + 1)
-	{
-		model = glm::translate(model, glm::vec3(0.0f, 0.20f, -1.10f));
-		model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-		model = glm::rotate(model, glm::radians(2.50f), glm::vec3(0, 1, 0));
-		projectionShader.setMat4("model", model);
-		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
-		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-	}
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	////FIN DE LOS RIELES---------------------------------------------------------
+
+
+	
 	//---------------------------------------MODELOS -------------------------------------------
 	//arbol ////////////////
 
