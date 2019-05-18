@@ -144,16 +144,17 @@ void LoadTextures()
 	texture3 = generateTextures("texturas_feria/estrellas1.jpg", 0);
 	texture4 = generateTextures("texturas_feria/red_flag.jpg", 0);
 	texture5 = generateTextures("texturas_feria/galaxia3.jpg", 0);
-	texture6 = generateTextures("texturas_feria/wallmarcianos", 0);
+	texture6 = generateTextures("texturas_feria/cubos.jpg", 0);
 	texture7 = generateTextures("texturas_feria/marciano2.jpg", 0);
 	texture8 = generateTextures("texturas_feria/morado2.jpg", 0);
 	texture9 = generateTextures("texturas_feria/blue.jpg", 0);
-	//texture10 = generateTextures("texturas_feria/galaxia1.jpg", 0);
-	//texture11 = generateTextures("texturas_feria/", 0);
-
-
-
-
+	texture10 = generateTextures("texturas_feria/verde.jpg", 0);
+	texture11 = generateTextures("texturas_feria/letrero.jpg", 0);
+	texture12 = generateTextures("texturas_feria/lego.jpg", 0);
+	texture13 = generateTextures("texturas_feria/legoverde.jpg", 0);
+	texture14 = generateTextures("texturas_feria/nubes.jpg", 0);
+	texture15 = generateTextures("texturas_feria/nubes1000.jpg", 0);
+	
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, texture1);
 
@@ -182,9 +183,21 @@ void LoadTextures()
 	glActiveTexture(GL_TEXTURE10);
 	glBindTexture(GL_TEXTURE_2D, texture10);
 
-	//glActiveTexture(GL_TEXTURE11);
-	//glBindTexture(GL_TEXTURE_2D, texture11);
+	glActiveTexture(GL_TEXTURE11);
+	glBindTexture(GL_TEXTURE_2D, texture11);
 
+	glActiveTexture(GL_TEXTURE12);
+	glBindTexture(GL_TEXTURE_2D, texture12);
+	
+	glActiveTexture(GL_TEXTURE13);
+	glBindTexture(GL_TEXTURE_2D, texture13);
+
+	glActiveTexture(GL_TEXTURE14);
+	glBindTexture(GL_TEXTURE_2D, texture14);
+
+	glActiveTexture(GL_TEXTURE15);
+	glBindTexture(GL_TEXTURE_2D, texture15);
+	   
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
@@ -763,84 +776,108 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	//---mudanza
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	for (int i = 0; i <= 11; i = i + 1)
 	{
 		model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
-		projectionShader.setMat4("model", model);
-		projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+		lightingShader.setMat4("model", model);
+		lightingShader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
+		lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+		lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	}
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	for (int i = 0; i <= 11; i = i + 1)
 	{
 		model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
-		projectionShader.setMat4("model", model);
-		projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+		lightingShader.setMat4("model", model);
+		lightingShader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
+		lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+		lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	}
 
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	for (int i = 0; i <= 11; i = i + 1)
 	{
 		model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
-		projectionShader.setMat4("model", model);
-		projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+		lightingShader.setMat4("model", model);
+		lightingShader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
+		lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+		lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	}
 
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	for (int i = 0; i <= 11; i = i + 1)
 	{
 		model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
-		projectionShader.setMat4("model", model);
-		projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+		lightingShader.setMat4("model", model);
+		lightingShader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
+		lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+		lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	}
 
 
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	for (int i = 0; i <= 11; i = i + 1)
 	{
 		model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
-		projectionShader.setMat4("model", model);
-		projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+		lightingShader.setMat4("model", model);
+		lightingShader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
+		lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+		lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	}
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	for (int i = 0; i <= 11; i = i + 1)
 	{
 		model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
-		projectionShader.setMat4("model", model);
-		projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+		lightingShader.setMat4("model", model);
+		lightingShader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
+		lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+		lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	}
@@ -848,104 +885,129 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 
 	///
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	for (int i = 0; i <= 11; i = i + 1)
 	{
 		model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
-		projectionShader.setMat4("model", model);
-		projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+		lightingShader.setMat4("model", model);
+		lightingShader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
+		lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+		lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	}
 
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	for (int i = 0; i <= 11; i = i + 1)
 	{
 		model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
-		projectionShader.setMat4("model", model);
-		projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+		lightingShader.setMat4("model", model);
+		lightingShader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
+		lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+		lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	}
 
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	for (int i = 0; i <= 11; i = i + 1)
 	{
 		model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
-		projectionShader.setMat4("model", model);
-		projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+		lightingShader.setMat4("model", model);
+		lightingShader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
+		lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+		lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	}
 
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	for (int i = 0; i <= 11; i = i + 1)
 	{
 		model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
-		projectionShader.setMat4("model", model);
-		projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+		lightingShader.setMat4("model", model);
+		lightingShader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
+		lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+		lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	}
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	for (int i = 0; i <= 11; i = i + 1)
 	{
 		model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
-		projectionShader.setMat4("model", model);
-		projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+		lightingShader.setMat4("model", model);
+		lightingShader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
+		lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+		lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	}
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	for (int i = 0; i <= 11; i = i + 1)
 	{
 		model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
-		projectionShader.setMat4("model", model);
-		projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+		lightingShader.setMat4("model", model);
+		lightingShader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
+		lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+		lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	}
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	for (int i = 0; i <= 11; i = i + 1)
 	{
 		model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
-		projectionShader.setMat4("model", model);
-		projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+		lightingShader.setMat4("model", model);
+		lightingShader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
+		lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+		lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	}
 
 
-	
-	
-	
 	
 	
 	
@@ -1160,66 +1222,86 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 
 	glActiveTexture(GL_TEXTURE);
 	glBindTexture(GL_TEXTURE_2D, texture11);
+	lightingShader.setInt("material_diffuse", texture11);
 
 	model = glm::translate(model, glm::vec3(5.550f, -0.430f, 1.0f));
 	model = glm::scale(model, glm::vec3(7.30, 3.10, 1.50));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.20f, 0.20f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	//________________________MESA_________________________________
 	glActiveTexture(GL_TEXTURE);
 	glBindTexture(GL_TEXTURE_2D, texture2);
+	lightingShader.setInt("material_diffuse", texture2);
 
 	model = glm::mat4(1.0f);
 
 	model = glm::scale(model, glm::vec3(0.70, 1.50, 0.70));
 	model = glm::translate(model, glm::vec3(-88.0f, 0.50f, -14.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.10f, 0.80f, 0.80f);
+	lightingShader.setVec3("diffuseColor", 0.90f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(4.0f, 0.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.10f, 0.80f, 0.80f);
+	lightingShader.setVec3("diffuseColor", 0.90f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(-2.0f, 0.110f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 1.20, 1.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.10f, 0.80f, 0.80f);
+	lightingShader.setVec3("diffuseColor", 0.90f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(0.0f, 0.5490f, 0.0f));
 	model = glm::scale(model, glm::vec3(2.50, 0.10, 2.50));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.10f, 0.80f, 0.80f);
+	lightingShader.setVec3("diffuseColor", 0.90f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	//mesa2
 	model = glm::mat4(1.0f);
 
 	model = glm::scale(model, glm::vec3(0.70, 1.50, 0.70));
 	model = glm::translate(model, glm::vec3(-78.0f, 0.50f, -14.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.10f, 0.80f, 0.80f);
+	lightingShader.setVec3("diffuseColor", 0.90f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(4.0f, 0.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.10f, 0.80f, 0.80f);
+	lightingShader.setVec3("diffuseColor", 0.90f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(-2.0f, 0.110f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 1.20, 1.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.10f, 0.80f, 0.80f);
+	lightingShader.setVec3("diffuseColor", 0.90f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(0.0f, 0.5490f, 0.0f));
 	model = glm::scale(model, glm::vec3(2.50, 0.10, 2.50));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.10f, 0.80f, 0.80f);
+	lightingShader.setVec3("diffuseColor", 0.90f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	//mesa3
@@ -1227,26 +1309,34 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 
 	model = glm::scale(model, glm::vec3(0.70, 1.50, 0.70));
 	model = glm::translate(model, glm::vec3(-70.0f, 0.50f, -14.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.10f, 0.80f, 0.80f);
+	lightingShader.setVec3("diffuseColor", 0.90f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(4.0f, 0.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.10f, 0.80f, 0.80f);
+	lightingShader.setVec3("diffuseColor", 0.90f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(-2.0f, 0.110f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 1.20, 1.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.10f, 0.80f, 0.80f);
+	lightingShader.setVec3("diffuseColor", 0.90f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(0.0f, 0.5490f, 0.0f));
 	model = glm::scale(model, glm::vec3(2.50, 0.10, 2.50));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.10f, 0.80f, 0.80f);
+	lightingShader.setVec3("diffuseColor", 0.90f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	//mesa4
@@ -1254,52 +1344,68 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 
 	model = glm::scale(model, glm::vec3(0.70, 1.50, 0.70));
 	model = glm::translate(model, glm::vec3(-88.0f, 0.50f, -9.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.10f, 0.80f, 0.80f);
+	lightingShader.setVec3("diffuseColor", 0.90f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(4.0f, 0.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.10f, 0.80f, 0.80f);
+	lightingShader.setVec3("diffuseColor", 0.90f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(-2.0f, 0.110f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 1.20, 1.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.10f, 0.80f, 0.80f);
+	lightingShader.setVec3("diffuseColor", 0.90f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(0.0f, 0.5490f, 0.0f));
 	model = glm::scale(model, glm::vec3(2.50, 0.10, 2.50));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.10f, 0.80f, 0.80f);
+	lightingShader.setVec3("diffuseColor", 0.90f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	//mesa5
 	model = glm::mat4(1.0f);
 
 	model = glm::scale(model, glm::vec3(0.70, 1.50, 0.70));
 	model = glm::translate(model, glm::vec3(-78.0f, 0.50f, -9.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.10f, 0.80f, 0.80f);
+	lightingShader.setVec3("diffuseColor", 0.90f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(4.0f, 0.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.10f, 0.80f, 0.80f);
+	lightingShader.setVec3("diffuseColor", 0.90f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(-2.0f, 0.110f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 1.20, 1.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.10f, 0.80f, 0.80f);
+	lightingShader.setVec3("diffuseColor", 0.90f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(0.0f, 0.5490f, 0.0f));
 	model = glm::scale(model, glm::vec3(2.50, 0.10, 2.50));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.10f, 0.80f, 0.80f);
+	lightingShader.setVec3("diffuseColor", 0.90f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	//mesa6
@@ -1307,30 +1413,35 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 
 	model = glm::scale(model, glm::vec3(0.70, 1.50, 0.70));
 	model = glm::translate(model, glm::vec3(-70.0f, 0.50f, -9.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.10f, 0.80f, 0.80f);
+	lightingShader.setVec3("diffuseColor", 0.90f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(4.0f, 0.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.10f, 0.80f, 0.80f);
+	lightingShader.setVec3("diffuseColor", 0.90f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(-2.0f, 0.110f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 1.20, 1.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.10f, 0.80f, 0.80f);
+	lightingShader.setVec3("diffuseColor", 0.90f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(0.0f, 0.5490f, 0.0f));
 	model = glm::scale(model, glm::vec3(2.50, 0.10, 2.50));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.10f, 0.80f, 0.80f);
+	lightingShader.setVec3("diffuseColor", 0.90f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-
-
-
 
 	//Rueda de la fortuna////////////////////////////////////////////////////////////////
 	glActiveTexture(GL_TEXTURE);
@@ -2504,85 +2615,139 @@ glBindTexture(GL_TEXTURE_2D, texture2);
 	model = modelTemp3;
 	glActiveTexture(GL_TEXTURE);
 	glBindTexture(GL_TEXTURE_2D, texture5);
+	lightingShader.setInt("material_diffuse", texture5);
+
 	model = glm::translate(model, glm::vec3(1.0f, 0.860f, 2.0f));
 	model = glm::scale(model, glm::vec3(02.0, 1.40, 1.0));
-	projectionShader.setMat4("model", model);
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 01.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	glBindTexture(GL_TEXTURE_2D, texture9);
+	lightingShader.setInt("material_diffuse", texture9);
 	model = glm::translate(model, glm::vec3(0.0f, -0.10, 0.750f));
 	model = glm::scale(model, glm::vec3(01.0, 0.80, 0.50));
-	projectionShader.setMat4("model", model);
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 01.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	glBindTexture(GL_TEXTURE_2D, texture8);
+	lightingShader.setInt("material_diffuse", texture8);
 	model = glm::translate(model, glm::vec3(0.0f, -0.10, 1.0f));
 	model = glm::scale(model, glm::vec3(01.0, 0.80, 1.0));
-	projectionShader.setMat4("model", model);
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 01.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	glBindTexture(GL_TEXTURE_2D, texture9);
+	lightingShader.setInt("material_diffuse", texture9);
 	model = glm::translate(model, glm::vec3(0.0f, -0.10, 1.0f));
 	model = glm::scale(model, glm::vec3(01.0, 0.80, 1.0));
-	projectionShader.setMat4("model", model);
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 01.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	glBindTexture(GL_TEXTURE_2D, texture8);
+	lightingShader.setInt("material_diffuse", texture8);
 	model = glm::translate(model, glm::vec3(0.0f, -0.10, 1.0f));
 	model = glm::scale(model, glm::vec3(01.0, 0.80, 1.0));
-	projectionShader.setMat4("model", model);
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 01.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	glBindTexture(GL_TEXTURE_2D, texture9);
+	lightingShader.setInt("material_diffuse", texture9);
 	model = glm::translate(model, glm::vec3(0.0f, -0.10, 1.0f));
 	model = glm::scale(model, glm::vec3(01.0, 0.80, 1.0));
-	projectionShader.setMat4("model", model);
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 01.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	//cercado
 	model = modelTemp3;
 	glActiveTexture(GL_TEXTURE);
 	glBindTexture(GL_TEXTURE_2D, texture9);
+	lightingShader.setInt("material_diffuse", texture9);
+
 	model = glm::translate(model, glm::vec3(-18.0f, 1.010f, 12.0f));
 	model = glm::scale(model, glm::vec3(0.40, 3.0, 0.40));
-	projectionShader.setMat4("model", model);
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 0.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 0.0f, 1.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(2.0f, 0.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-	projectionShader.setMat4("model", model);
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 0.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 0.0f, 1.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(2.0f, 0.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-	projectionShader.setMat4("model", model);
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 0.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 0.0f, 1.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(2.0f, 0.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-	projectionShader.setMat4("model", model);
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 0.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 0.0f, 1.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(2.0f, 0.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-	projectionShader.setMat4("model", model);
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 0.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 0.0f, 1.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(2.0f, 0.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-	projectionShader.setMat4("model", model);
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 0.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 0.0f, 1.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(2.0f, 0.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-	projectionShader.setMat4("model", model);
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 0.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 0.0f, 1.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 
 	model = glm::translate(model, glm::vec3(2.0f, 0.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-	projectionShader.setMat4("model", model);
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 0.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 0.0f, 1.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	for (int i = 0; i <= 10; i = i + 1)
 	{
 
 		model = glm::translate(model, glm::vec3(2.0f, 0.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-		projectionShader.setMat4("model", model);
+		lightingShader.setMat4("model", model);
+		lightingShader.setVec3("ambientColor", 0.0f, 1.0f, 1.0f);
+		lightingShader.setVec3("diffuseColor", 0.0f, 1.0f, 1.0f);
+		lightingShader.setVec3("specularColor", 0.0f, 1.0f, 1.0f);
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	}
@@ -2594,109 +2759,142 @@ glBindTexture(GL_TEXTURE_2D, texture2);
 	//MONTAÑA RUSA 
 	glActiveTexture(GL_TEXTURE);
 	glBindTexture(GL_TEXTURE_2D, texture14);
+	lightingShader.setInt("material_diffuse", texture14);
+
 	model = glm::mat4(1.0f);
 	//modelTemp = model;
 	model = glm::translate(model, glm::vec3(0.0f, 13.0f, -100.0f));
 	model = glm::scale(model, glm::vec3(8, 25, 4));
 	modelTemp2 = model;
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(5.0f, 0.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(1, 1, 1));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -6.0f));
 	model = glm::scale(model, glm::vec3(1, 1, 1));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(-5.0f, 0.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(1, 1, 1));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	//cabina plancha 
 	glActiveTexture(GL_TEXTURE);
 	glBindTexture(GL_TEXTURE_2D, texture10);
+	lightingShader.setInt("material_diffuse", texture10);
 
 
 	model = glm::translate(model, glm::vec3(2.5f, 0.55f, 3.0f));
 	model = glm::scale(model, glm::vec3(6.0, 0.1, 8.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 
 	//parte donde van los rieles en la plancha 
 	glActiveTexture(GL_TEXTURE);
 	glBindTexture(GL_TEXTURE_2D, texture14);
+	lightingShader.setInt("material_diffuse", texture14);
+
 	model = glm::translate(model, glm::vec3(0.0f, 0.5f, 0.0f));
 	modelTemp = model;
 	model = glm::scale(model, glm::vec3(1.0, 0.1, 0.5));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	//barandales de la plancha
 	glActiveTexture(GL_TEXTURE);
 	glBindTexture(GL_TEXTURE_2D, texture4);
+	lightingShader.setInt("material_diffuse", texture4);
+
 	model = glm::translate(model, glm::vec3(-0.495f, 5.9f, 0.55f));
 	model = glm::scale(model, glm::vec3(0.01, 12.0, 0.02));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	for (int i = 0; i <= 3; i = i + 1)
 	{
 		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 5.5f));
 		model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-		projectionShader.setMat4("model", model);
-		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+		lightingShader.setMat4("model", model);
+		lightingShader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
+		lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+		lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	}
 
 	model = glm::translate(model, glm::vec3(10.0f, 0.0f, -22.0f));
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	for (int i = 0; i <= 1; i = i + 1)
 	{
 		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 5.5f));
 		model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-		projectionShader.setMat4("model", model);
-		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+		lightingShader.setMat4("model", model);
+		lightingShader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
+		lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+		lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	}
 
 	model = glm::translate(model, glm::vec3(10.0f, 0.0f, -11.0f));
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	for (int i = 0; i <= 1; i = i + 1)
 	{
 		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 5.5f));
 		model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-		projectionShader.setMat4("model", model);
-		projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+		lightingShader.setMat4("model", model);
+		lightingShader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
+		lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+		lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	}
 
 	model = glm::translate(model, glm::vec3(10.0f, 0.0f, -11.0f));
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	for (int i = 0; i <= 1; i = i + 1)
@@ -2932,6 +3130,8 @@ glBindTexture(GL_TEXTURE_2D, texture2);
 	//ESCALERAS 
 	glActiveTexture(GL_TEXTURE);
 	glBindTexture(GL_TEXTURE_2D, texture4);
+	lightingShader.setInt("material_diffuse", texture4);
+
 	model = glm::translate(model, glm::vec3(0.6f, -6.4f, 16.0f));
 	model = glm::scale(model, glm::vec3(0.3, 11.3, 40.0));
 	projectionShader.setMat4("model", model);
@@ -2982,6 +3182,7 @@ glBindTexture(GL_TEXTURE_2D, texture2);
 	//--------------------Postes-Soporte----------------
 	glActiveTexture(GL_TEXTURE);
 	glBindTexture(GL_TEXTURE_2D, texture14);
+	lightingShader.setInt("material_diffuse", texture14);
 
 	model = modelTemp2;
 
@@ -3093,6 +3294,7 @@ glBindTexture(GL_TEXTURE_2D, texture2);
 
 	glActiveTexture(GL_TEXTURE);
 	glBindTexture(GL_TEXTURE_2D, texture13);
+	lightingShader.setInt("material_diffuse", texture13);
 
 	model = modelTemp;
 
