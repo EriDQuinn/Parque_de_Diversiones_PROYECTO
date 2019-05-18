@@ -11,15 +11,14 @@
 /*--------Z Bajar   E  subir------------------------------------*/
 /*--------A izquierda   D derecha------------------------------------*/
 /*----------mouse: mover, scroll = acercar---------------*/
+
 //#define STB_IMAGE_IMPLEMENTATION
-#include <glew.h>
-#include <glfw3.h>
-#include <stb_image.h>
 #include "esfera.h"
 #include "camera.h"
-#include <stb_image.h>
+#include "stb_image.h"
+#include <glew.h>
+#include <glfw3.h>
 #include "Model.h"
-
 
 Esfera my_sphere(1.0f);
 
@@ -37,7 +36,7 @@ GLFWmonitor* monitors;
 GLuint VBO, VAO, EBO;
 
 //Camera
-Camera camera(glm::vec3(0.0f, 0.0f, 0.0f));
+Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
 double	lastX = 0.0f,
 lastY = 0.0f;
 bool firstMouse = true;
@@ -47,25 +46,33 @@ double	deltaTime = 0.0f,
 lastFrame = 0.0f;
 
 //Lighting
-glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
+glm::vec3 lightPosition(1.20f, 3.0f, 0.0f);
+glm::vec3 lightDirection(0.0f, 0.0f, -5.0f);
 
 void myData(void);
 void display(Model, Model, Model, Model);
 void getResolution(void);
 void animate(void);
+void LoadTextures(void);
 void circulos(void);
+void circulos2(void);
+unsigned int generateTextures(char*, bool);
+
 //For Keyboard
 float	movX = 0.0f,
 movY = 0.0f,
 movZ = -5.0f,
 rotX = 0.0f,
-rotZ = 0.0f,
+R = 0.90f,
+G = 0.90f,
+B = 0.90f,
+LAMPARA = 0.0f,
 rotY = 0.0f;
+
 
 //rueda
 float angRueda = 0.0f, angCanasta = 0.0f;
 float movimiento = 0.0, colgando = 0.0;
-
 //for model carrito 
 //5.0f, 30.10f, -125.0f
 float movKit_z = -112.0f,
@@ -74,12 +81,47 @@ movKit_y = 28.0f,
 rotKit_y = -90.0f;
 
 int estado = 0;
-bool play, play2;
+bool play, play2, night;
+
 
 //Texture
 unsigned int texture1, texture2, texture3, texture4, texture5, texture6, texture7; //Indice que va a tener cada textura, i.e., 2 índices = 2 texturas
 unsigned int texture8, texture9, texture10, texture11, texture12, texture13, texture14, texture15, texture16, texture17;
 unsigned int texture18, texture19, texture20;
+
+unsigned int generateTextures(const char* filename, bool alfa)
+{
+	unsigned int textureID;
+	glGenTextures(1, &textureID);
+	glBindTexture(GL_TEXTURE_2D, textureID);
+	// set the texture wrapping parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	// set texture filtering parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	// load image, create texture and generate mipmaps
+	int width, height, nrChannels;
+	stbi_set_flip_vertically_on_load(true); // tell stb_image.h to flip loaded texture's on the y-axis.
+
+	unsigned char* data = stbi_load(filename, &width, &height, &nrChannels, 0);
+	if (data)
+	{
+		if (alfa)
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+		else
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+		return textureID;
+	}
+	else
+	{
+		std::cout << "Failed to load texture" << std::endl;
+		return 100;
+	}
+
+	stbi_image_free(data);
+}
 
 void getResolution()
 {
@@ -93,54 +135,105 @@ void getResolution()
 
 }
 
+void LoadTextures()
+{
 
-void myData() //Recordemos que antes aquí teníamos un cubo, pero ahora hay un plano.
+	
+	texture1 = generateTextures("texturas_feria/piedras.jpg", 0);
+	texture2 = generateTextures("texturas_feria/marmol.jpg", 0);
+	texture3 = generateTextures("texturas_feria/estrellas1.jpg", 0);
+	texture4 = generateTextures("texturas_feria/red_flag.jpg", 0);
+	texture5 = generateTextures("texturas_feria/galaxia3.jpg", 0);
+	texture6 = generateTextures("texturas_feria/wallmarcianos", 0);
+	texture7 = generateTextures("texturas_feria/marciano2.jpg", 0);
+	texture8 = generateTextures("texturas_feria/morado2.jpg", 0);
+	texture9 = generateTextures("texturas_feria/blue.jpg", 0);
+	//texture10 = generateTextures("texturas_feria/galaxia1.jpg", 0);
+	//texture11 = generateTextures("texturas_feria/", 0);
+
+
+
+
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, texture1);
+
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, texture2);
+
+	glActiveTexture(GL_TEXTURE3);
+	glBindTexture(GL_TEXTURE_2D, texture3);
+
+	glActiveTexture(GL_TEXTURE4);
+	glBindTexture(GL_TEXTURE_2D, texture4);
+
+	glActiveTexture(GL_TEXTURE5);
+	glBindTexture(GL_TEXTURE_2D, texture5);
+
+	glActiveTexture(GL_TEXTURE6);
+	glBindTexture(GL_TEXTURE_2D, texture6);
+
+	glActiveTexture(GL_TEXTURE7);
+	glBindTexture(GL_TEXTURE_2D, texture7);
+	glActiveTexture(GL_TEXTURE8);
+	glBindTexture(GL_TEXTURE_2D, texture8);
+
+	glActiveTexture(GL_TEXTURE9);
+	glBindTexture(GL_TEXTURE_2D, texture9);
+	glActiveTexture(GL_TEXTURE10);
+	glBindTexture(GL_TEXTURE_2D, texture10);
+
+	//glActiveTexture(GL_TEXTURE11);
+	//glBindTexture(GL_TEXTURE_2D, texture11);
+
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	
+
+}
+
+void myData()
 {
 	float vertices[] = {
 		// positions          // texture coords
 												//front
-		0.5f, 0.5f, 0.5f,		1.0f, 1.0f,
-		0.5f, -0.5f, 0.5f,		1.0f, 0.0f,
-		-0.5f, -0.5f, 0.5f,		0.0f, 0.0f,
-		-0.5f, 0.5f, 0.5f,		0.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
+		 0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 0.0f,
+		 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 1.0f,
+		-0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  1.0f,
 
-		// Trasera
-0.5f, -0.5f, -0.5f,	1.0f, 1.0f,
-0.5f,  0.5f, -0.5f,	1.0f, 0.0f,
--0.5f,  0.5f, -0.5f,	0.0f, 0.0f,
--0.5f, -0.5f, -0.5f,	0.0f, 1.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f,
+		 0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  0.0f,
+		 0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  1.0f,
+		-0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  1.0f,
 
-//Izq
--0.5f,  0.5f, 0.5f,		1.0f, 1.0f,
--0.5f,  0.5f, -0.5f,	0.0f, 1.0f,
--0.5f, -0.5f, -0.5f,	0.0f, 0.0f,
--0.5f, -0.5f, 0.5f,		1.0f, 0.0f,
+		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0,  1.0f,
+		-0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 0.0f,
+		-0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0,  0.0f,
 
-//Der
-0.5f,  0.5f, 0.5f,		0.0f, 1.0f,
-0.5f,  0.5f, -0.5f,		1.0f, 1.0f,
-0.5f, -0.5f, -0.5f,		1.0f, 0.0f,
-0.5f, -0.5f, 0.5f,		0.0f, 0.0f,
+		0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
+		0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+		0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
+		0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
 
-//Sup
--0.5f, 0.5f, 0.5f,		2.0f, 2.0f,
- 0.5f, 0.5f, 0.5f,		2.0f, 0.0f,
- 0.5f, 0.5f, -0.5f,		0.0f, 0.0f,
--0.5f, 0.5f, -0.5f,		0.0f, 2.0f,
+		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f,
+		 0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  1.0f,
+		 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
+		-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  0.0f,
 
-//Inf
--0.5f, -0.5f, 0.5f,		1.0f, 1.0f,
--0.5f, -0.5f, -0.5f,	1.0f, 0.0f,
- 0.5f, -0.5f, -0.5f,	0.0f, 0.0f,
- 0.5f, -0.5f, 0.5f,		0.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f,
+		 0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  1.0f,
+		 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  0.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  0.0f,
 
- -0.5f, -0.5f, 0.5f,	0.0f, 0.0f,
--0.5f, 0.0f, 0.5f,		0.0f, 1.0f,
-0.7f, -0.3f, 0.5f,      1.0f, 0.0f,
+		 -0.5f, -0.5f, 0.5f, 0.0f,  0.0f, 0.0f,		0.0f, 0.0f,
+		-0.5f, 0.0f, 0.5f, 0.0f,  0.0f,  0.0f,		0.0f, 1.0f,
+		0.7f, -0.3f, 0.5f, 0.0f,  0.0f,  0.0f,    1.0f, 0.0f,
 
- -0.3f, 0.0f, 0.5f,		0.0f, 0.0f,
- 0.3f, 0.0f, 0.5f,		1.0f, 0.0f,
- 0.0f, 0.8f, 0.5f,		0.50f, 1.0f
+ -0.3f, 0.0f, 0.5f,	0.0f,  0.0f,  0.0f,	0.0f, 0.0f,
+ 0.3f, 0.0f, 0.5f,	0.0f,  0.0f,  0.0f,	1.0f, 0.0f,
+ 0.0f, 0.8f, 0.5f,	0.0f,  0.0f,  0.0f,	0.50f, 1.0f
 
 
 	};
@@ -164,23 +257,8 @@ void myData() //Recordemos que antes aquí teníamos un cubo, pero ahora hay un 
 		20, 21, 22,
 		20, 22, 23,
 
-		24,25,26,
-		27,28,29
-
-		/*		24,25,26,
-				24,26,27,
-				28,29,30,
-				28,30,31,
-				31,32,33,
-				31,33,34,
-				35,36,37,
-				35,37,38,
-				39,40,41,
-				39,41,42,
-				43,44,45,
-				43,45,46*/
-
-
+		//24,25,26,
+		//27,28,29
 
 	};
 
@@ -197,371 +275,16 @@ void myData() //Recordemos que antes aquí teníamos un cubo, pero ahora hay un 
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
 	// position attribute
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0); //El atributo 0 corresponde a la posicion
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
-	// texture coord attribute
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float))); //El atributo 1 corresponde a la textura
+	// normal attribute
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
-	//---------------hereee textura2
-	//glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-	//glEnableVertexAttribArray(2);
-
-	// load and create a texture 
-	// -------------------------
-
-	// texture 1
-	// ---------
-	glGenTextures(1, &texture1); //Leemos una textura 
-	glBindTexture(GL_TEXTURE_2D, texture1); //tipo 2D 
-	// set the texture wrapping parameters
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	// set texture filtering parameters
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); //filtro 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	// load image, create texture and generate mipmaps
-	int width, height, nrChannels;
-	stbi_set_flip_vertically_on_load(true); // tell stb_image.h to flip loaded texture's on the y-axis.
-	unsigned char* data = stbi_load("texturas_feria/piedras.jpg", &width, &height, &nrChannels, 0);
-	if (data)
-	{
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-		glGenerateMipmap(GL_TEXTURE_2D);
-	}
-	else
-	{
-		std::cout << "Failed to load texture one" << std::endl;
-	}
-	stbi_image_free(data);
-	// texture 2
-	// ---------
-	glGenTextures(2, &texture2);
-	glBindTexture(GL_TEXTURE_2D, texture2); //tipo 2D 
-	// set the texture wrapping parameters
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	// set texture filtering parameters
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); //filtro 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	data = stbi_load("texturas_feria/marmol.jpg", &width, &height, &nrChannels, 0);
-	if (data)
-	{
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-		glGenerateMipmap(GL_TEXTURE_2D);
-	}
-	else
-	{
-		std::cout << "Failed to load texture two" << std::endl;
-	}
-	stbi_image_free(data);
-	// texture 3
-	// ---------
-	glGenTextures(3, &texture3);
-	glBindTexture(GL_TEXTURE_2D, texture3); //tipo 2D 
-	// set the texture wrapping parameters
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	// set texture filtering parameters
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); //filtro 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	data = stbi_load("texturas_feria/estrellas1.jpg", &width, &height, &nrChannels, 0);
-	if (data)
-	{
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-		glGenerateMipmap(GL_TEXTURE_2D);
-	}
-	else
-	{
-		std::cout << "Failed to load texture three" << std::endl;
-	}
-	stbi_image_free(data);
-
-	// texture 4 banderas
-	// ---------
-	glGenTextures(4, &texture4);
-	glBindTexture(GL_TEXTURE_2D, texture4); //tipo 2D 
-	// set the texture wrapping parameters
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	// set texture filtering parameters
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); //filtro 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	data = stbi_load("texturas_feria/red_flag.jpg", &width, &height, &nrChannels, 0);
-	if (data)
-	{
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-		glGenerateMipmap(GL_TEXTURE_2D);
-	}
-	else
-	{
-		std::cout << "Failed to load texture three" << std::endl;
-	}
-	stbi_image_free(data);
-
-
-	// texture 5 
-	glGenTextures(5, &texture5);
-	glBindTexture(GL_TEXTURE_2D, texture5); //tipo 2D 
-	// set the texture wrapping parameters
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	// set texture filtering parameters
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); //filtro 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	data = stbi_load("texturas_feria/galaxia3.jpg", &width, &height, &nrChannels, 0);
-	if (data)
-	{
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-		glGenerateMipmap(GL_TEXTURE_2D);
-	}
-	else
-	{
-		std::cout << "Failed to load texture three" << std::endl;
-	}
-	stbi_image_free(data);
-
-	// texture 6`puertas
-	glGenTextures(6, &texture6);
-	glBindTexture(GL_TEXTURE_2D, texture6); //tipo 2D 
-	// set the texture wrapping parameters
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	// set texture filtering parameters
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); //filtro 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	data = stbi_load("texturas_feria/cubos.jpg", &width, &height, &nrChannels, 0);
-	if (data)
-	{
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-		glGenerateMipmap(GL_TEXTURE_2D);
-	}
-	else
-	{
-		std::cout << "Failed to load texture three" << std::endl;
-	}
-
-	stbi_image_free(data);
-
-
-
-	// texture 7
-	glGenTextures(7, &texture7);
-	glBindTexture(GL_TEXTURE_2D, texture7); //tipo 2D 
-	// set the texture wrapping parameters
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	// set texture filtering parameters
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); //filtro 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	data = stbi_load("texturas_feria/marciano2.jpg", &width, &height, &nrChannels, 0);
-	if (data)
-	{
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-		glGenerateMipmap(GL_TEXTURE_2D);
-	}
-	else
-	{
-		std::cout << "Failed to load texture three" << std::endl;
-	}
-	stbi_image_free(data);
-
-
-	// texture 8
-	glGenTextures(8, &texture8);
-	glBindTexture(GL_TEXTURE_2D, texture8); //tipo 2D 
-	// set the texture wrapping parameters
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	// set texture filtering parameters
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); //filtro 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	data = stbi_load("texturas_feria/morado2.jpg", &width, &height, &nrChannels, 0);
-	if (data)
-	{
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-		glGenerateMipmap(GL_TEXTURE_2D);
-	}
-	else
-	{
-		std::cout << "Failed to load texture three" << std::endl;
-	}
-	stbi_image_free(data);
-
-
-
-	// texture 9
-	glGenTextures(9, &texture9);
-	glBindTexture(GL_TEXTURE_2D, texture9); //tipo 2D 
-	// set the texture wrapping parameters
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	// set texture filtering parameters
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); //filtro 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	data = stbi_load("texturas_feria/blue.jpg", &width, &height, &nrChannels, 0);
-	if (data)
-	{
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-		glGenerateMipmap(GL_TEXTURE_2D);
-	}
-	else
-	{
-		std::cout << "Failed to load texture three" << std::endl;
-	}
-	stbi_image_free(data);
-
-
-	// texture 10
-	glGenTextures(10, &texture10);
-	glBindTexture(GL_TEXTURE_2D, texture10); //tipo 2D 
-	// set the texture wrapping parameters
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	// set texture filtering parameters
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); //filtro 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	data = stbi_load("texturas_feria/verde.jpg", &width, &height, &nrChannels, 0);
-	if (data)
-	{
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-		glGenerateMipmap(GL_TEXTURE_2D);
-	}
-	else
-	{
-		std::cout << "Failed to load texture three" << std::endl;
-	}
-	stbi_image_free(data);
-	//TEXTURA 11
-	glGenTextures(11, &texture11);
-	glBindTexture(GL_TEXTURE_2D, texture11); //tipo 2D 
-	// set the texture wrapping parameters
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	// set texture filtering parameters
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); //filtro 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	data = stbi_load("texturas_feria/letrero.jpg", &width, &height, &nrChannels, 0);
-	if (data)
-	{
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-		glGenerateMipmap(GL_TEXTURE_2D);
-	}
-	else
-	{
-		std::cout << "Failed to load texture two" << std::endl;
-	}
-	stbi_image_free(data);
-
-
-	//TEXTURA 12
-	glGenTextures(12, &texture12);
-	glBindTexture(GL_TEXTURE_2D, texture12); //tipo 2D 
-	// set the texture wrapping parameters
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	// set texture filtering parameters
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); //filtro 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	data = stbi_load("texturas_feria/lego.jpg", &width, &height, &nrChannels, 0);
-	if (data)
-	{
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-		glGenerateMipmap(GL_TEXTURE_2D);
-	}
-	else
-	{
-		std::cout << "Failed to load texture three" << std::endl;
-	}
-	stbi_image_free(data);
-
-
-
-	glGenTextures(13, &texture13);
-	glBindTexture(GL_TEXTURE_2D, texture13); //tipo 2D 
-	// set the texture wrapping parameters
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	// set texture filtering parameters
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); //filtro 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	data = stbi_load("texturas_feria/legoverde.jpg", &width, &height, &nrChannels, 0);
-	if (data)
-	{
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-		glGenerateMipmap(GL_TEXTURE_2D);
-	}
-	else
-	{
-		std::cout << "Failed to load texture three" << std::endl;
-	}
-	stbi_image_free(data);
-
-	// texture 14
-		// ---------
-	glGenTextures(14, &texture14);
-	glBindTexture(GL_TEXTURE_2D, texture14); //tipo 2D 
-	// set the texture wrapping parameters
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	// set texture filtering parameters
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); //filtro 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	data = stbi_load("texturas_feria/lego.jpg", &width, &height, &nrChannels, 0);
-	if (data)
-	{
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-		glGenerateMipmap(GL_TEXTURE_2D);
-	}
-	else
-	{
-		std::cout << "Failed to load texture two" << std::endl;
-	}
-	stbi_image_free(data);
-
-
-
-
-	// texture 15
-		// ---------
-	glGenTextures(15, &texture15);
-	glBindTexture(GL_TEXTURE_2D, texture14); //tipo 2D 
-	// set the texture wrapping parameters
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	// set texture filtering parameters
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); //filtro 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	data = stbi_load("texturas_feria/nubes1000.jpg", &width, &height, &nrChannels, 0);
-	if (data)
-	{
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-		glGenerateMipmap(GL_TEXTURE_2D);
-	}
-	else
-	{
-		std::cout << "Failed to load texture two" << std::endl;
-	}
-	stbi_image_free(data);
-
-
-
+	// texture coord attribute
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+	glEnableVertexAttribArray(2);
 
 }
-
 
 
 void circulos(void) {
@@ -797,156 +520,248 @@ void animate(void)
 
 
 
+
+
+
 }
+
 
 void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 {
-	// bind textures on corresponding texture units
-	glActiveTexture(GL_TEXTURE);			//activar la textura a 0. 
-	glBindTexture(GL_TEXTURE_2D, texture1);
-
 	//Shader projectionShader("shaders/shader_light.vs", "shaders/shader_light.fs");
-	Shader projectionShader("shaders/shader_texture.vs", "shaders/shader_texture.fs");
+	//Shader projectionShader("shaders/shader_texture_color.vs", "shaders/shader_texture_color.fs");
+	//Shader lightingShader("shaders/shader_texture_light_pos.vs", "shaders/shader_texture_light_pos.fs"); //Positional
+	//Shader lightingShader("shaders/shader_texture_light_dir.vs", "shaders/shader_texture_light_dir.fs"); //Directional
+	Shader lightingShader("shaders/shader_texture_light_spot.vs", "shaders/shader_texture_light_spot.fs"); //Spotlight
 	Shader lampShader("shaders/shader_lamp.vs", "shaders/shader_lamp.fs");
 	Shader modelShader("Shaders/modelLoading.vs", "Shaders/modelLoading.fs");
-	//To Use Lighting
-	projectionShader.use();
-	projectionShader.setInt("texture1", 0);
 
+	//To Use Lighting
+	if (LAMPARA == 0.0)
+	{
+		lightingShader.use();
+
+	}
+	else {
+		if (LAMPARA == 1.0)
+		{
+			lampShader.use();
+
+		}
+	}
+
+	//If the light is Directional, we send the direction of the light
+			//lightingShader.setVec3("light.direction", lightDirection);
+			//If the light is Positional, we send the position of the light
+			//lightingShader.setVec3("light.position", lightPosition);
+			//If the light is Spotlight, we put the light in the camera
+	lightingShader.setVec3("light.position", camera.Position);
+	lightingShader.setVec3("light.direction", camera.Front);
+	lightingShader.setFloat("light.cutOff", glm::cos(glm::radians(12.5f)));
+
+	lightingShader.setVec3("viewPos", camera.Position);
+
+	// light properties
+	lightingShader.setVec3("light.ambient", R, G, B);
+	lightingShader.setVec3("light.diffuse", 0.8f, 0.8f, 0.8f);
+	lightingShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
+	//For Positional and Spotlight
+	lightingShader.setFloat("light.constant", 1.0f);
+	lightingShader.setFloat("light.linear", 0.09f);
+	lightingShader.setFloat("light.quadratic", 0.032f);
+
+	// material properties
+	lightingShader.setFloat("material_shininess", 32.0f);
 
 	// create transformations and Projection
-	glm::mat4 model = glm::mat4(1.0f);		// initialize Matrix, Use this matrix for individual models
-	glm::mat4 view = glm::mat4(1.0f);		//Use this matrix for ALL models
-	glm::mat4 projection = glm::mat4(1.0f);	//This matrix is for Projection
 	glm::mat4 modelTemp = glm::mat4(1.0f);
 	glm::mat4 modelTemp2 = glm::mat4(1.0f);
 	glm::mat4 modelTemp3 = glm::mat4(1.0f);
-	view = glm::rotate(view, glm::radians(rotX), glm::vec3(1.0f, 0.0f, 0.0f));
-	view = glm::rotate(view, glm::radians(rotY), glm::vec3(0.0f, 1.0f, 0.0f));
-	view = glm::rotate(view, glm::radians(rotZ), glm::vec3(0.0f, 0.0f, 1.0f));
+	glm::mat4 model = glm::mat4(1.0f);		// initialize Matrix, Use this matrix for individual models
+	glm::mat4 view = glm::mat4(1.0f);		//Use this matrix for ALL models
+	glm::mat4 projection = glm::mat4(1.0f);	//This matrix is for Projection
 
 	//Use "projection" to include Camera
 	projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 	view = camera.GetViewMatrix();
 	view = glm::translate(view, glm::vec3(movX, movY, movZ));
 
-	//	view = glm::rotate(view, glm::radians(rotX), glm::vec3(1.0f, 0.0f, 0.0f));
-		//view = glm::rotate(view, glm::radians(rotY), glm::vec3(0.0f, 1.0f, 0.0f));
-
-
-		// pass them to the shaders
-	projectionShader.setVec3("viewPos", camera.Position);
-	projectionShader.setMat4("model", model);
-	projectionShader.setMat4("view", view);
+	// pass them to the shaders
+	//lightingShader.setVec3("viewPos", camera.Position);
+	lightingShader.setMat4("model", model);
+	lightingShader.setMat4("view", view);
 	// note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
-	projectionShader.setMat4("projection", projection);
+	lightingShader.setMat4("projection", projection);
 
 
 	glBindVertexArray(VAO);
 
-	//glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, texture2);
+	//Colocar código aquí
 	model = glm::scale(model, glm::vec3(20.0f, 0.05f, 20.0f));
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
+	lightingShader.setInt("material_diffuse", texture1);
 
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+		
 	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
+	lightingShader.setInt("material_diffuse", texture1);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 1.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
+	lightingShader.setInt("material_diffuse", texture1);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
+	lightingShader.setInt("material_diffuse", texture1);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
+	lightingShader.setInt("material_diffuse", texture1);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
+	lightingShader.setInt("material_diffuse", texture1);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
+	lightingShader.setInt("material_diffuse", texture1);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
+	lightingShader.setInt("material_diffuse", texture1);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
+	lightingShader.setInt("material_diffuse", texture1);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
+	lightingShader.setInt("material_diffuse", texture1);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(-2.0f, 0.0f, -1.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
+	lightingShader.setInt("material_diffuse", texture1);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
+	lightingShader.setInt("material_diffuse", texture1);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
+	lightingShader.setInt("material_diffuse", texture1);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
+	lightingShader.setInt("material_diffuse", texture1);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
+	lightingShader.setInt("material_diffuse", texture1);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
+	lightingShader.setInt("material_diffuse", texture1);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 
 	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
+	lightingShader.setInt("material_diffuse", texture1);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
+	lightingShader.setInt("material_diffuse", texture1);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
+	lightingShader.setInt("material_diffuse", texture1); 
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
+	lightingShader.setInt("material_diffuse", texture1);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-
+	//---mudanza
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
@@ -1128,164 +943,216 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	}
 
 
-	//entrada	--------------------------------------------
+	
+	
+	
+	
+	
+	
+	
+	//entrada	
 
 	glActiveTexture(GL_TEXTURE);
 	glBindTexture(GL_TEXTURE_2D, texture2);
-	projectionShader.setInt("texture2", 1);
-
+	lightingShader.setInt("material_diffuse", texture2);
 	model = glm::mat4(1.0f);
 
 	model = glm::translate(model, glm::vec3(-42.0f, 2.0f, 26.0f));
 	modelTemp = model;
 	model = glm::scale(model, glm::vec3(15.0f, 4.0f, 4.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
+	//lightingShader.setInt("material_diffuse", texture1);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(3.0f, 0.0f, 0.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
+	//lightingShader.setInt("material_diffuse", texture1);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = modelTemp;
 	//columna 1 lado izquierdo
 	model = glm::translate(model, glm::vec3(-5.0f, 8.5f, 0.0f));
 	model = glm::scale(model, glm::vec3(5.0f, 13.0f, 4.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f); 
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	//columna 2 lado izquierdo
 	model = glm::translate(model, glm::vec3(2.0f, 0.0f, 0.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f); 
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	//columna 1 lado derecho
 	model = glm::translate(model, glm::vec3(7.0f, 0.0f, 0.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f); 
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	//columna 2 lado derecho
 	model = glm::translate(model, glm::vec3(2.0f, 0.0f, 0.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f); 
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	//base bandera lado derecho columna 2
 	glActiveTexture(GL_TEXTURE);
 	glBindTexture(GL_TEXTURE_2D, texture3);
+	lightingShader.setInt("material_diffuse", texture3);
 
 	model = glm::translate(model, glm::vec3(0.0f, 0.5250f, 0.0f));
 	modelTemp = model;
 	model = glm::scale(model, glm::vec3(1.0f, 0.05f, 1.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f); 
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(-2.0f, 0.0f, 0.0f));
 	modelTemp = model;
 	model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(-9.0f, 0.0f, 0.0f));
 	modelTemp = model;
 	model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(2.0f, 0.0f, 0.0f));
 	modelTemp = model;
 	model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	//parte alta
-	//model = modelTemp;
-
 	model = glm::translate(model, glm::vec3(-2.0f, 3.53f, 0.0f));
 	model = glm::scale(model, glm::vec3(0.450f, 6.0f, 0.450f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(24.5f, 0.0f, 0.0f));
 	modelTemp = model;
 	model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(-4.55f, 0.5f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0f, 2.0f, 1.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 2.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(-15.55f, 0.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	//palito
 	model = glm::translate(model, glm::vec3(0.0f, 0.75f, 0.0f));
 	model = glm::scale(model, glm::vec3(0.2f, 0.50f, 0.20f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(-22.0f, -1.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(99.7f, 1.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(22.7f, -1.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	//banderas
 	glActiveTexture(GL_TEXTURE);
 	glBindTexture(GL_TEXTURE_2D, texture4);
+	lightingShader.setInt("material_diffuse", texture4);
 
 	model = glm::translate(model, glm::vec3(5.3f, 0.50f, -0.20f));
 	//modelTemp = model;
 	model = glm::scale(model, glm::vec3(10.0f, 0.5f, 1.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawArrays(GL_TRIANGLES, 24, 3);
 	//model = modelTemp;
 
 	model = glm::translate(model, glm::vec3(-2.30f, 1.90f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawArrays(GL_TRIANGLES, 24, 3);
 	//model = modelTemp;
 
 	model = glm::translate(model, glm::vec3(-7.750f, 0.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawArrays(GL_TRIANGLES, 24, 3);
 
 	model = glm::translate(model, glm::vec3(-2.18f, -1.9f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawArrays(GL_TRIANGLES, 24, 3);
 
 
@@ -1295,36 +1162,208 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	glBindTexture(GL_TEXTURE_2D, texture11);
 
 	model = glm::translate(model, glm::vec3(5.550f, -0.430f, 1.0f));
-	//model = glm::mat4(1.0f);
 	model = glm::scale(model, glm::vec3(7.30, 3.10, 1.50));
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	//________________________MESA_________________________________
+	glActiveTexture(GL_TEXTURE);
+	glBindTexture(GL_TEXTURE_2D, texture2);
+
+	model = glm::mat4(1.0f);
+
+	model = glm::scale(model, glm::vec3(0.70, 1.50, 0.70));
+	model = glm::translate(model, glm::vec3(-88.0f, 0.50f, -14.0f));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	model = glm::translate(model, glm::vec3(4.0f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	model = glm::translate(model, glm::vec3(-2.0f, 0.110f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0, 1.20, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.5490f, 0.0f));
+	model = glm::scale(model, glm::vec3(2.50, 0.10, 2.50));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	//mesa2
+	model = glm::mat4(1.0f);
+
+	model = glm::scale(model, glm::vec3(0.70, 1.50, 0.70));
+	model = glm::translate(model, glm::vec3(-78.0f, 0.50f, -14.0f));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	model = glm::translate(model, glm::vec3(4.0f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	model = glm::translate(model, glm::vec3(-2.0f, 0.110f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0, 1.20, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.5490f, 0.0f));
+	model = glm::scale(model, glm::vec3(2.50, 0.10, 2.50));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	//mesa3
+	model = glm::mat4(1.0f);
+
+	model = glm::scale(model, glm::vec3(0.70, 1.50, 0.70));
+	model = glm::translate(model, glm::vec3(-70.0f, 0.50f, -14.0f));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	model = glm::translate(model, glm::vec3(4.0f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	model = glm::translate(model, glm::vec3(-2.0f, 0.110f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0, 1.20, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.5490f, 0.0f));
+	model = glm::scale(model, glm::vec3(2.50, 0.10, 2.50));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	//mesa4
+	model = glm::mat4(1.0f);
+
+	model = glm::scale(model, glm::vec3(0.70, 1.50, 0.70));
+	model = glm::translate(model, glm::vec3(-88.0f, 0.50f, -9.0f));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	model = glm::translate(model, glm::vec3(4.0f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	model = glm::translate(model, glm::vec3(-2.0f, 0.110f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0, 1.20, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.5490f, 0.0f));
+	model = glm::scale(model, glm::vec3(2.50, 0.10, 2.50));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	//mesa5
+	model = glm::mat4(1.0f);
+
+	model = glm::scale(model, glm::vec3(0.70, 1.50, 0.70));
+	model = glm::translate(model, glm::vec3(-78.0f, 0.50f, -9.0f));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	model = glm::translate(model, glm::vec3(4.0f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	model = glm::translate(model, glm::vec3(-2.0f, 0.110f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0, 1.20, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.5490f, 0.0f));
+	model = glm::scale(model, glm::vec3(2.50, 0.10, 2.50));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	//mesa6
+	model = glm::mat4(1.0f);
+
+	model = glm::scale(model, glm::vec3(0.70, 1.50, 0.70));
+	model = glm::translate(model, glm::vec3(-70.0f, 0.50f, -9.0f));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	model = glm::translate(model, glm::vec3(4.0f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	model = glm::translate(model, glm::vec3(-2.0f, 0.110f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0, 1.20, 1.0));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.5490f, 0.0f));
+	model = glm::scale(model, glm::vec3(2.50, 0.10, 2.50));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+
+
 
 	//Rueda de la fortuna////////////////////////////////////////////////////////////////
 	glActiveTexture(GL_TEXTURE);
 	glBindTexture(GL_TEXTURE_2D, texture5);//galaxia
+	lightingShader.setInt("material_diffuse", texture5);
+
 	//base
 	model = glm::mat4(1.0f);
 	model = glm::translate(model, glm::vec3(2.0f, 0.5f, 0.0f));
 	modelTemp = model;
 	modelTemp3 = model;
 	model = glm::scale(model, glm::vec3(35.0f, 0.50f, 15.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	model = modelTemp;
 
 	//soporte
 	model = glm::translate(model, glm::vec3(1.0f, 0.24f, 7.3));
 	model = glm::scale(model, glm::vec3(15.0f, 25.0f, 0.33f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawArrays(GL_TRIANGLES, 27, 3);
 
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -45.0f));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawArrays(GL_TRIANGLES, 27, 3);
 
 	//eje
@@ -1333,157 +1372,206 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	model = glm::rotate(model, glm::radians(angRueda), glm::vec3(0, 0, 1));
 	modelTemp = model;
 	model = glm::scale(model, glm::vec3(0.5, 0.5, 14.8));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
 
 	//barras que sostienen la rueda al eje
 	model = modelTemp;
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 3.20f));
 	model = glm::scale(model, glm::vec3(1.0, 25.0, 1.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	model = modelTemp;
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -3.20f));
 	model = glm::scale(model, glm::vec3(1.0, 25.0, 1.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = modelTemp;
 	model = glm::translate(model, glm::vec3(6.50f, 0.0f, 3.20f));
 	model = glm::scale(model, glm::vec3(12.0, 1.0, 1.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	model = modelTemp;
 	model = glm::translate(model, glm::vec3(6.50f, 0.0f, -3.20f));
 	model = glm::scale(model, glm::vec3(12.0, 1.0, 1.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = modelTemp;
 	model = glm::translate(model, glm::vec3(-6.50f, 0.0f, 3.20f));
 	model = glm::scale(model, glm::vec3(12.0, 1.0, 1.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	model = modelTemp;
 	model = glm::translate(model, glm::vec3(-6.50f, 0.0f, -3.20f));
 	model = glm::scale(model, glm::vec3(12.0, 1.0, 1.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = modelTemp;
 	model = glm::rotate(model, glm::radians(40.0f), glm::vec3(0, 0, 1));
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 2.20f));
 	model = glm::scale(model, glm::vec3(0.80, 25.50, 1.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = modelTemp;
 	model = glm::rotate(model, glm::radians(-40.0f), glm::vec3(0, 0, 1));
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -2.20f));
 	model = glm::scale(model, glm::vec3(0.80, 25.50, 1.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	//circulos rueda
 	model = modelTemp;
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -3.50f));
 	model = glm::scale(model, glm::vec3(12.50, 12.50, 1.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	circulos();
 	model = modelTemp;
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 3.50f));
 	model = glm::scale(model, glm::vec3(12.50, 12.50, 1.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	circulos2();
 
 	//barras entre las ruedas
 	model = modelTemp;
 	model = glm::translate(model, glm::vec3(0.0f, -12.55f, 0.0f));
 	model = glm::scale(model, glm::vec3(0.5, 0.5, 7.5));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(16.0f, 6.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(-32.0f, 0.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(-7.0f, 9.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(46.0f, 0.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(2.0f, 10.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(-50.0f, 0.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(3.0f, 12.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(44.0f, 0.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(-6.0f, 7.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(-32.0f, 0.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = modelTemp;
 	model = glm::translate(model, glm::vec3(0.0f, 12.50f, 0.0f));
 	model = glm::scale(model, glm::vec3(0.50, 0.50, 8.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
-	glActiveTexture(GL_TEXTURE);
+	glActiveTexture(GL_TEXTURE7);
 	glBindTexture(GL_TEXTURE_2D, texture7);
+	lightingShader.setInt("material_diffuse", texture7);
+
 	//esferas rueda de la fortuna
 	//canasta1 Aros-------------------------------------------------------------------------
 	model = modelTemp;
@@ -1493,82 +1581,115 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	model = glm::translate(model, glm::vec3(0.0f, -0.50f, 0.0f));
 	//model = modelTemp2;
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	circulos();
 	//canasta 
 	//soporte
 	model = modelTemp2;
-	glActiveTexture(GL_TEXTURE);
-	glBindTexture(GL_TEXTURE_2D, texture2);
+	
+	glActiveTexture(GL_TEXTURE2);
+glBindTexture(GL_TEXTURE_2D, texture2);
+	lightingShader.setInt("material_diffuse", texture2);
+
 	model = glm::translate(model, glm::vec3(0.0f, -2.50f, 0.3f));
 	model = glm::scale(model, glm::vec3(0.250, 2.50, 0.250));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	//techo canasta
 	model = glm::translate(model, glm::vec3(0.0f, 0.45f, 0.0f));
 	model = glm::scale(model, glm::vec3(2.0, 0.10, 2.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	my_sphere.render();
 	glBindVertexArray(VAO);
 	//piso canasta
 	//caja
 	glActiveTexture(GL_TEXTURE);
 	glBindTexture(GL_TEXTURE_2D, texture7);
+	lightingShader.setInt("material_diffuse", texture7);
+
 	model = glm::translate(model, glm::vec3(0.0f, -8.05f, 0.0f));
 	model = glm::scale(model, glm::vec3(3.50, 3.0, 3.50));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 24, GL_UNSIGNED_INT, 0);
 	glActiveTexture(GL_TEXTURE);
 	glBindTexture(GL_TEXTURE_2D, texture8);
+	lightingShader.setInt("material_diffuse", texture8);
+
 	model = glm::translate(model, glm::vec3(0.0f, -0.550f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 0.10, 1.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	my_sphere.render();
 	glBindVertexArray(VAO);
-	glActiveTexture(GL_TEXTURE);
+	//glActiveTexture(GL_TEXTURE);
 	//asiento enfrente textura galaxia
-	glBindTexture(GL_TEXTURE_2D, texture5);
+	//glBindTexture(GL_TEXTURE_2D, texture5);
+	lightingShader.setInt("material_diffuse", texture5);
+
 	model = glm::translate(model, glm::vec3(0.0f, 1.80f, 0.39f));
 	model = glm::scale(model, glm::vec3(0.80, 5.0, 0.20));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	//asientoatras
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -3.90f));
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 01.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	//asientoder
 	model = glm::translate(model, glm::vec3(0.4950f, 0.0f, 2.0f));
 	model = glm::scale(model, glm::vec3(0.250, 1.0, 2.500));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	//asientoizq
 	model = glm::translate(model, glm::vec3(-3.94950f, 0.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.00));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	//disco azul
-	glActiveTexture(GL_TEXTURE);
-	glBindTexture(GL_TEXTURE_2D, texture9);
+	//glActiveTexture(GL_TEXTURE);
+	//glBindTexture(GL_TEXTURE_2D, texture9);
+	lightingShader.setInt("material_diffuse", texture9);
+
 	model = glm::translate(model, glm::vec3(2.0f, 6.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(2.0, 0.010, 1.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	my_sphere.render();
 	glBindVertexArray(VAO);
 
 	//canasta2 Aros------------------------------------------------------------------------
-	glActiveTexture(GL_TEXTURE);
-	glBindTexture(GL_TEXTURE_2D, texture7);
+	//glActiveTexture(GL_TEXTURE);
+	//glBindTexture(GL_TEXTURE_2D, texture7);
+	lightingShader.setInt("material_diffuse", texture7);
+
 	model = modelTemp;
 	model = glm::translate(model, glm::vec3(0.0f, 12.350f, 0.0f));
 	model = glm::rotate(model, glm::radians(angCanasta), glm::vec3(0, 0, 1));
@@ -1576,572 +1697,808 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	model = glm::translate(model, glm::vec3(0.0f, -0.50f, 0.0f));
 	//model = modelTemp2;
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	circulos();
 	//canasta
 	//soporte
 	model = modelTemp2;
 	glActiveTexture(GL_TEXTURE);
 	glBindTexture(GL_TEXTURE_2D, texture2);
+	lightingShader.setInt("material_diffuse", texture2);
+
 	model = glm::translate(model, glm::vec3(0.0f, -2.50f, 0.3f));
 	model = glm::scale(model, glm::vec3(0.250, 2.50, 0.250));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	//techo canasta
 	model = glm::translate(model, glm::vec3(0.0f, 0.45f, 0.0f));
 	model = glm::scale(model, glm::vec3(2.0, 0.10, 2.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	my_sphere.render();
 	glBindVertexArray(VAO);
 	//piso canasta
 	//model = modelTemp2;
-	glActiveTexture(GL_TEXTURE);
-	glBindTexture(GL_TEXTURE_2D, texture7);
+	//glActiveTexture(GL_TEXTURE);
+	//glBindTexture(GL_TEXTURE_2D, texture7);
+	lightingShader.setInt("material_diffuse", texture7);
+
 	model = glm::translate(model, glm::vec3(0.0f, -8.05f, 0.0f));
 	model = glm::scale(model, glm::vec3(3.50, 3.0, 3.50));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 24, GL_UNSIGNED_INT, 0);
-	glActiveTexture(GL_TEXTURE);
-	glBindTexture(GL_TEXTURE_2D, texture8);
+	//glActiveTexture(GL_TEXTURE);
+	//glBindTexture(GL_TEXTURE_2D, texture8);
+	lightingShader.setInt("material_diffuse", texture8);
+
 	model = glm::translate(model, glm::vec3(0.0f, -0.550f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 0.10, 1.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	my_sphere.render();
 	glBindVertexArray(VAO);
-	glActiveTexture(GL_TEXTURE);
+	//glActiveTexture(GL_TEXTURE);
 	//asiento enfrente textura galaxia
-	glBindTexture(GL_TEXTURE_2D, texture5);
+	//glBindTexture(GL_TEXTURE_2D, texture5);
+	lightingShader.setInt("material_diffuse", texture5);
+
 	model = glm::translate(model, glm::vec3(0.0f, 1.80f, 0.39f));
 	model = glm::scale(model, glm::vec3(0.80, 5.0, 0.20));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	//asientoatras
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -3.90f));
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 01.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	//asientoder
 	model = glm::translate(model, glm::vec3(0.4950f, 0.0f, 2.0f));
 	model = glm::scale(model, glm::vec3(0.250, 1.0, 2.500));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	//asientoizq
 	model = glm::translate(model, glm::vec3(-3.94950f, 0.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.00));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	//disco azul
-	glActiveTexture(GL_TEXTURE);
-	glBindTexture(GL_TEXTURE_2D, texture9);
+	//glActiveTexture(GL_TEXTURE);
+	//glBindTexture(GL_TEXTURE_2D, texture9);
+	lightingShader.setInt("material_diffuse", texture9);
+
 	model = glm::translate(model, glm::vec3(2.0f, 6.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(2.0, 0.010, 1.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	my_sphere.render();
 	glBindVertexArray(VAO);
 	//canasta3 Aros-----------------------------------------------------------------------------------------
-	glActiveTexture(GL_TEXTURE);
-	glBindTexture(GL_TEXTURE_2D, texture7);
+	//glActiveTexture(GL_TEXTURE);
+	//glBindTexture(GL_TEXTURE_2D, texture7);
+	lightingShader.setInt("material_diffuse", texture7);
+
 	model = modelTemp;
 	model = glm::translate(model, glm::vec3(12.30f, -0.30f, 0.0f));
 	model = glm::rotate(model, glm::radians(angCanasta), glm::vec3(0, 0, 1));
 	modelTemp2 = model;
 	model = glm::translate(model, glm::vec3(0.0f, -0.50f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	circulos();
 	//canasta
 	//soporte
 	model = modelTemp2;
-	glActiveTexture(GL_TEXTURE);
-	glBindTexture(GL_TEXTURE_2D, texture2);
+	//glActiveTexture(GL_TEXTURE);
+	//glBindTexture(GL_TEXTURE_2D, texture2);
+	lightingShader.setInt("material_diffuse", texture2);
+
 	model = glm::translate(model, glm::vec3(0.0f, -2.50f, 0.3f));
 	model = glm::scale(model, glm::vec3(0.250, 2.50, 0.250));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	//techo canasta
 	model = glm::translate(model, glm::vec3(0.0f, 0.45f, 0.0f));
 	model = glm::scale(model, glm::vec3(2.0, 0.10, 2.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	my_sphere.render();
 	glBindVertexArray(VAO);
 	//piso canasta
-	glActiveTexture(GL_TEXTURE);
-	glBindTexture(GL_TEXTURE_2D, texture7);
+	//glActiveTexture(GL_TEXTURE);
+	//glBindTexture(GL_TEXTURE_2D, texture7);
+	lightingShader.setInt("material_diffuse", texture7);
+
 	model = glm::translate(model, glm::vec3(0.0f, -8.05f, 0.0f));
 	model = glm::scale(model, glm::vec3(3.50, 3.0, 3.50));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 24, GL_UNSIGNED_INT, 0);
-	glActiveTexture(GL_TEXTURE);
-	glBindTexture(GL_TEXTURE_2D, texture8);
+	//glActiveTexture(GL_TEXTURE);
+	//glBindTexture(GL_TEXTURE_2D, texture8);
+	lightingShader.setInt("material_diffuse", texture8);
+
 	model = glm::translate(model, glm::vec3(0.0f, -0.550f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 0.10, 1.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	my_sphere.render();
 	glBindVertexArray(VAO);
-	glActiveTexture(GL_TEXTURE);
+	//glActiveTexture(GL_TEXTURE);
 	//asiento enfrente textura galaxia
-	glBindTexture(GL_TEXTURE_2D, texture5);
+	//glBindTexture(GL_TEXTURE_2D, texture5);
+	lightingShader.setInt("material_diffuse", texture5);
+
 	model = glm::translate(model, glm::vec3(0.0f, 1.80f, 0.39f));
 	model = glm::scale(model, glm::vec3(0.80, 5.0, 0.20));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	//asientoatras
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -3.90f));
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 01.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	//asientoder
 	model = glm::translate(model, glm::vec3(0.4950f, 0.0f, 2.0f));
 	model = glm::scale(model, glm::vec3(0.250, 1.0, 2.500));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	//asientoizq
 	model = glm::translate(model, glm::vec3(-3.94950f, 0.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.00));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	//disco azul
-	glActiveTexture(GL_TEXTURE);
-	glBindTexture(GL_TEXTURE_2D, texture9);
+	//glActiveTexture(GL_TEXTURE);
+	//glBindTexture(GL_TEXTURE_2D, texture9);
+	lightingShader.setInt("material_diffuse", texture9);
+
 	model = glm::translate(model, glm::vec3(2.0f, 6.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(2.0, 0.010, 1.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	my_sphere.render();
 	glBindVertexArray(VAO);
 	//canasta 4  Aros--------------------------------------------------------------------------------------
-	glActiveTexture(GL_TEXTURE);
-	glBindTexture(GL_TEXTURE_2D, texture7);
+	//glActiveTexture(GL_TEXTURE);
+	//glBindTexture(GL_TEXTURE_2D, texture7);
+	lightingShader.setInt("material_diffuse", texture7);
+
 	model = modelTemp;
 	model = glm::translate(model, glm::vec3(-12.30f, -0.30f, 0.0f));
 	model = glm::rotate(model, glm::radians(angCanasta), glm::vec3(0, 0, 1));
 	modelTemp2 = model;
 	model = glm::translate(model, glm::vec3(0.0f, -0.50f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	circulos();
 	//canasta
 	//soporte
 	model = modelTemp2;
-	glActiveTexture(GL_TEXTURE);
-	glBindTexture(GL_TEXTURE_2D, texture2);
+	//glActiveTexture(GL_TEXTURE);
+	//glBindTexture(GL_TEXTURE_2D, texture2);
+	lightingShader.setInt("material_diffuse", texture2);
+
 	model = glm::translate(model, glm::vec3(0.0f, -2.50f, 0.3f));
 	model = glm::scale(model, glm::vec3(0.250, 2.50, 0.250));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	//techo canasta
 	model = glm::translate(model, glm::vec3(0.0f, 0.45f, 0.0f));
 	model = glm::scale(model, glm::vec3(2.0, 0.10, 2.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	my_sphere.render();
 	glBindVertexArray(VAO);
 	//piso canasta
-	glActiveTexture(GL_TEXTURE);
-	glBindTexture(GL_TEXTURE_2D, texture7);
+	//glActiveTexture(GL_TEXTURE);
+	//glBindTexture(GL_TEXTURE_2D, texture7);
+	lightingShader.setInt("material_diffuse", texture7);
+
 	model = glm::translate(model, glm::vec3(0.0f, -8.05f, 0.0f));
 	model = glm::scale(model, glm::vec3(3.50, 3.0, 3.50));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 24, GL_UNSIGNED_INT, 0);
-	glActiveTexture(GL_TEXTURE);
-	glBindTexture(GL_TEXTURE_2D, texture8);
+	//glActiveTexture(GL_TEXTURE);
+	//glBindTexture(GL_TEXTURE_2D, texture8);
+	lightingShader.setInt("material_diffuse", texture8);
+
 	model = glm::translate(model, glm::vec3(0.0f, -0.550f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 0.10, 1.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	my_sphere.render();
 	glBindVertexArray(VAO);
-	glActiveTexture(GL_TEXTURE);
+	//glActiveTexture(GL_TEXTURE);
 	//asiento enfrente textura galaxia
-	glBindTexture(GL_TEXTURE_2D, texture5);
+	//glBindTexture(GL_TEXTURE_2D, texture5);
+	lightingShader.setInt("material_diffuse", texture5);
+
 	model = glm::translate(model, glm::vec3(0.0f, 1.80f, 0.39f));
 	model = glm::scale(model, glm::vec3(0.80, 5.0, 0.20));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	//asientoatras
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -3.90f));
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 01.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	//asientoder
 	model = glm::translate(model, glm::vec3(0.4950f, 0.0f, 2.0f));
 	model = glm::scale(model, glm::vec3(0.250, 1.0, 2.500));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	//asientoizq
 	model = glm::translate(model, glm::vec3(-3.94950f, 0.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.00));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	//disco azul
-	glActiveTexture(GL_TEXTURE);
-	glBindTexture(GL_TEXTURE_2D, texture9);
+	//glActiveTexture(GL_TEXTURE);
+	//glBindTexture(GL_TEXTURE_2D, texture9);
+	lightingShader.setInt("material_diffuse", texture9);
+
 	model = glm::translate(model, glm::vec3(2.0f, 6.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(2.0, 0.010, 1.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	my_sphere.render();
 	glBindVertexArray(VAO);
 
 	//canasta 5  Aros--------------------------------------------------------------------------------------
-	glActiveTexture(GL_TEXTURE);
-	glBindTexture(GL_TEXTURE_2D, texture7);
+	//glActiveTexture(GL_TEXTURE);
+	//glBindTexture(GL_TEXTURE_2D, texture7);
+	lightingShader.setInt("material_diffuse", texture7);
+
 	model = modelTemp;
 	model = glm::translate(model, glm::vec3(8.320f, 9.40f, 0.0f));
 	model = glm::rotate(model, glm::radians(angCanasta), glm::vec3(0, 0, 1));
 	modelTemp2 = model;
 	model = glm::translate(model, glm::vec3(0.0f, -0.50f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 0.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 0.0f, 0.0f, 1.0f);
 	circulos();
 	//canasta
 	//soporte
 	model = modelTemp2;
-	glActiveTexture(GL_TEXTURE);
+	glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_2D, texture2);
+	lightingShader.setInt("material_diffuse", texture2);
+
 	model = glm::translate(model, glm::vec3(0.0f, -2.50f, 0.3f));
 	model = glm::scale(model, glm::vec3(0.250, 2.50, 0.250));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	//techo canasta
 	model = glm::translate(model, glm::vec3(0.0f, 0.45f, 0.0f));
 	model = glm::scale(model, glm::vec3(2.0, 0.10, 2.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	my_sphere.render();
 	glBindVertexArray(VAO);
 	//piso canasta
-	glActiveTexture(GL_TEXTURE);
+	//glActiveTexture(GL_TEXTURE);
 	glBindTexture(GL_TEXTURE_2D, texture7);
+	lightingShader.setInt("material_diffuse", texture7);
+
 	model = glm::translate(model, glm::vec3(0.0f, -8.05f, 0.0f));
 	model = glm::scale(model, glm::vec3(3.50, 3.0, 3.50));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 24, GL_UNSIGNED_INT, 0);
-	glActiveTexture(GL_TEXTURE);
+	//glActiveTexture(GL_TEXTURE);
 	glBindTexture(GL_TEXTURE_2D, texture8);
+	lightingShader.setInt("material_diffuse", texture8);
+
 	model = glm::translate(model, glm::vec3(0.0f, -0.550f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 0.10, 1.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	my_sphere.render();
 	glBindVertexArray(VAO);
 	glActiveTexture(GL_TEXTURE);
 	//asiento enfrente textura galaxia
 	glBindTexture(GL_TEXTURE_2D, texture5);
+	lightingShader.setInt("material_diffuse", texture5);
+
 	model = glm::translate(model, glm::vec3(0.0f, 1.80f, 0.39f));
 	model = glm::scale(model, glm::vec3(0.80, 5.0, 0.20));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	//asientoatras
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -3.90f));
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 01.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	//asientoder
 	model = glm::translate(model, glm::vec3(0.4950f, 0.0f, 2.0f));
 	model = glm::scale(model, glm::vec3(0.250, 1.0, 2.500));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	//asientoizq
 	model = glm::translate(model, glm::vec3(-3.94950f, 0.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.00));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	//disco azul
 	glActiveTexture(GL_TEXTURE);
 	glBindTexture(GL_TEXTURE_2D, texture9);
+	lightingShader.setInt("material_diffuse", texture9);
+
 	model = glm::translate(model, glm::vec3(2.0f, 6.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(2.0, 0.010, 1.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 0.0f, 0.0f, 1.0f);
 	my_sphere.render();
 	glBindVertexArray(VAO);
 
 	//canasta 6 Aros--------------------------------------------------------------------------------------
 	glActiveTexture(GL_TEXTURE);
 	glBindTexture(GL_TEXTURE_2D, texture7);
+	lightingShader.setInt("material_diffuse", texture7);
+
 	model = modelTemp;
 	model = glm::translate(model, glm::vec3(-8.320f, 9.40f, 0.0f));
 	model = glm::rotate(model, glm::radians(angCanasta), glm::vec3(0, 0, 1));
 	modelTemp2 = model;
 	model = glm::translate(model, glm::vec3(0.0f, -0.50f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	circulos();
 	//canasta
 	//soporte
 	model = modelTemp2;
 	glActiveTexture(GL_TEXTURE);
 	glBindTexture(GL_TEXTURE_2D, texture2);
+	lightingShader.setInt("material_diffuse", texture2);
+
 	model = glm::translate(model, glm::vec3(0.0f, -2.50f, 0.3f));
 	model = glm::scale(model, glm::vec3(0.250, 2.50, 0.250));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	//techo canasta
 	model = glm::translate(model, glm::vec3(0.0f, 0.45f, 0.0f));
 	model = glm::scale(model, glm::vec3(2.0, 0.10, 2.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	my_sphere.render();
 	glBindVertexArray(VAO);
 	//piso canasta
 	glActiveTexture(GL_TEXTURE);
 	glBindTexture(GL_TEXTURE_2D, texture7);
+	lightingShader.setInt("material_diffuse", texture7);
+
 	model = glm::translate(model, glm::vec3(0.0f, -8.05f, 0.0f));
 	model = glm::scale(model, glm::vec3(3.50, 3.0, 3.50));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 24, GL_UNSIGNED_INT, 0);
 	glActiveTexture(GL_TEXTURE);
 	glBindTexture(GL_TEXTURE_2D, texture8);
+	lightingShader.setInt("material_diffuse", texture8);
+
 	model = glm::translate(model, glm::vec3(0.0f, -0.550f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 0.10, 1.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	my_sphere.render();
 	glBindVertexArray(VAO);
 	glActiveTexture(GL_TEXTURE);
 	//asiento enfrente textura galaxia
 	glBindTexture(GL_TEXTURE_2D, texture5);
+	lightingShader.setInt("material_diffuse", texture5);
+
 	model = glm::translate(model, glm::vec3(0.0f, 1.80f, 0.39f));
 	model = glm::scale(model, glm::vec3(0.80, 5.0, 0.20));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	//asientoatras
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -3.90f));
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 01.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	//asientoder
 	model = glm::translate(model, glm::vec3(0.4950f, 0.0f, 2.0f));
 	model = glm::scale(model, glm::vec3(0.250, 1.0, 2.500));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	//asientoizq
 	model = glm::translate(model, glm::vec3(-3.94950f, 0.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.00));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	//disco azul
 	glActiveTexture(GL_TEXTURE);
 	glBindTexture(GL_TEXTURE_2D, texture9);
+	lightingShader.setInt("material_diffuse", texture9);
+
 	model = glm::translate(model, glm::vec3(2.0f, 6.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(2.0, 0.010, 1.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	my_sphere.render();
 	glBindVertexArray(VAO);
 
 	//canasta 7 Aros--------------------------------------------------------------------------------------
 	glActiveTexture(GL_TEXTURE);
 	glBindTexture(GL_TEXTURE_2D, texture7);
+	lightingShader.setInt("material_diffuse", texture7);
+
 	model = modelTemp;
 	model = glm::translate(model, glm::vec3(8.310f, -9.450f, 0.0f));
 	model = glm::rotate(model, glm::radians(angCanasta), glm::vec3(0, 0, 1));
 	modelTemp2 = model;
 	model = glm::translate(model, glm::vec3(0.0f, -0.50f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	circulos();
 	//canasta
 	//soporte
 	model = modelTemp2;
 	glActiveTexture(GL_TEXTURE);
 	glBindTexture(GL_TEXTURE_2D, texture2);
+	lightingShader.setInt("material_diffuse", texture2);
+
 	model = glm::translate(model, glm::vec3(0.0f, -2.50f, 0.3f));
 	model = glm::scale(model, glm::vec3(0.250, 2.50, 0.250));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	//techo canasta
 	model = glm::translate(model, glm::vec3(0.0f, 0.45f, 0.0f));
 	model = glm::scale(model, glm::vec3(2.0, 0.10, 2.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	my_sphere.render();
 	glBindVertexArray(VAO);
 	//piso canasta
 	glActiveTexture(GL_TEXTURE);
 	glBindTexture(GL_TEXTURE_2D, texture7);
+	lightingShader.setInt("material_diffuse", texture7);
+
 	model = glm::translate(model, glm::vec3(0.0f, -8.05f, 0.0f));
 	model = glm::scale(model, glm::vec3(3.50, 3.0, 3.50));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 24, GL_UNSIGNED_INT, 0);
 	glActiveTexture(GL_TEXTURE);
 	glBindTexture(GL_TEXTURE_2D, texture8);
+	lightingShader.setInt("material_diffuse", texture8);
+
 	model = glm::translate(model, glm::vec3(0.0f, -0.550f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 0.10, 1.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	my_sphere.render();
 	glBindVertexArray(VAO);
 	glActiveTexture(GL_TEXTURE);
 	//asiento enfrente textura galaxia
 	glBindTexture(GL_TEXTURE_2D, texture5);
+	lightingShader.setInt("material_diffuse", texture5);
+
 	model = glm::translate(model, glm::vec3(0.0f, 1.80f, 0.39f));
 	model = glm::scale(model, glm::vec3(0.80, 5.0, 0.20));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	//asientoatras
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -3.90f));
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 01.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	//asientoder
 	model = glm::translate(model, glm::vec3(0.4950f, 0.0f, 2.0f));
 	model = glm::scale(model, glm::vec3(0.250, 1.0, 2.500));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	//asientoizq
 	model = glm::translate(model, glm::vec3(-3.94950f, 0.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.00));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	//disco azul
 	glActiveTexture(GL_TEXTURE);
 	glBindTexture(GL_TEXTURE_2D, texture9);
+	lightingShader.setInt("material_diffuse", texture9);
+
 	model = glm::translate(model, glm::vec3(2.0f, 6.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(2.0, 0.010, 1.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	my_sphere.render();
 	glBindVertexArray(VAO);
 
 	//canasta 8 Aros--------------------------------------------------------------------------------------
 	glActiveTexture(GL_TEXTURE);
 	glBindTexture(GL_TEXTURE_2D, texture7);
+	lightingShader.setInt("material_diffuse", texture7);
+
 	model = modelTemp;
 	model = glm::translate(model, glm::vec3(-8.320f, -9.450f, 0.0f));
 	model = glm::rotate(model, glm::radians(angCanasta), glm::vec3(0, 0, 1));
 	modelTemp2 = model;
 	model = glm::translate(model, glm::vec3(0.0f, -0.50f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	circulos();
 	//canasta
 	//soporte
 	model = modelTemp2;
 	glActiveTexture(GL_TEXTURE);
 	glBindTexture(GL_TEXTURE_2D, texture2);
+	lightingShader.setInt("material_diffuse", texture2);
+
 	model = glm::translate(model, glm::vec3(0.0f, -2.50f, 0.3f));
 	model = glm::scale(model, glm::vec3(0.250, 2.50, 0.250));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	//techo canasta
 	model = glm::translate(model, glm::vec3(0.0f, 0.45f, 0.0f));
 	model = glm::scale(model, glm::vec3(2.0, 0.10, 2.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	my_sphere.render();
 	glBindVertexArray(VAO);
 	//piso canasta
 	glActiveTexture(GL_TEXTURE);
 	glBindTexture(GL_TEXTURE_2D, texture7);
+	lightingShader.setInt("material_diffuse", texture7);
+
 	model = glm::translate(model, glm::vec3(0.0f, -8.05f, 0.0f));
 	model = glm::scale(model, glm::vec3(3.50, 3.0, 3.50));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 24, GL_UNSIGNED_INT, 0);
 	glActiveTexture(GL_TEXTURE);
 	glBindTexture(GL_TEXTURE_2D, texture8);
+	lightingShader.setInt("material_diffuse", texture8);
+
 	model = glm::translate(model, glm::vec3(0.0f, -0.550f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 0.10, 1.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	my_sphere.render();
 	glBindVertexArray(VAO);
 	glActiveTexture(GL_TEXTURE);
 	//asiento enfrente textura galaxia
 	glBindTexture(GL_TEXTURE_2D, texture5);
+	lightingShader.setInt("material_diffuse", texture5);
+
 	model = glm::translate(model, glm::vec3(0.0f, 1.80f, 0.39f));
 	model = glm::scale(model, glm::vec3(0.80, 5.0, 0.20));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	//asientoatras
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -3.90f));
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 01.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	//asientoder
 	model = glm::translate(model, glm::vec3(0.4950f, 0.0f, 2.0f));
 	model = glm::scale(model, glm::vec3(0.250, 1.0, 2.500));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	//asientoizq
 	model = glm::translate(model, glm::vec3(-3.94950f, 0.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.00));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	//disco azul
 	glActiveTexture(GL_TEXTURE);
 	glBindTexture(GL_TEXTURE_2D, texture9);
+	lightingShader.setInt("material_diffuse", texture9);
+
 	model = glm::translate(model, glm::vec3(2.0f, 6.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(2.0, 0.010, 1.0));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	my_sphere.render();
 	glBindVertexArray(VAO);
 
 	model = modelTemp;
-	glActiveTexture(GL_TEXTURE);
-	glBindTexture(GL_TEXTURE_2D, texture10);
+	glActiveTexture(GL_TEXTURE5);
+	glBindTexture(GL_TEXTURE_2D, texture5);
+	lightingShader.setInt("material_diffuse", texture5);
+
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 7.50f));
 	model = glm::scale(model, glm::vec3(2.0, 2.0, 0.150));
-	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 1.0f, 0.0f);
+	lightingShader.setVec3("diffuseColor", 0.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	my_sphere.render();
 	glBindVertexArray(VAO);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -101.0f));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.010));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 1.0f, 0.0f);
+	lightingShader.setVec3("diffuseColor", 0.0f, 1.0f, 0.0f);
+	lightingShader.setVec3("specularColor", 0.0f, 1.0f, 0.0f);
+	my_sphere.render();
+	glBindVertexArray(VAO);
+
 
 	//escalera canastas
 	model = modelTemp3;
@@ -2229,8 +2586,6 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	}
-
-
 
 
 
@@ -3301,7 +3656,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	model = glm::mat4(1.0f);
 	modelShader.setMat4("model", model);
 	model = glm::translate(model, glm::vec3(-35.0f, 0.10f, 20.0f));
-	model = glm::scale(model, glm::vec3(1.0f, 1.00f, 1.0f));
+	model = glm::scale(model, glm::vec3(0.50f, 0.5f, 0.50f));
 	projectionShader.setMat4("model", model);
 	projectionShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 0.0f));
 	Soldado1.Draw(modelShader);
@@ -3316,8 +3671,73 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	Carrito.Draw(modelShader);
 
 
+	model = glm::mat4(1.0f);
+	modelShader.setMat4("model", model);
+	model = glm::translate(model, glm::vec3(-35.0f, 0.10f, -40.0f));
+	model = glm::scale(model, glm::vec3(0.0150f, 0.0250f, 0.0150f));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 0.0f));
+	Tree.Draw(modelShader);
+	model = glm::mat4(1.0f);
+	modelShader.setMat4("model", model);
+	model = glm::translate(model, glm::vec3(-50.0f, 0.10f, -45.0f));
+	model = glm::scale(model, glm::vec3(0.0150f, 0.0250f, 0.0150f));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 0.0f));
+	Tree.Draw(modelShader);
+	model = glm::mat4(1.0f);
+	modelShader.setMat4("model", model);
+	model = glm::translate(model, glm::vec3(-23.0f, 0.10f, -50.0f));
+	model = glm::scale(model, glm::vec3(0.0150f, 0.0250f, 0.0150f));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 0.0f));
+	Tree.Draw(modelShader);
 
+	model = glm::mat4(1.0f);
+	modelShader.setMat4("model", model);
+	model = glm::translate(model, glm::vec3(-50.0f, 0.10f, -90.0f));
+	model = glm::scale(model, glm::vec3(0.0150f, 0.0250f, 0.0150f));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 0.0f));
+	Tree.Draw(modelShader);
+
+	model = glm::mat4(1.0f);
+	modelShader.setMat4("model", model);
+	model = glm::translate(model, glm::vec3(-80.0f, 0.10f, -80.0f));
+	model = glm::scale(model, glm::vec3(0.0150f, 0.0250f, 0.0150f));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 0.0f));
+	Tree.Draw(modelShader);
+
+	model = glm::mat4(1.0f);
+	modelShader.setMat4("model", model);
+	model = glm::translate(model, glm::vec3(-83.0f, 0.10f, -90.0f));
+	model = glm::scale(model, glm::vec3(0.0150f, 0.0250f, 0.0150f));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 0.0f));
+	Tree.Draw(modelShader);
+
+
+	//----------------------------------LUCES-------------------------------------------
+
+	lampShader.use();
+	lampShader.setMat4("projection", projection);
+	lampShader.setMat4("view", view);
+	model = glm::mat4(1.0f);
+	model = glm::translate(model, glm::vec3(-10.0f, 2.0f, -5.0f));
+	model = glm::scale(model, glm::vec3(0.25f));
+	lampShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+
+	lampShader.setMat4("model", model);
+	my_sphere.render();
 	glBindVertexArray(VAO);
+
+
+
+
+
+	glBindVertexArray(0);
+
 }
 
 int main()
@@ -3338,7 +3758,7 @@ int main()
 	monitors = glfwGetPrimaryMonitor();
 	getResolution();
 
-	GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Proyecto Feria Diaz y Ortiz", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Practica 9", NULL, NULL);
 	if (window == NULL)
 	{
 		std::cout << "Failed to create GLFW window" << std::endl;
@@ -3359,10 +3779,10 @@ int main()
 
 	//Mis funciones
 	//Datos a utilizar
+	LoadTextures();
 	myData();
 	my_sphere.init();
 	glEnable(GL_DEPTH_TEST);
-
 	//-----------------------MODELOS-------------------------------------
 	Shader modelShader("Shaders/modelLoading.vs", "Shaders/modelLoading.fs");
 	// Load models
@@ -3373,11 +3793,6 @@ int main()
 
 
 	//-------------------------------------------------------
-
-
-
-
-
 
 	// render loop
 	// While the windows is not closed
@@ -3395,7 +3810,13 @@ int main()
 
 		// render
 		// Backgound color
-		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		if (night) {
+			glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		}
+		else {
+			glClearColor(0.5, 0.869, 0.869f, 1.0f);
+		}
+		
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		//Mi función de dibujo
@@ -3432,12 +3853,43 @@ void my_input(GLFWwindow * window)
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 		camera.ProcessKeyboard(RIGHT, (float)deltaTime);
 	if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
-		movY += 0.07f;
+		movY += 0.05f;
 	if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS)
-		movY -= 0.07f;
+		movY -= 0.05f;
 	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
 		play = true;
-
+	if (glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS)
+		night = true;
+	if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS)
+		night = false;
+	if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
+	{
+		R = 1.0;
+		G = 0.0;
+		B = 0.0;
+	}
+	if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS)
+	{
+		R = 0.0;
+		G = 1.0;
+		B = 0.0;
+	}
+	if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS)
+	{
+		R = 0.0;
+		G = 0.0;
+		B = 1.0;
+	}
+	if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS)
+	{
+		R = 1.0;
+		G = 1.0;
+		B = 1.0;
+	}
+	if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS)
+		LAMPARA = 1.0f;
+	if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS)
+		LAMPARA = 0.0f;
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
