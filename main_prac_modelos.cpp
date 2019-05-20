@@ -138,7 +138,7 @@ void getResolution()
 void LoadTextures()
 {
 
-
+	
 	texture1 = generateTextures("texturas_feria/piedras.jpg", 0);
 	texture2 = generateTextures("texturas_feria/marmol.jpg", 0);
 	texture3 = generateTextures("texturas_feria/estrellas1.jpg", 0);
@@ -154,7 +154,7 @@ void LoadTextures()
 	texture13 = generateTextures("texturas_feria/legoverde.jpg", 0);
 	texture14 = generateTextures("texturas_feria/nubes.jpg", 0);
 	texture15 = generateTextures("texturas_feria/nubes1000.jpg", 0);
-
+	
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, texture1);
 
@@ -188,7 +188,7 @@ void LoadTextures()
 
 	glActiveTexture(GL_TEXTURE12);
 	glBindTexture(GL_TEXTURE_2D, texture12);
-
+	
 	glActiveTexture(GL_TEXTURE13);
 	glBindTexture(GL_TEXTURE_2D, texture13);
 
@@ -197,11 +197,11 @@ void LoadTextures()
 
 	glActiveTexture(GL_TEXTURE15);
 	glBindTexture(GL_TEXTURE_2D, texture15);
-
+	   
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
-
+	
 
 }
 
@@ -609,8 +609,8 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 
 	glBindVertexArray(VAO);
 
-	glActiveTexture(GL_TEXTURE2);
-	glBindTexture(GL_TEXTURE_2D, texture2);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, texture1);
 	//Colocar código aquí
 	model = glm::scale(model, glm::vec3(20.0f, 0.05f, 20.0f));
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
@@ -621,7 +621,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	lightingShader.setInt("material_diffuse", texture1);
 
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-
+		
 	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
 	lightingShader.setMat4("model", model);
 	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
@@ -764,7 +764,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
 	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
 	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
-	lightingShader.setInt("material_diffuse", texture1);
+	lightingShader.setInt("material_diffuse", texture1); 
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
@@ -1008,13 +1008,13 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	}
 
 
-
-
-
-
+	
+	
+	
+	
 	//entrada	
 
-	glActiveTexture(GL_TEXTURE);
+	glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_2D, texture2);
 	lightingShader.setInt("material_diffuse", texture2);
 	model = glm::mat4(1.0f);
@@ -1044,7 +1044,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	lightingShader.setMat4("model", model);
 	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
 	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
-	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f); 
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	//columna 2 lado izquierdo
@@ -1052,7 +1052,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	lightingShader.setMat4("model", model);
 	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
 	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
-	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f); 
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	//columna 1 lado derecho
@@ -1060,7 +1060,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	lightingShader.setMat4("model", model);
 	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
 	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
-	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f); 
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	//columna 2 lado derecho
@@ -1068,11 +1068,11 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	lightingShader.setMat4("model", model);
 	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
 	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
-	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f); 
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	//base bandera lado derecho columna 2
-	glActiveTexture(GL_TEXTURE);
+	glActiveTexture(GL_TEXTURE3);
 	glBindTexture(GL_TEXTURE_2D, texture3);
 	lightingShader.setInt("material_diffuse", texture3);
 
@@ -1082,7 +1082,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	lightingShader.setMat4("model", model);
 	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
 	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
-	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f); 
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = glm::translate(model, glm::vec3(-2.0f, 0.0f, 0.0f));
@@ -1178,7 +1178,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	//banderas
-	glActiveTexture(GL_TEXTURE);
+	glActiveTexture(GL_TEXTURE4);
 	glBindTexture(GL_TEXTURE_2D, texture4);
 	lightingShader.setInt("material_diffuse", texture4);
 
@@ -1220,7 +1220,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 
 	//----------------letrero-------------------
 
-	glActiveTexture(GL_TEXTURE);
+	glActiveTexture(GL_TEXTURE11);
 	glBindTexture(GL_TEXTURE_2D, texture11);
 	lightingShader.setInt("material_diffuse", texture11);
 
@@ -1232,7 +1232,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	//________________________MESA_________________________________
-	glActiveTexture(GL_TEXTURE);
+	glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_2D, texture2);
 	lightingShader.setInt("material_diffuse", texture2);
 
@@ -1444,7 +1444,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	//Rueda de la fortuna////////////////////////////////////////////////////////////////
-	glActiveTexture(GL_TEXTURE);
+	glActiveTexture(GL_TEXTURE5);
 	glBindTexture(GL_TEXTURE_2D, texture5);//galaxia
 	lightingShader.setInt("material_diffuse", texture5);
 
@@ -1458,6 +1458,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
 	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
 	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
+	lightingShader.setInt("material_diffuse", texture5);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	model = modelTemp;
 
@@ -1468,6 +1469,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
 	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
 	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
+	lightingShader.setInt("material_diffuse", texture5);
 	glDrawArrays(GL_TRIANGLES, 27, 3);
 
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -45.0f));
@@ -1475,6 +1477,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
 	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
 	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
+	lightingShader.setInt("material_diffuse", texture5);
 	glDrawArrays(GL_TRIANGLES, 27, 3);
 
 	//eje
@@ -1487,6 +1490,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
 	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
 	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
+	lightingShader.setInt("material_diffuse", texture5);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 
@@ -1498,6 +1502,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
 	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
 	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
+	lightingShader.setInt("material_diffuse", texture5);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	model = modelTemp;
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -3.20f));
@@ -1506,6 +1511,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
 	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
 	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
+	lightingShader.setInt("material_diffuse", texture5);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = modelTemp;
@@ -1515,6 +1521,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
 	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
 	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
+	lightingShader.setInt("material_diffuse", texture5);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	model = modelTemp;
 	model = glm::translate(model, glm::vec3(6.50f, 0.0f, -3.20f));
@@ -1523,6 +1530,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
 	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
 	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
+	lightingShader.setInt("material_diffuse", texture5);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = modelTemp;
@@ -1532,6 +1540,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
 	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
 	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
+	lightingShader.setInt("material_diffuse", texture5);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	model = modelTemp;
 	model = glm::translate(model, glm::vec3(-6.50f, 0.0f, -3.20f));
@@ -1540,6 +1549,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
 	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
 	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
+	lightingShader.setInt("material_diffuse", texture5);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = modelTemp;
@@ -1550,6 +1560,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
 	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
 	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
+	lightingShader.setInt("material_diffuse", texture5);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	model = modelTemp;
@@ -1560,6 +1571,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
 	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
 	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
+	lightingShader.setInt("material_diffuse", texture5);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	//circulos rueda
@@ -1700,7 +1712,122 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	//canasta 
 	//soporte
 	model = modelTemp2;
+	
+	glActiveTexture(GL_TEXTURE2);
+glBindTexture(GL_TEXTURE_2D, texture2);
+	lightingShader.setInt("material_diffuse", texture2);
 
+	model = glm::translate(model, glm::vec3(0.0f, -2.50f, 0.3f));
+	model = glm::scale(model, glm::vec3(0.250, 2.50, 0.250));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	//techo canasta
+	model = glm::translate(model, glm::vec3(0.0f, 0.45f, 0.0f));
+	model = glm::scale(model, glm::vec3(2.0, 0.10, 2.0));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
+	my_sphere.render();
+	glBindVertexArray(VAO);
+	//piso canasta
+	//caja
+	glActiveTexture(GL_TEXTURE7);
+	glBindTexture(GL_TEXTURE_2D, texture7);
+	lightingShader.setInt("material_diffuse", texture7);
+
+	model = glm::translate(model, glm::vec3(0.0f, -8.05f, 0.0f));
+	model = glm::scale(model, glm::vec3(3.50, 3.0, 3.50));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
+	glDrawElements(GL_TRIANGLES, 24, GL_UNSIGNED_INT, 0);
+	glActiveTexture(GL_TEXTURE8);
+	glBindTexture(GL_TEXTURE_2D, texture8);
+	lightingShader.setInt("material_diffuse", texture8);
+
+	model = glm::translate(model, glm::vec3(0.0f, -0.550f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0, 0.10, 1.0));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
+	my_sphere.render();
+	glBindVertexArray(VAO);
+	glActiveTexture(GL_TEXTURE5);
+	//asiento enfrente textura galaxia
+	glBindTexture(GL_TEXTURE_2D, texture5);
+	lightingShader.setInt("material_diffuse", texture5);
+
+	model = glm::translate(model, glm::vec3(0.0f, 1.80f, 0.39f));
+	model = glm::scale(model, glm::vec3(0.80, 5.0, 0.20));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	//asientoatras
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -3.90f));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 01.0));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	//asientoder
+	model = glm::translate(model, glm::vec3(0.4950f, 0.0f, 2.0f));
+	model = glm::scale(model, glm::vec3(0.250, 1.0, 2.500));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	//asientoizq
+	model = glm::translate(model, glm::vec3(-3.94950f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.00));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	//disco azul
+	glActiveTexture(GL_TEXTURE9);
+	glBindTexture(GL_TEXTURE_2D, texture9);
+	lightingShader.setInt("material_diffuse", texture9);
+
+	model = glm::translate(model, glm::vec3(2.0f, 6.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(2.0, 0.010, 1.0));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
+	my_sphere.render();
+	glBindVertexArray(VAO);
+
+	//canasta2 Aros------------------------------------------------------------------------
+	glActiveTexture(GL_TEXTURE7);
+	glBindTexture(GL_TEXTURE_2D, texture7);
+	lightingShader.setInt("material_diffuse", texture7);
+
+	model = modelTemp;
+	model = glm::translate(model, glm::vec3(0.0f, 12.350f, 0.0f));
+	model = glm::rotate(model, glm::radians(angCanasta), glm::vec3(0, 0, 1));
+	modelTemp2 = model;
+	model = glm::translate(model, glm::vec3(0.0f, -0.50f, 0.0f));
+	//model = modelTemp2;
+	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
+	lightingShader.setMat4("model", model);
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
+	circulos();
+	//canasta
+	//soporte
+	model = modelTemp2;
 	glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_2D, texture2);
 	lightingShader.setInt("material_diffuse", texture2);
@@ -1722,8 +1849,8 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	my_sphere.render();
 	glBindVertexArray(VAO);
 	//piso canasta
-	//caja
-	glActiveTexture(GL_TEXTURE);
+	//model = modelTemp2;
+	glActiveTexture(GL_TEXTURE7);
 	glBindTexture(GL_TEXTURE_2D, texture7);
 	lightingShader.setInt("material_diffuse", texture7);
 
@@ -1734,7 +1861,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
 	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 24, GL_UNSIGNED_INT, 0);
-	glActiveTexture(GL_TEXTURE);
+	glActiveTexture(GL_TEXTURE8);
 	glBindTexture(GL_TEXTURE_2D, texture8);
 	lightingShader.setInt("material_diffuse", texture8);
 
@@ -1746,9 +1873,9 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	my_sphere.render();
 	glBindVertexArray(VAO);
-	//glActiveTexture(GL_TEXTURE);
+	glActiveTexture(GL_TEXTURE5);
 	//asiento enfrente textura galaxia
-	//glBindTexture(GL_TEXTURE_2D, texture5);
+	glBindTexture(GL_TEXTURE_2D, texture5);
 	lightingShader.setInt("material_diffuse", texture5);
 
 	model = glm::translate(model, glm::vec3(0.0f, 1.80f, 0.39f));
@@ -1783,8 +1910,8 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	//disco azul
-	//glActiveTexture(GL_TEXTURE);
-	//glBindTexture(GL_TEXTURE_2D, texture9);
+	glActiveTexture(GL_TEXTURE9);
+	glBindTexture(GL_TEXTURE_2D, texture9);
 	lightingShader.setInt("material_diffuse", texture9);
 
 	model = glm::translate(model, glm::vec3(2.0f, 6.0f, 0.0f));
@@ -1795,18 +1922,16 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	my_sphere.render();
 	glBindVertexArray(VAO);
-
-	//canasta2 Aros------------------------------------------------------------------------
-	//glActiveTexture(GL_TEXTURE);
-	//glBindTexture(GL_TEXTURE_2D, texture7);
+	//canasta3 Aros-----------------------------------------------------------------------------------------
+	glActiveTexture(GL_TEXTURE7);
+	glBindTexture(GL_TEXTURE_2D, texture7);
 	lightingShader.setInt("material_diffuse", texture7);
 
 	model = modelTemp;
-	model = glm::translate(model, glm::vec3(0.0f, 12.350f, 0.0f));
+	model = glm::translate(model, glm::vec3(12.30f, -0.30f, 0.0f));
 	model = glm::rotate(model, glm::radians(angCanasta), glm::vec3(0, 0, 1));
 	modelTemp2 = model;
 	model = glm::translate(model, glm::vec3(0.0f, -0.50f, 0.0f));
-	//model = modelTemp2;
 	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
 	lightingShader.setMat4("model", model);
 	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
@@ -1816,7 +1941,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	//canasta
 	//soporte
 	model = modelTemp2;
-	glActiveTexture(GL_TEXTURE);
+	glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_2D, texture2);
 	lightingShader.setInt("material_diffuse", texture2);
 
@@ -1837,9 +1962,8 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	my_sphere.render();
 	glBindVertexArray(VAO);
 	//piso canasta
-	//model = modelTemp2;
-	//glActiveTexture(GL_TEXTURE);
-	//glBindTexture(GL_TEXTURE_2D, texture7);
+	glActiveTexture(GL_TEXTURE7);
+	glBindTexture(GL_TEXTURE_2D, texture7);
 	lightingShader.setInt("material_diffuse", texture7);
 
 	model = glm::translate(model, glm::vec3(0.0f, -8.05f, 0.0f));
@@ -1849,8 +1973,8 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
 	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 24, GL_UNSIGNED_INT, 0);
-	//glActiveTexture(GL_TEXTURE);
-	//glBindTexture(GL_TEXTURE_2D, texture8);
+	glActiveTexture(GL_TEXTURE8);
+	glBindTexture(GL_TEXTURE_2D, texture8);
 	lightingShader.setInt("material_diffuse", texture8);
 
 	model = glm::translate(model, glm::vec3(0.0f, -0.550f, 0.0f));
@@ -1861,9 +1985,9 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	my_sphere.render();
 	glBindVertexArray(VAO);
-	//glActiveTexture(GL_TEXTURE);
+	glActiveTexture(GL_TEXTURE5);
 	//asiento enfrente textura galaxia
-	//glBindTexture(GL_TEXTURE_2D, texture5);
+	glBindTexture(GL_TEXTURE_2D, texture5);
 	lightingShader.setInt("material_diffuse", texture5);
 
 	model = glm::translate(model, glm::vec3(0.0f, 1.80f, 0.39f));
@@ -1898,120 +2022,8 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	//disco azul
-	//glActiveTexture(GL_TEXTURE);
-	//glBindTexture(GL_TEXTURE_2D, texture9);
-	lightingShader.setInt("material_diffuse", texture9);
-
-	model = glm::translate(model, glm::vec3(2.0f, 6.0f, 0.0f));
-	model = glm::scale(model, glm::vec3(2.0, 0.010, 1.0));
-	lightingShader.setMat4("model", model);
-	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
-	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
-	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
-	my_sphere.render();
-	glBindVertexArray(VAO);
-	//canasta3 Aros-----------------------------------------------------------------------------------------
-	//glActiveTexture(GL_TEXTURE);
-	//glBindTexture(GL_TEXTURE_2D, texture7);
-	lightingShader.setInt("material_diffuse", texture7);
-
-	model = modelTemp;
-	model = glm::translate(model, glm::vec3(12.30f, -0.30f, 0.0f));
-	model = glm::rotate(model, glm::radians(angCanasta), glm::vec3(0, 0, 1));
-	modelTemp2 = model;
-	model = glm::translate(model, glm::vec3(0.0f, -0.50f, 0.0f));
-	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-	lightingShader.setMat4("model", model);
-	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
-	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
-	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
-	circulos();
-	//canasta
-	//soporte
-	model = modelTemp2;
-	//glActiveTexture(GL_TEXTURE);
-	//glBindTexture(GL_TEXTURE_2D, texture2);
-	lightingShader.setInt("material_diffuse", texture2);
-
-	model = glm::translate(model, glm::vec3(0.0f, -2.50f, 0.3f));
-	model = glm::scale(model, glm::vec3(0.250, 2.50, 0.250));
-	lightingShader.setMat4("model", model);
-	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
-	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
-	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-	//techo canasta
-	model = glm::translate(model, glm::vec3(0.0f, 0.45f, 0.0f));
-	model = glm::scale(model, glm::vec3(2.0, 0.10, 2.0));
-	lightingShader.setMat4("model", model);
-	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
-	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
-	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
-	my_sphere.render();
-	glBindVertexArray(VAO);
-	//piso canasta
-	//glActiveTexture(GL_TEXTURE);
-	//glBindTexture(GL_TEXTURE_2D, texture7);
-	lightingShader.setInt("material_diffuse", texture7);
-
-	model = glm::translate(model, glm::vec3(0.0f, -8.05f, 0.0f));
-	model = glm::scale(model, glm::vec3(3.50, 3.0, 3.50));
-	lightingShader.setMat4("model", model);
-	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
-	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
-	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
-	glDrawElements(GL_TRIANGLES, 24, GL_UNSIGNED_INT, 0);
-	//glActiveTexture(GL_TEXTURE);
-	//glBindTexture(GL_TEXTURE_2D, texture8);
-	lightingShader.setInt("material_diffuse", texture8);
-
-	model = glm::translate(model, glm::vec3(0.0f, -0.550f, 0.0f));
-	model = glm::scale(model, glm::vec3(1.0, 0.10, 1.0));
-	lightingShader.setMat4("model", model);
-	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
-	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
-	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
-	my_sphere.render();
-	glBindVertexArray(VAO);
-	//glActiveTexture(GL_TEXTURE);
-	//asiento enfrente textura galaxia
-	//glBindTexture(GL_TEXTURE_2D, texture5);
-	lightingShader.setInt("material_diffuse", texture5);
-
-	model = glm::translate(model, glm::vec3(0.0f, 1.80f, 0.39f));
-	model = glm::scale(model, glm::vec3(0.80, 5.0, 0.20));
-	lightingShader.setMat4("model", model);
-	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
-	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
-	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-	//asientoatras
-	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -3.90f));
-	model = glm::scale(model, glm::vec3(1.0, 1.0, 01.0));
-	lightingShader.setMat4("model", model);
-	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
-	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
-	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-	//asientoder
-	model = glm::translate(model, glm::vec3(0.4950f, 0.0f, 2.0f));
-	model = glm::scale(model, glm::vec3(0.250, 1.0, 2.500));
-	lightingShader.setMat4("model", model);
-	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
-	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
-	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-	//asientoizq
-	model = glm::translate(model, glm::vec3(-3.94950f, 0.0f, 0.0f));
-	model = glm::scale(model, glm::vec3(1.0, 1.0, 1.00));
-	lightingShader.setMat4("model", model);
-	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 1.0f);
-	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
-	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-	//disco azul
-	//glActiveTexture(GL_TEXTURE);
-	//glBindTexture(GL_TEXTURE_2D, texture9);
+	glActiveTexture(GL_TEXTURE9);
+	glBindTexture(GL_TEXTURE_2D, texture9);
 	lightingShader.setInt("material_diffuse", texture9);
 
 	model = glm::translate(model, glm::vec3(2.0f, 6.0f, 0.0f));
@@ -2023,8 +2035,8 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	my_sphere.render();
 	glBindVertexArray(VAO);
 	//canasta 4  Aros--------------------------------------------------------------------------------------
-	//glActiveTexture(GL_TEXTURE);
-	//glBindTexture(GL_TEXTURE_2D, texture7);
+	glActiveTexture(GL_TEXTURE7);
+	glBindTexture(GL_TEXTURE_2D, texture7);
 	lightingShader.setInt("material_diffuse", texture7);
 
 	model = modelTemp;
@@ -2041,8 +2053,8 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	//canasta
 	//soporte
 	model = modelTemp2;
-	//glActiveTexture(GL_TEXTURE);
-	//glBindTexture(GL_TEXTURE_2D, texture2);
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, texture2);
 	lightingShader.setInt("material_diffuse", texture2);
 
 	model = glm::translate(model, glm::vec3(0.0f, -2.50f, 0.3f));
@@ -2062,8 +2074,8 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	my_sphere.render();
 	glBindVertexArray(VAO);
 	//piso canasta
-	//glActiveTexture(GL_TEXTURE);
-	//glBindTexture(GL_TEXTURE_2D, texture7);
+	glActiveTexture(GL_TEXTURE7);
+	glBindTexture(GL_TEXTURE_2D, texture7);
 	lightingShader.setInt("material_diffuse", texture7);
 
 	model = glm::translate(model, glm::vec3(0.0f, -8.05f, 0.0f));
@@ -2073,8 +2085,8 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
 	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 24, GL_UNSIGNED_INT, 0);
-	//glActiveTexture(GL_TEXTURE);
-	//glBindTexture(GL_TEXTURE_2D, texture8);
+	glActiveTexture(GL_TEXTURE8);
+	glBindTexture(GL_TEXTURE_2D, texture8);
 	lightingShader.setInt("material_diffuse", texture8);
 
 	model = glm::translate(model, glm::vec3(0.0f, -0.550f, 0.0f));
@@ -2085,9 +2097,9 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	my_sphere.render();
 	glBindVertexArray(VAO);
-	//glActiveTexture(GL_TEXTURE);
+	glActiveTexture(GL_TEXTURE5);
 	//asiento enfrente textura galaxia
-	//glBindTexture(GL_TEXTURE_2D, texture5);
+	glBindTexture(GL_TEXTURE_2D, texture5);
 	lightingShader.setInt("material_diffuse", texture5);
 
 	model = glm::translate(model, glm::vec3(0.0f, 1.80f, 0.39f));
@@ -2122,8 +2134,8 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	//disco azul
-	//glActiveTexture(GL_TEXTURE);
-	//glBindTexture(GL_TEXTURE_2D, texture9);
+	glActiveTexture(GL_TEXTURE9);
+	glBindTexture(GL_TEXTURE_2D, texture9);
 	lightingShader.setInt("material_diffuse", texture9);
 
 	model = glm::translate(model, glm::vec3(2.0f, 6.0f, 0.0f));
@@ -2136,8 +2148,8 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	glBindVertexArray(VAO);
 
 	//canasta 5  Aros--------------------------------------------------------------------------------------
-	//glActiveTexture(GL_TEXTURE);
-	//glBindTexture(GL_TEXTURE_2D, texture7);
+	glActiveTexture(GL_TEXTURE7);
+	glBindTexture(GL_TEXTURE_2D, texture7);
 	lightingShader.setInt("material_diffuse", texture7);
 
 	model = modelTemp;
@@ -2175,7 +2187,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	my_sphere.render();
 	glBindVertexArray(VAO);
 	//piso canasta
-	//glActiveTexture(GL_TEXTURE);
+	glActiveTexture(GL_TEXTURE7);
 	glBindTexture(GL_TEXTURE_2D, texture7);
 	lightingShader.setInt("material_diffuse", texture7);
 
@@ -2186,7 +2198,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
 	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 24, GL_UNSIGNED_INT, 0);
-	//glActiveTexture(GL_TEXTURE);
+	glActiveTexture(GL_TEXTURE8);
 	glBindTexture(GL_TEXTURE_2D, texture8);
 	lightingShader.setInt("material_diffuse", texture8);
 
@@ -2198,7 +2210,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	my_sphere.render();
 	glBindVertexArray(VAO);
-	glActiveTexture(GL_TEXTURE);
+	glActiveTexture(GL_TEXTURE5);
 	//asiento enfrente textura galaxia
 	glBindTexture(GL_TEXTURE_2D, texture5);
 	lightingShader.setInt("material_diffuse", texture5);
@@ -2235,7 +2247,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	//disco azul
-	glActiveTexture(GL_TEXTURE);
+	glActiveTexture(GL_TEXTURE9);
 	glBindTexture(GL_TEXTURE_2D, texture9);
 	lightingShader.setInt("material_diffuse", texture9);
 
@@ -2249,7 +2261,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	glBindVertexArray(VAO);
 
 	//canasta 6 Aros--------------------------------------------------------------------------------------
-	glActiveTexture(GL_TEXTURE);
+	glActiveTexture(GL_TEXTURE7);
 	glBindTexture(GL_TEXTURE_2D, texture7);
 	lightingShader.setInt("material_diffuse", texture7);
 
@@ -2267,7 +2279,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	//canasta
 	//soporte
 	model = modelTemp2;
-	glActiveTexture(GL_TEXTURE);
+	glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_2D, texture2);
 	lightingShader.setInt("material_diffuse", texture2);
 
@@ -2288,7 +2300,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	my_sphere.render();
 	glBindVertexArray(VAO);
 	//piso canasta
-	glActiveTexture(GL_TEXTURE);
+	glActiveTexture(GL_TEXTURE7);
 	glBindTexture(GL_TEXTURE_2D, texture7);
 	lightingShader.setInt("material_diffuse", texture7);
 
@@ -2299,7 +2311,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
 	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 24, GL_UNSIGNED_INT, 0);
-	glActiveTexture(GL_TEXTURE);
+	glActiveTexture(GL_TEXTURE8);
 	glBindTexture(GL_TEXTURE_2D, texture8);
 	lightingShader.setInt("material_diffuse", texture8);
 
@@ -2311,7 +2323,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	my_sphere.render();
 	glBindVertexArray(VAO);
-	glActiveTexture(GL_TEXTURE);
+	glActiveTexture(GL_TEXTURE5);
 	//asiento enfrente textura galaxia
 	glBindTexture(GL_TEXTURE_2D, texture5);
 	lightingShader.setInt("material_diffuse", texture5);
@@ -2348,7 +2360,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	//disco azul
-	glActiveTexture(GL_TEXTURE);
+	glActiveTexture(GL_TEXTURE9);
 	glBindTexture(GL_TEXTURE_2D, texture9);
 	lightingShader.setInt("material_diffuse", texture9);
 
@@ -2362,7 +2374,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	glBindVertexArray(VAO);
 
 	//canasta 7 Aros--------------------------------------------------------------------------------------
-	glActiveTexture(GL_TEXTURE);
+	glActiveTexture(GL_TEXTURE7);
 	glBindTexture(GL_TEXTURE_2D, texture7);
 	lightingShader.setInt("material_diffuse", texture7);
 
@@ -2380,7 +2392,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	//canasta
 	//soporte
 	model = modelTemp2;
-	glActiveTexture(GL_TEXTURE);
+	glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_2D, texture2);
 	lightingShader.setInt("material_diffuse", texture2);
 
@@ -2401,7 +2413,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	my_sphere.render();
 	glBindVertexArray(VAO);
 	//piso canasta
-	glActiveTexture(GL_TEXTURE);
+	glActiveTexture(GL_TEXTURE7);
 	glBindTexture(GL_TEXTURE_2D, texture7);
 	lightingShader.setInt("material_diffuse", texture7);
 
@@ -2412,7 +2424,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
 	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 24, GL_UNSIGNED_INT, 0);
-	glActiveTexture(GL_TEXTURE);
+	glActiveTexture(GL_TEXTURE8);
 	glBindTexture(GL_TEXTURE_2D, texture8);
 	lightingShader.setInt("material_diffuse", texture8);
 
@@ -2424,7 +2436,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	my_sphere.render();
 	glBindVertexArray(VAO);
-	glActiveTexture(GL_TEXTURE);
+	glActiveTexture(GL_TEXTURE5);
 	//asiento enfrente textura galaxia
 	glBindTexture(GL_TEXTURE_2D, texture5);
 	lightingShader.setInt("material_diffuse", texture5);
@@ -2461,7 +2473,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	//disco azul
-	glActiveTexture(GL_TEXTURE);
+	glActiveTexture(GL_TEXTURE9);
 	glBindTexture(GL_TEXTURE_2D, texture9);
 	lightingShader.setInt("material_diffuse", texture9);
 
@@ -2475,7 +2487,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	glBindVertexArray(VAO);
 
 	//canasta 8 Aros--------------------------------------------------------------------------------------
-	glActiveTexture(GL_TEXTURE);
+	glActiveTexture(GL_TEXTURE7);
 	glBindTexture(GL_TEXTURE_2D, texture7);
 	lightingShader.setInt("material_diffuse", texture7);
 
@@ -2493,7 +2505,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	//canasta
 	//soporte
 	model = modelTemp2;
-	glActiveTexture(GL_TEXTURE);
+	glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_2D, texture2);
 	lightingShader.setInt("material_diffuse", texture2);
 
@@ -2514,7 +2526,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	my_sphere.render();
 	glBindVertexArray(VAO);
 	//piso canasta
-	glActiveTexture(GL_TEXTURE);
+	glActiveTexture(GL_TEXTURE7);
 	glBindTexture(GL_TEXTURE_2D, texture7);
 	lightingShader.setInt("material_diffuse", texture7);
 
@@ -2525,7 +2537,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
 	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 24, GL_UNSIGNED_INT, 0);
-	glActiveTexture(GL_TEXTURE);
+	glActiveTexture(GL_TEXTURE8);
 	glBindTexture(GL_TEXTURE_2D, texture8);
 	lightingShader.setInt("material_diffuse", texture8);
 
@@ -2537,7 +2549,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	my_sphere.render();
 	glBindVertexArray(VAO);
-	glActiveTexture(GL_TEXTURE);
+	glActiveTexture(GL_TEXTURE5);
 	//asiento enfrente textura galaxia
 	glBindTexture(GL_TEXTURE_2D, texture5);
 	lightingShader.setInt("material_diffuse", texture5);
@@ -2574,7 +2586,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	//disco azul
-	glActiveTexture(GL_TEXTURE);
+	glActiveTexture(GL_TEXTURE9);
 	glBindTexture(GL_TEXTURE_2D, texture9);
 	lightingShader.setInt("material_diffuse", texture9);
 
@@ -2613,7 +2625,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 
 	//escalera canastas
 	model = modelTemp3;
-	glActiveTexture(GL_TEXTURE);
+	glActiveTexture(GL_TEXTURE5);
 	glBindTexture(GL_TEXTURE_2D, texture5);
 	lightingShader.setInt("material_diffuse", texture5);
 
@@ -2624,6 +2636,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	lightingShader.setVec3("diffuseColor", 01.0f, 0.0f, 1.0f);
 	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	glActiveTexture(GL_TEXTURE9);
 	glBindTexture(GL_TEXTURE_2D, texture9);
 	lightingShader.setInt("material_diffuse", texture9);
 	model = glm::translate(model, glm::vec3(0.0f, -0.10, 0.750f));
@@ -2633,6 +2646,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	lightingShader.setVec3("diffuseColor", 01.0f, 0.0f, 1.0f);
 	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	glActiveTexture(GL_TEXTURE8);
 	glBindTexture(GL_TEXTURE_2D, texture8);
 	lightingShader.setInt("material_diffuse", texture8);
 	model = glm::translate(model, glm::vec3(0.0f, -0.10, 1.0f));
@@ -2642,6 +2656,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	lightingShader.setVec3("diffuseColor", 01.0f, 0.0f, 1.0f);
 	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	glActiveTexture(GL_TEXTURE9);
 	glBindTexture(GL_TEXTURE_2D, texture9);
 	lightingShader.setInt("material_diffuse", texture9);
 	model = glm::translate(model, glm::vec3(0.0f, -0.10, 1.0f));
@@ -2651,6 +2666,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	lightingShader.setVec3("diffuseColor", 01.0f, 0.0f, 1.0f);
 	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	glActiveTexture(GL_TEXTURE8);
 	glBindTexture(GL_TEXTURE_2D, texture8);
 	lightingShader.setInt("material_diffuse", texture8);
 	model = glm::translate(model, glm::vec3(0.0f, -0.10, 1.0f));
@@ -2660,6 +2676,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	lightingShader.setVec3("diffuseColor", 01.0f, 0.0f, 1.0f);
 	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	glActiveTexture(GL_TEXTURE9);
 	glBindTexture(GL_TEXTURE_2D, texture9);
 	lightingShader.setInt("material_diffuse", texture9);
 	model = glm::translate(model, glm::vec3(0.0f, -0.10, 1.0f));
@@ -2671,7 +2688,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	//cercado
 	model = modelTemp3;
-	glActiveTexture(GL_TEXTURE);
+	glActiveTexture(GL_TEXTURE9);
 	glBindTexture(GL_TEXTURE_2D, texture9);
 	lightingShader.setInt("material_diffuse", texture9);
 
@@ -2753,22 +2770,8 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	}
 
 
-	/////JUEGO DE DESTREZA: TOPOS//////////////////
-	
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+	//-------------------------------------------------------------------------------------------
 
 
 
@@ -2776,7 +2779,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	//-------------------------------------------------------------------------------------------
 
 	//MONTAÑA RUSA 
-	glActiveTexture(GL_TEXTURE);
+	glActiveTexture(GL_TEXTURE14);
 	glBindTexture(GL_TEXTURE_2D, texture14);
 	lightingShader.setInt("material_diffuse", texture14);
 
@@ -2816,7 +2819,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	//cabina plancha 
-	glActiveTexture(GL_TEXTURE);
+	glActiveTexture(GL_TEXTURE10);
 	glBindTexture(GL_TEXTURE_2D, texture10);
 	lightingShader.setInt("material_diffuse", texture10);
 
@@ -2831,7 +2834,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 
 
 	//parte donde van los rieles en la plancha 
-	glActiveTexture(GL_TEXTURE);
+	glActiveTexture(GL_TEXTURE14);
 	glBindTexture(GL_TEXTURE_2D, texture14);
 	lightingShader.setInt("material_diffuse", texture14);
 
@@ -2844,7 +2847,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	//barandales de la plancha
-	glActiveTexture(GL_TEXTURE);
+	glActiveTexture(GL_TEXTURE4);
 	glBindTexture(GL_TEXTURE_2D, texture4);
 	lightingShader.setInt("material_diffuse", texture4);
 
@@ -3207,7 +3210,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	//ESCALERAS 
-	glActiveTexture(GL_TEXTURE);
+	glActiveTexture(GL_TEXTURE4);
 	glBindTexture(GL_TEXTURE_2D, texture4);
 	lightingShader.setInt("material_diffuse", texture4);
 
@@ -3271,7 +3274,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	}
 
 	//--------------------Postes-Soporte----------------
-	glActiveTexture(GL_TEXTURE);
+	glActiveTexture(GL_TEXTURE14);
 	glBindTexture(GL_TEXTURE_2D, texture14);
 	lightingShader.setInt("material_diffuse", texture14);
 
@@ -3413,7 +3416,7 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 
 	//----------------Rieles-------------------Rieles-----------------Rieles-----------------------------------
 
-	glActiveTexture(GL_TEXTURE);
+	glActiveTexture(GL_TEXTURE13);
 	glBindTexture(GL_TEXTURE_2D, texture13);
 	lightingShader.setInt("material_diffuse", texture13);
 
@@ -4007,6 +4010,9 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 
 
 
+
+	////FIN DE LOS RIELES---------------------------------------------------------
+
 	//---------------------------------------MODELOS -------------------------------------------
 	//arbol ////////////////
 
@@ -4021,58 +4027,46 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	modelShader.setMat4("model", model);
 	model = glm::translate(model, glm::vec3(-60.0f, 0.10f, -25.0f));
 	model = glm::scale(model, glm::vec3(0.0150f, 0.0150f, 0.0150f));
-	lightingShader.setMat4("model", model);
-	lightingShader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
-	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
-	lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
+	modelShader.setMat4("model", model);
+	modelShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 0.0f));
 	Tree.Draw(modelShader);
 
 	model = glm::mat4(1.0f);
 	modelShader.setMat4("model", model);
 	model = glm::translate(model, glm::vec3(-55.0f, 0.10f, -15.0f));
 	model = glm::scale(model, glm::vec3(01.350f, 01.350f, 01.350f));
-	lightingShader.setMat4("model", model);
-	lightingShader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
-	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
-	lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
+	modelShader.setMat4("model", model);
+	modelShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 0.0f));
 	FoodCart.Draw(modelShader);
 
 	model = glm::mat4(1.0f);
 	modelShader.setMat4("model", model);
 	model = glm::translate(model, glm::vec3(-45.0f, 0.10f, -15.0f));
 	model = glm::scale(model, glm::vec3(0.0150f, 0.0250f, 0.0150f));
-	lightingShader.setMat4("model", model);
-	lightingShader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
-	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
-	lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
+	modelShader.setMat4("model", model);
+	modelShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 0.0f));
 	Tree.Draw(modelShader);
 	model = glm::mat4(1.0f);
 	modelShader.setMat4("model", model);
 	model = glm::translate(model, glm::vec3(-45.0f, 0.10f, -10.0f));
 	model = glm::scale(model, glm::vec3(0.0150f, 0.0250f, 0.0150f));
-	lightingShader.setMat4("model", model);
-	lightingShader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
-	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
-	lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
+	modelShader.setMat4("model", model);
+	modelShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 0.0f));
 	Tree.Draw(modelShader);
 	model = glm::mat4(1.0f);
 	modelShader.setMat4("model", model);
 	model = glm::translate(model, glm::vec3(-45.0f, 0.10f, -5.0f));
 	model = glm::scale(model, glm::vec3(0.0150f, 0.0250f, 0.0150f));
-	lightingShader.setMat4("model", model);
-	lightingShader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
-	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
-	lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
+	modelShader.setMat4("model", model);
+	modelShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 0.0f));
 	Tree.Draw(modelShader);
 
 	model = glm::mat4(1.0f);
 	modelShader.setMat4("model", model);
 	model = glm::translate(model, glm::vec3(-35.0f, 0.10f, 20.0f));
 	model = glm::scale(model, glm::vec3(0.50f, 0.5f, 0.50f));
-	lightingShader.setMat4("model", model);
-	lightingShader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
-	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
-	lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
+	modelShader.setMat4("model", model);
+	modelShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 0.0f));
 	Soldado1.Draw(modelShader);
 
 	model = glm::mat4(1.0f);
@@ -4080,10 +4074,8 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	model = glm::translate(model, glm::vec3(movKit_x, movKit_y, movKit_z));
 	model = glm::rotate(model, glm::radians(rotKit_y), glm::vec3(0.0f, 1.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.4f));
-	lightingShader.setMat4("model", model);
-	lightingShader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
-	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
-	lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
+	modelShader.setMat4("model", model);
+	modelShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 0.0f));
 	Carrito.Draw(modelShader);
 
 
@@ -4091,58 +4083,46 @@ void display(Model Tree, Model FoodCart, Model Soldado1, Model Carrito)
 	modelShader.setMat4("model", model);
 	model = glm::translate(model, glm::vec3(-35.0f, 0.10f, -40.0f));
 	model = glm::scale(model, glm::vec3(0.0150f, 0.0250f, 0.0150f));
-	lightingShader.setMat4("model", model);
-	lightingShader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
-	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
-	lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
+	modelShader.setMat4("model", model);
+	modelShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 0.0f));
 	Tree.Draw(modelShader);
 	model = glm::mat4(1.0f);
 	modelShader.setMat4("model", model);
 	model = glm::translate(model, glm::vec3(-50.0f, 0.10f, -45.0f));
 	model = glm::scale(model, glm::vec3(0.0150f, 0.0250f, 0.0150f));
-	lightingShader.setMat4("model", model);
-	lightingShader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
-	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
-	lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
+	modelShader.setMat4("model", model);
+	modelShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 0.0f));
 	Tree.Draw(modelShader);
 	model = glm::mat4(1.0f);
 	modelShader.setMat4("model", model);
 	model = glm::translate(model, glm::vec3(-23.0f, 0.10f, -50.0f));
 	model = glm::scale(model, glm::vec3(0.0150f, 0.0250f, 0.0150f));
-	lightingShader.setMat4("model", model);
-	lightingShader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
-	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
-	lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
+	modelShader.setMat4("model", model);
+	modelShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 0.0f));
 	Tree.Draw(modelShader);
 
 	model = glm::mat4(1.0f);
 	modelShader.setMat4("model", model);
 	model = glm::translate(model, glm::vec3(-50.0f, 0.10f, -90.0f));
 	model = glm::scale(model, glm::vec3(0.0150f, 0.0250f, 0.0150f));
-	lightingShader.setMat4("model", model);
-	lightingShader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
-	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
-	lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
+	modelShader.setMat4("model", model);
+	modelShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 0.0f));
 	Tree.Draw(modelShader);
 
 	model = glm::mat4(1.0f);
 	modelShader.setMat4("model", model);
 	model = glm::translate(model, glm::vec3(-80.0f, 0.10f, -80.0f));
 	model = glm::scale(model, glm::vec3(0.0150f, 0.0250f, 0.0150f));
-	lightingShader.setMat4("model", model);
-	lightingShader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
-	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
-	lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
+	modelShader.setMat4("model", model);
+	modelShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 0.0f));
 	Tree.Draw(modelShader);
 
 	model = glm::mat4(1.0f);
 	modelShader.setMat4("model", model);
 	model = glm::translate(model, glm::vec3(-83.0f, 0.10f, -90.0f));
 	model = glm::scale(model, glm::vec3(0.0150f, 0.0250f, 0.0150f));
-	lightingShader.setMat4("model", model);
-	lightingShader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
-	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
-	lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
+	modelShader.setMat4("model", model);
+	modelShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 0.0f));
 	Tree.Draw(modelShader);
 
 
@@ -4244,7 +4224,7 @@ int main()
 		else {
 			glClearColor(0.5, 0.869, 0.869f, 1.0f);
 		}
-
+		
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		//Mi función de dibujo
