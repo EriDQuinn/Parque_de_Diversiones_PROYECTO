@@ -373,7 +373,7 @@ void animate(void)
 
 	/////PARA EL CARRITO EN LA MONTAÑA RUSA//////////
 
-	if (play) {
+		if (play) {
 
 		if (estado == 0) { //ESTADO A
 
@@ -486,11 +486,10 @@ void animate(void)
 		}
 		if (estado == 8) { //ESTADO b
 
-			if (movKit_x < -56) {//SIGO EN EL ESTADO B    
+			if (movKit_x < -60) {//SIGO EN EL ESTADO B    
 				movKit_x += 1.0f;
 
 				movKit_y -= 0.1f;
-				printf("%f \n", movKit_x);
 			}
 			else {
 
@@ -498,39 +497,278 @@ void animate(void)
 				estado = 9;
 			}
 		}
-		if (estado == 8) { //ESTADO b
 
-			if (movKit_x < -30) {//SIGO EN EL ESTADO B    
-				movKit_x += 0.5f;
-
-				movKit_y += 0.12f;
-				printf("%f \n", movKit_x);
-			}
-			else {
-
-				rotKit_y = 90.0f;
-				estado = 9;
-			}
-
-		}
 
 		if (estado == 9) { //ESTADO b
 
-			if (movKit_x < -35) {//SIGO EN EL ESTADO B    
+			if (movKit_x < -40) {//SIGO EN EL ESTADO B    
 				movKit_x += 1.0f;
 
 				movKit_y += 0.5f;
-				printf("%f \n", movKit_x);
 			}
 			else {
 
 				rotKit_y = 90.0f;
+				estado = 10;
+			}
+		}
+
+
+		if (estado == 10) { //ESTADO b
+
+			if (movKit_x < -24) {//SIGO EN EL ESTADO B    
+				movKit_x += 1.0f;
+
+				movKit_y += 0.01f;
+			}
+			else {
+
+				rotKit_y = 90.0f;
+				estado = 11;
+			}
+		}
+
+		if (estado == 11) { //ESTADO b
+
+			if (movKit_x < -18) {//SIGO EN EL ESTADO B    
+				movKit_x += 1.0f;
+
+				movKit_y += 0.35f;
+			}
+			else {
+
+				rotKit_y = 90.0f;
+				estado = 12;
+			}
+		}
+
+		if (estado == 12) { //ESTADO b
+
+			if (movKit_x < -16) {//SIGO EN EL ESTADO B    
+				movKit_x += 1.0f;
+
+				movKit_y += 1.3f;
+			}
+			else {
+
+				rotKit_y = 90.0f;
+				estado = 13;
 
 			}
 		}
 
-	}
+		if (estado == 13) { //ESTADO b
 
+			if (movKit_x < -11) {//SIGO EN EL ESTADO B    
+				movKit_x += 2.0f;
+
+				movKit_y += 2.3f;
+			}
+			else {
+
+				rotKit_y = 90.0f;
+				estado = 14;
+			}
+		}
+
+		if (estado == 14) { //ESTADO b
+
+			if (movKit_x < -8) {//SIGO EN EL ESTADO B    
+				movKit_x += 1.0f;
+
+				movKit_y += 0.5f;
+			}
+			else {
+
+				rotKit_y = 90.0f;
+				estado = 15;
+			}
+		}
+		if (estado == 15) { //ESTADO b
+
+			if (movKit_x < 0.0) {//SIGO EN EL ESTADO B    
+				movKit_x += 2.0f;
+
+				movKit_y += 0.1f;
+			}
+			else {
+
+				rotKit_y = 90.0f;
+				estado = 16;
+			}
+		}
+		if (estado == 16) { //ESTADO b
+
+			if (movKit_x < 10.0) {//SIGO EN EL ESTADO B    
+				movKit_x += 1.0f;
+
+				movKit_y += 0.0f;
+			}
+			else {
+
+				rotKit_y = 90.0f;
+				estado = 17;
+			}
+		}
+
+		if (estado == 17) { //ESTADO b
+
+			if (movKit_x < 40.0) {//SIGO EN EL ESTADO B    
+				movKit_x += 0.7f;
+
+				movKit_y += -0.29f;
+			}
+			else {
+
+				rotKit_y = 90.0f;
+				estado = 18;
+			}
+		}
+		if (estado == 18) { //ESTADO b
+
+			if (movKit_x < 72.0) {//SIGO EN EL ESTADO B    
+				movKit_x += 0.4f;
+
+
+			}
+			else {
+
+				rotKit_y = 90.0f;
+				estado = 19;
+			}
+		}
+		if (estado == 19) { //ESTADO b
+
+			if (movKit_x < 85.0) {//SIGO EN EL ESTADO B    
+				movKit_x += 1.5f;
+				movKit_y -= 2.0;
+
+			}
+			else {
+
+				rotKit_y = 90.0f;
+				estado = 20;
+			}
+		}
+		if (estado == 20) { //ESTADO b
+
+			if (movKit_x < 92.0) {//SIGO EN EL ESTADO B    
+				movKit_x += 1.5f;
+				//movKit_y -= 2.0;
+
+			}
+			else {
+
+				rotKit_y = 90.0f;
+				estado = 21;
+			}
+		}
+		if (estado == 21) { //ESTADO b
+			view = glm::rotate(view, glm::radians(-25.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+			view = glm::rotate(view, glm::radians(-25.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+
+			if (movKit_x < 94.0) {//SIGO EN EL ESTADO B    
+				movKit_x += 0.8f;
+				movKit_y -= 0.1;
+
+			}
+			else {
+
+				rotKit_y = 90.0f;
+				estado = 22;
+			}
+		}
+		if (estado == 22) { //ESTADO b
+
+			if (movKit_x < 110.0) {//SIGO EN EL ESTADO B    
+				movKit_x += 0.8f;
+				movKit_y -= 0.085;
+
+			}
+			else {
+
+				rotKit_y = 10.0f;
+				estado = 23;
+			}
+		}
+		if (estado == 23) { //ESTADO b
+
+			if (movKit_z < -124.0f) {//SIGO EN EL ESTADO B    
+				movKit_y -= 0.3;
+				movKit_z += 1.00f;
+
+				printf("%f \n", movKit_z);
+			}
+			else {
+
+				rotKit_y = 270.0f;
+				estado = 24;
+			}
+		}
+
+
+		if (estado == 24) { //ESTADO b
+
+			if (movKit_x > 102.0f) {//SIGO EN EL ESTADO B    
+				movKit_x -= 1.0f;
+				movKit_z += 1.0f;
+
+				printf("%f \n", movKit_z);
+			}
+			else {
+
+				rotKit_y = 270.0f;
+				estado = 25;
+			}
+		}
+
+
+		if (estado == 25) { //ESTADO b
+
+			if (movKit_x > 87.0f) {//SIGO EN EL ESTADO B    
+				movKit_x -= 1.0f;
+
+
+				printf("%f \n", movKit_z);
+			}
+			else {
+
+
+				estado = 26;
+			}
+		}
+
+
+		if (estado == 26) { //ESTADO b
+
+			if (movKit_x > 57.0f) {//SIGO EN EL ESTADO B    
+				movKit_x -= 1.0f;
+				movKit_y += 0.55f;
+
+			}
+			else {
+
+
+				estado = 27;
+			}
+		}
+
+		if (estado == 27) { //ESTADO b
+
+			if (movKit_x > 0.0f) {//SIGO EN EL ESTADO B    
+				movKit_x -= 1.0f;
+
+
+			}
+			else {
+				estado = 0;
+
+			}
+		}
+
+
+
+	}
 
 
 
